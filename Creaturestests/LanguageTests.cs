@@ -99,6 +99,34 @@ namespace CreaturesTests
             Check(commands.ToString(), -1);
         }
 
+        [TestMethod]
+        public void EmbeddedCondition()
+        {
+            var commands =
+               new StringBuilder()
+                   .AppendLine("int a")
+                   .AppendLine("a=1")
+                   .AppendLine("int b")
+                   .AppendLine("b=2")
+                   .AppendLine("int c")
+                   .AppendLine("c=a-b")
+                   .AppendLine("if a then")
+                   
+                   .AppendLine("if b then")
+                   .AppendLine("print b")
+                   .AppendLine("endif")
+
+                   .AppendLine("if c then")
+                   .AppendLine("print c")
+                   .AppendLine("endif")
+
+                   .AppendLine("print a")
+                   .AppendLine("endif")
+                   .AppendLine("print a");
+
+            Check(commands.ToString(), 2, 1, 1);
+        }
+
         private void Check(string commands, params int[] values)
         {
             var parsedCommands = new Parser().ProcessCommands(commands);
