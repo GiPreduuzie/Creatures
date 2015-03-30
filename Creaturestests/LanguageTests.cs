@@ -11,6 +11,18 @@ namespace CreaturesTests
     public class LanguageTests
     {
         [TestMethod]
+        public void SetValue()
+        {
+            var commands =
+               new StringBuilder()
+                   .AppendLine("int a")
+                   .AppendLine("a=1")
+                   .AppendLine("print a");
+
+            Check(commands.ToString(), 1);
+        }
+
+        [TestMethod]
         public void Plus()
         {
             var commands =
@@ -40,9 +52,56 @@ namespace CreaturesTests
             Check(commands.ToString(), -1);
         }
 
+        [TestMethod]
+        public void CloneValue()
+        {
+            var commands =
+               new StringBuilder()
+                   .AppendLine("int a")
+                   .AppendLine("a=1")
+                   .AppendLine("int b")
+                   .AppendLine("b=a")
+                   .AppendLine("print b");
+
+            Check(commands.ToString(), 1);
+        }
+
+        [TestMethod]
+        public void TrueCondition()
+        {
+            var commands =
+               new StringBuilder()
+                   .AppendLine("int a")
+                   .AppendLine("a=1")
+                   .AppendLine("if a then")
+                   .AppendLine("print a")
+                   .AppendLine("endif")
+                   .AppendLine("print a");
+
+            Check(commands.ToString(), 1, 1);
+        }
+
+        [TestMethod]
+        public void FalseCondition()
+        {
+            var commands =
+               new StringBuilder()
+                   .AppendLine("int a")
+                   .AppendLine("a=1")
+                   .AppendLine("int b")
+                   .AppendLine("b=2")
+                   .AppendLine("a=a-b")
+                   .AppendLine("if a then")
+                   .AppendLine("print a")
+                   .AppendLine("endif")
+                   .AppendLine("print a");
+
+            Check(commands.ToString(), -1);
+        }
+
         private void Check(string commands, params int[] values)
         {
-            var parsedCommands = new Constructor().ProcessCommands(commands);
+            var parsedCommands = new Parser().ProcessCommands(commands);
             var output =
                 new Executor().Execute(parsedCommands)
                     .Replace("\r\n", "\n")

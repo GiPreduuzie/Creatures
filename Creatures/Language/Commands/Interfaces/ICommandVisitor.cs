@@ -7,5 +7,8 @@ namespace Creatures.Language.Commands.Interfaces
         void Accept(Plus command);
         void Accept(Print command);
         void Accept(Minus command);
+        void Accept(CloneValue command);
+        void Accept(Condition command);
+        void Accept(CloseCondition command);
     }
 }

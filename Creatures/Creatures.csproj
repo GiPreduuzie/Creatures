@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Language\Commands\CloseCondition.cs" />
     <Compile Include="Language\Executors\Executor.cs" />
     <Compile Include="Language\Commands\CloneValue.cs" />
     <Compile Include="Language\Commands\Condition.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="Language\Commands\Plus.cs" />
     <Compile Include="Language\Commands\Print.cs" />
     <Compile Include="Language\Commands\SetValue.cs" />
+    <Compile Include="Language\Parsers\Parser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

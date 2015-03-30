@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Creatures.Language.Commands;
 using Creatures.Language.Commands.Interfaces;
@@ -8,48 +7,9 @@ namespace Creatures.Language.Parsers
 {
     public class Constructor
     {
-        IList<ICommand> commands = new List<ICommand>();
-
         public ICommand NewInt(string command)
         {
             return new NewInt(CheckTypeNamePair("int", command));
-        }
-
-        public IEnumerable<ICommand> ProcessCommands(string commands)
-        {
-            return commands
-                .Split(new[] { '\r', '\n' })
-                .Select(item => item.Trim())
-                .Where(item => !string.IsNullOrEmpty(item))
-                .Select(item => ProcessCommand(item));
-        }
-
-        public ICommand ProcessCommand(string command)
-        {
-            var handlers = new List<Func<string, ICommand>>
-            { 
-                NewInt,
-                NewArray,
-                CloneValue,
-                SetValue,
-                Plus,
-                Minus,
-                Print
-               // Condition
-            };
-
-            foreach (var handler in handlers)
-            {
-                try
-                {
-                    return handler(command);
-                }
-                catch
-                {
-                }
-            }
-
-            throw new ArgumentException("No proper handler found for : " + command);
         }
 
         public ICommand NewArray(string command)
@@ -144,19 +104,28 @@ namespace Creatures.Language.Parsers
             throw exception;
         }
 
-        //public ICommand Condition(string command)
-        //{
-        //    var exception = new ArgumentException("Should be 'if <name> then', but it is: " + command);
-        //    var parts = command.Split(' ').Select(item => item.Trim()).Where(item => string.IsNullOrEmpty(item)).ToList();
-        //    if (parts[0] != "if")
-        //        throw exception;
-        //    if (!IsIdentifier(parts[1]))
-        //        new ArgumentException("Identifier expected, but have : " + parts[1]);
-        //    if (parts[2] != "then")
-        //        throw exception;
+        public ICommand Condition(string command)
+        {
+            var exception = new ArgumentException("Should be 'if <name> then', but it is: " + command);
+            var parts = command.Split(' ').Select(item => item.Trim()).ToList();
+            if (parts[0] != "if")
+                throw exception;
+            if (!IsIdentifier(parts[1]))
+                new ArgumentException("Identifier expected, but have : " + parts[1]);
+            if (parts[2] != "then")
+                throw exception;
 
-        //    return new Condition(parts[1]);
-        //}
+            return new Condition(parts[1]);
+        }
+
+        public ICommand CloseCondition(string command)
+        {
+            var exception = new ArgumentException("Should be 'endif', but it is: " + command);
+            if (command.Trim() != "endif")
+                throw exception;
+
+            return new CloseCondition();
+        }
 
         private string CheckTypeNamePair(string type, string value)
         {

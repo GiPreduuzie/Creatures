@@ -2,20 +2,30 @@ using Creatures.Language.Commands.Interfaces;
 
 namespace Creatures.Language.Commands
 {
-    class CloneValue : ICommand
+    public class CloneValue : ICommand
     {
-        string _nameTarget;
-        string _nameSource;
+        private readonly string _targetName;
+        private readonly string _sourceName;
 
-        public CloneValue(string nameTarget, string nameSource)
+        public CloneValue(string targetName, string sourceName)
         {
-            _nameTarget = nameTarget;
-            _nameSource = nameSource;
+            _targetName = targetName;
+            _sourceName = sourceName;
+        }
+
+        public string TargetName
+        {
+            get { return _targetName; }
+        }
+
+        public string SourceName
+        {
+            get { return _sourceName; }
         }
 
         public void AcceptVisitor(ICommandVisitor visitor)
         {
-            throw new System.NotImplementedException();
+            visitor.Accept(this);
         }
     }
 }
