@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.SqlServer.Server;
 
 namespace Creatures.Language.Commands
 {
@@ -28,12 +29,14 @@ namespace Creatures.Language.Commands
         {
             var handlers = new List<Func<string, ICommand>>
             { 
+                NewInt,
                 NewArray,
                 CloneValue,
                 SetValue,
                 Plus,
                 Minus,
-                Condition
+                Print
+               // Condition
             };
 
             foreach (var handler in handlers)
@@ -125,19 +128,36 @@ namespace Creatures.Language.Commands
             throw exception;
         }
 
-        public ICommand Condition(string command)
+        public ICommand Print(string command)
         {
-            var exception = new ArgumentException("Should be 'if <name> then', but it is: " + command);
-            var parts = command.Split(' ').Select(item => item.Trim()).Where(item => string.IsNullOrEmpty(item)).ToList();
-            if (parts[0] != "if")
-                throw exception;
-            if (IsIdentifier(parts[1]))
-                new ArgumentException("Identifier expected, but have : " + parts[1]);
-            if (parts[2] != "then")
+            var exception = new ArgumentException("Should be 'print <name>', but it is: " + command);
+
+            var parts = command.Split(' ').Select(item => item.Trim()).ToList();
+            if (parts.Count != 2)
                 throw exception;
 
-            return new Condition(parts[1]);
+            if (parts[0] != "print")
+                throw exception;
+
+            if (IsIdentifier(parts[1]))
+                return new Print(parts[1]);
+
+            throw exception;
         }
+
+        //public ICommand Condition(string command)
+        //{
+        //    var exception = new ArgumentException("Should be 'if <name> then', but it is: " + command);
+        //    var parts = command.Split(' ').Select(item => item.Trim()).Where(item => string.IsNullOrEmpty(item)).ToList();
+        //    if (parts[0] != "if")
+        //        throw exception;
+        //    if (!IsIdentifier(parts[1]))
+        //        new ArgumentException("Identifier expected, but have : " + parts[1]);
+        //    if (parts[2] != "then")
+        //        throw exception;
+
+        //    return new Condition(parts[1]);
+        //}
 
         private string CheckTypeNamePair(string type, string value)
         {
@@ -156,7 +176,7 @@ namespace Creatures.Language.Commands
 
         private bool IsIdentifier(string value)
         {
-            return char.IsLetter(value[0]);
+            return value.All(char.IsLetter);
         }
     }
 }
