@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.SqlServer.Server;
+using Creatures.Language.Commands;
+using Creatures.Language.Commands.Interfaces;
 
-namespace Creatures.Language.Commands
+namespace Creatures.Language.Parsers
 {
-    class Constructor
+    public class Constructor
     {
         IList<ICommand> commands = new List<ICommand>();
 
@@ -123,7 +122,7 @@ namespace Creatures.Language.Commands
                 throw exception;
 
             if (IsIdentifier(parts[0]) && IsIdentifier(partsLeft[0]) && IsIdentifier(partsLeft[1]))
-                return new Plus(parts[0], partsLeft[0], partsLeft[1]);
+                return new Minus(parts[0], partsLeft[0], partsLeft[1]);
 
             throw exception;
         }

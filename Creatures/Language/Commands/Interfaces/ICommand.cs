@@ -1,6 +1,6 @@
-namespace Creatures.Language.Commands
+namespace Creatures.Language.Commands.Interfaces
 {
-    interface ICommand
+    public interface ICommand
     {
         void AcceptVisitor(ICommandVisitor visitor);
     }

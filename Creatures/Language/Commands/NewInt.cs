@@ -1,6 +1,8 @@
+using Creatures.Language.Commands.Interfaces;
+
 namespace Creatures.Language.Commands
 {
-    class NewInt : ICommand
+    public class NewInt : ICommand
     {
         private readonly string _name;
 

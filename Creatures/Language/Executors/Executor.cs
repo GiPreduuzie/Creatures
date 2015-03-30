@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using Creatures.Language.Commands;
+using Creatures.Language.Commands.Interfaces;
 
-namespace Creatures
+namespace Creatures.Language.Executors
 {
-    class Executor : ICommandVisitor
+    public class Executor : ICommandVisitor
     {
         readonly Dictionary<string, int?> _variables = new Dictionary<string, int?>();
         readonly StringBuilder _console = new StringBuilder();
@@ -38,6 +39,13 @@ namespace Creatures
             var firstValue = _variables[command.FirstSource];
             var secondValue = _variables[command.SecondSource];
             _variables[command.NameTarget] = firstValue + secondValue;
+        }
+
+        public void Accept(Minus command)
+        {
+            var firstValue = _variables[command.FirstSource];
+            var secondValue = _variables[command.SecondSource];
+            _variables[command.NameTarget] = firstValue - secondValue;
         }
 
         public void Accept(Print command)

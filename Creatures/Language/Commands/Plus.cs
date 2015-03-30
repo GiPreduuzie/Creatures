@@ -1,6 +1,8 @@
+using Creatures.Language.Commands.Interfaces;
+
 namespace Creatures.Language.Commands
 {
-    class Plus : ICommand
+    public class Plus : ICommand
     {
         private readonly string _nameTarget;
         private readonly string _firstSource;

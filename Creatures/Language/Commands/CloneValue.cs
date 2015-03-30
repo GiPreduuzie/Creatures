@@ -1,3 +1,5 @@
+using Creatures.Language.Commands.Interfaces;
+
 namespace Creatures.Language.Commands
 {
     class CloneValue : ICommand

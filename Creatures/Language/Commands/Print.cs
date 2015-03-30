@@ -1,6 +1,8 @@
+using Creatures.Language.Commands.Interfaces;
+
 namespace Creatures.Language.Commands
 {
-    class Print : ICommand
+    public class Print : ICommand
     {
         private readonly string _variable;
 

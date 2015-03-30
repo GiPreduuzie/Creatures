@@ -1,10 +1,12 @@
+using Creatures.Language.Commands.Interfaces;
+
 namespace Creatures.Language.Commands
 {
-    class Minus : ICommand
+    public class Minus : ICommand
     {
-        string _nameTarget;
-        string _firstSource;
-        string _secondSource;
+        private readonly string _nameTarget;
+        private readonly string _firstSource;
+        private readonly string _secondSource;
 
         public Minus(string nameTarget, string firstSource, string secondSource)
         {
@@ -13,9 +15,24 @@ namespace Creatures.Language.Commands
             _secondSource = secondSource;
         }
 
+        public string NameTarget
+        {
+            get { return _nameTarget; }
+        }
+
+        public string FirstSource
+        {
+            get { return _firstSource; }
+        }
+
+        public string SecondSource
+        {
+            get { return _secondSource; }
+        }
+
         public void AcceptVisitor(ICommandVisitor visitor)
         {
-            throw new System.NotImplementedException();
+            visitor.Accept(this);
         }
     }
 }
