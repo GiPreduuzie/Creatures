@@ -63,8 +63,10 @@ namespace CellsAutomate
         private int _i;
         private int _j;
         private readonly Random _random;
-        private int _store = 0;
+        private int _store = 1;
         private int _turnsOnPlace;
+
+        public Random RandomGenerator { get { return _random; } }
 
         public SimpleCreature(int i, int j, Random random)
         {
@@ -73,28 +75,46 @@ namespace CellsAutomate
             _random = random;
         }
 
-        public ActionEnum MyTurn(bool[,] eatMatrix)
+        public Tuple<bool, ActionEnum> MyTurn(bool[,] eatMatrix)
         {
-            if (_turnsOnPlace < 4 && _random.Next(2) == 1)
-            {
-                _store++;
-                _turnsOnPlace++;
-                return ActionEnum.Stay;
-            }
+            if (_store == 0)
+                return Tuple.Create(false, ActionEnum.Die);
 
-            if (_store == 3 && _random.Next(2) == 1)
+            _store--;
+
+            if (_turnsOnPlace < 4 && _random.Next(3) != 1)
             {
-                _store++;
+                _store += 3;
                 _turnsOnPlace++;
-                return ActionEnum.Stay;
+                return Tuple.Create(false, ActionEnum.Stay);
+            }
+            else
+            {
+                var directions2 = ActionEx
+                        .GetPoints(_i, _j)
+                        .Where(x => IsValid(eatMatrix, x))
+                        .Where(x => IsFree(eatMatrix, x))
+                        .ToArray();
+
+                if (_store > 3 && _random.Next(2) == 1 && directions2.Length != 0)
+                {
+                    _store -= 3;
+                    _turnsOnPlace++;
+
+                    return Tuple.Create(true, ActionEx.ActionByPoint(new Point(_i, _j), directions2[_random.Next(directions2.Length)]));
+                }
+                else
+                {
+                    _turnsOnPlace = 0;
+                }
             }
 
 
             var directions = ActionEx.GetPoints(_i, _j).Where(x => IsValid(eatMatrix, x)).Where(x => IsFree(eatMatrix, x)).ToArray();
 
-            if (!directions.Any()) return ActionEnum.Die;
+            if (!directions.Any()) return Tuple.Create(false, ActionEnum.Die);
 
-            return ActionEx.ActionByPoint(new Point(_i, _j), directions[_random.Next(directions.Length)]);
+            return Tuple.Create(false, ActionEx.ActionByPoint(new Point(_i, _j), directions[_random.Next(directions.Length)]));
         }
 
         private bool IsFree(bool[,] eatMatrix, Point point)
@@ -109,8 +129,6 @@ namespace CellsAutomate
 
             return true;
         }
-
-  
 
         public void SetPosition(Point pointByAction)
         {
@@ -251,8 +269,22 @@ namespace CellsAutomate
         {
             if (simpleCreature == null) return;
 
-            var result = simpleCreature.MyTurn(eat);
+            var resultTuple = simpleCreature.MyTurn(eat);
 
+            var result = resultTuple.Item2;
+
+            if (resultTuple.Item1)
+            {
+                var newPosition = ActionEx.PointByAction(result, new Point(i, j));
+
+                var child = new SimpleCreature(newPosition.X, newPosition.Y, simpleCreature.RandomGenerator);
+
+                Cells[newPosition.X, newPosition.Y] = child;
+
+                return;
+            }
+
+            if (result == ActionEnum.Stay) return;
             if (result == ActionEnum.Die) Cells[i, j] = null;
             else
             {

@@ -20,7 +20,7 @@ namespace CellsAutomate
 
             Console.WriteLine("0:{0}", matrix.AliveCount);
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 matrix.MakeTurn();
                 Print(i + 1, length, matrix);
@@ -30,6 +30,8 @@ namespace CellsAutomate
 
         private static void Print(int id, int length, Matrix matrix)
         {
+            if (id % 10 != 0) return;
+
             var bitmap = new Bitmap(length, length);
             for (int i = 0; i < length; i++)
             {
