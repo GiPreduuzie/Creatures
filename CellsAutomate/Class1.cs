@@ -8,6 +8,56 @@ using System.Threading.Tasks;
 
 namespace CellsAutomate
 {
+    public class ReachMatrixBuilder
+    {
+        public bool[,] Build(
+            bool[,] placeHoldersMatrix,
+            int pointX,
+            int pointY)
+        {
+            int n = placeHoldersMatrix.GetLength(0);
+            int m = placeHoldersMatrix.GetLength(1);
+
+            return Build(placeHoldersMatrix, new bool[n, m], pointX, pointY);
+        }
+
+        public bool[,] Build(
+            bool[,] placeHoldersMatrix,
+            bool[,] reachingMatrix, 
+            int pointX,
+            int pointY)
+        {
+            int n = placeHoldersMatrix.GetLength(0);
+            int m = placeHoldersMatrix.GetLength(1);
+
+            var stack = new Stack<Point>();
+            stack.Push(new Point(pointX, pointY));
+
+            while (stack.Count != 0)
+            {
+                var current = stack.Pop();
+
+                if (
+                    current.X >= 0
+                    && current.X < m
+                    && current.Y >= 0
+                    && current.Y < n
+                    && !placeHoldersMatrix[current.X, current.Y]
+                    && !reachingMatrix[current.X, current.Y])
+                {
+                    reachingMatrix[current.X, current.Y] = true;
+
+                    foreach (var point in ActionEx.GetPoints(current.X, current.Y))
+                    {
+                        stack.Push(point);
+                    }
+                }
+            }
+
+            return reachingMatrix;
+        }
+    }
+
     public enum ActionEnum
     {
         Die,
@@ -164,11 +214,25 @@ namespace CellsAutomate
         public bool[,] CanBeReached()
         {
             var reachingMatrix = new bool[N, M];
+            var placeHoldersMatrix = new bool[N, M];
 
-            Do(reachingMatrix, 0, 0);
-            Do(reachingMatrix, 0, M - 1);
-            Do(reachingMatrix, N - 1, 0);
-            Do(reachingMatrix, N - 1, M - 1);
+            for (int  i = 0;  i < N;  i++)
+            {
+                for (int j = 0; j < M; j++)
+                {
+                    placeHoldersMatrix[i, j] = Cells != null;
+                }
+            }
+
+
+            var reachMatrixBuilder = new ReachMatrixBuilder();
+
+            
+
+            //Do(reachingMatrix, 0, 0);
+            reachMatrixBuilder.Build(placeHoldersMatrix, reachingMatrix, 0, M - 1);
+            //Do(reachingMatrix, N - 1, 0);
+            //Do(reachingMatrix, N - 1, M - 1);
 
             return reachingMatrix;
         }
@@ -185,12 +249,6 @@ namespace CellsAutomate
             }
         }
 
-        public string PrintMatrixOfReach()
-        {
-            var matrix = CanBeReached();
-
-            return PrintMatrix(matrix);
-        }
 
         public string PrintStartMatrix()
         {
@@ -223,36 +281,9 @@ namespace CellsAutomate
             return result.ToString();
         }
 
-        private bool[,] Do(bool[,] reachingMatrix, int pointX, int pointY)
-        {
-            var stack = new Stack<Point>();
-            stack.Push(new Point(pointX, pointY));
-            
-            while (stack.Count != 0)
-            {
-                var current = stack.Pop();
+       
 
-                if (
-                    current.X >= 0
-                    && current.X < M 
-                    && current.Y >= 0 
-                    && current.Y < N 
-                    && (Cells[current.X, current.Y] == null) 
-                    && !reachingMatrix[current.X, current.Y])
-                {
-                    reachingMatrix[current.X, current.Y] = true;
-
-                    foreach (var point in ActionEx.GetPoints(current.X, current.Y))
-                    {
-                        stack.Push(point);
-                    }
-                }
-            }
-
-            return reachingMatrix;
-        }
-
-        public void MakeTurn()
+        public bool[,] MakeTurn()
         {
             var matrix = CanBeReached();
 
@@ -263,6 +294,8 @@ namespace CellsAutomate
                     MakeTurn(Cells[i, j], matrix, i, j);
                 }
             }
+
+            return matrix;
         }
 
         private void MakeTurn(SimpleCreature simpleCreature, bool[,] eat, int i, int j)

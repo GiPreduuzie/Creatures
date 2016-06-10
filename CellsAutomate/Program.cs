@@ -8,7 +8,7 @@ namespace CellsAutomate
     {
         private static void Main(string[] args)
         {
-            var length = 500;
+            var length = 10;
 
             var matrix = new Matrix();
             matrix.Cells = new SimpleCreature[length, length];
@@ -16,32 +16,46 @@ namespace CellsAutomate
             matrix.M = length;
 
             matrix.FillStartMatrixRandomly();
-            Print(0, length, matrix);
+            Print(0, length, matrix, new bool[length, length]);
 
             Console.WriteLine("0:{0}", matrix.AliveCount);
 
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 100; i++)
             {
-                matrix.MakeTurn();
-                Print(i + 1, length, matrix);
+                var eat = matrix.MakeTurn();
+                Print(i + 1, length, matrix, eat);
                 Console.WriteLine("{0}:{1}", i + 1, matrix.AliveCount);
             }
         }
 
-        private static void Print(int id, int length, Matrix matrix)
+        private static void Print(int id, int length, Matrix matrix, bool[,] eat)
         {
             if (id % 10 != 0) return;
 
-            var bitmap = new Bitmap(length, length);
+            var bitmap = new Bitmap(length*2, length);
+
             for (int i = 0; i < length; i++)
             {
                 for (int j = 0; j < length; j++)
                 {
-                    bitmap.SetPixel(i, j, matrix.Cells[i, j] == null ? Color.White : Color.Red);
+                    bitmap.SetPixel(i, j, eat[i, j] ? Color.White : Color.Green);
                 }
             }
 
-            bitmap.Save($@"C:\temp\bitmaps\{id}.jpg", ImageFormat.Jpeg);
+            for (int i = 0; i < length; i++)
+            {
+                for (int j = 0; j < length; j++)
+                {
+                    var x = i + length;
+                    var y = j;
+
+                    bitmap.SetPixel(x, y, matrix.Cells[i, j] == null ? Color.White : Color.Red);
+
+                    // bitmap.SetPixel(x, y, matrix.Cells[i, j] == null ? (eat[i, j] ? Color.White : Color.Green) : Color.Red);
+                }
+            }
+
+            bitmap.Save($@"C:\temp\bitmaps\{id}.bmp", ImageFormat.Bmp);
         }
     }
 }

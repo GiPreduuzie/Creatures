@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Creaturestests</RootNamespace>
     <AssemblyName>Creaturestests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -16,6 +16,7 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -52,8 +53,13 @@
   <ItemGroup>
     <Compile Include="LanguageTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReachMatrixTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CellsAutomate\CellsAutomate.csproj">
+      <Project>{fcd09cea-d6a6-4cee-a8d1-f16417231612}</Project>
+      <Name>CellsAutomate</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Creatures\Creatures.csproj">
       <Project>{dae4f621-32bb-41e4-8e0a-10b9cfd76bd5}</Project>
       <Name>Creatures</Name>
