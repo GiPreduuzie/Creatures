@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace CellsAutomate
 {
@@ -8,7 +11,7 @@ namespace CellsAutomate
     {
         private static void Main(string[] args)
         {
-            var length = 10;
+            var length = 100;
 
             var matrix = new Matrix();
             matrix.Cells = new SimpleCreature[length, length];
@@ -16,19 +19,33 @@ namespace CellsAutomate
             matrix.M = length;
 
             matrix.FillStartMatrixRandomly();
-            Print(0, length, matrix, new bool[length, length]);
+            Print(0, length, matrix);
 
             Console.WriteLine("0:{0}", matrix.AliveCount);
+            var log = new StringBuilder();
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 1000; i++)
             {
-                var eat = matrix.MakeTurn();
-                Print(i + 1, length, matrix, eat);
+                matrix.MakeTurn();
+                Print(i + 1, length, matrix);
                 Console.WriteLine("{0}:{1}", i + 1, matrix.AliveCount);
+                var generationStat =
+                    string.Join(" ",
+                    matrix
+                        .CellsAsEnumerable
+                        .Select(x => x.Generation)
+                        .GroupBy(x => x)
+                        .OrderBy(x => x.Key)
+                        .Select(x => string.Format("{0}:{1}", x.Key, x.Count()))
+                        .ToArray());
+
+                log.AppendLine(generationStat);
             }
+
+            File.WriteAllText(@"C:\Temp\Creatures\Log.txt", log.ToString());
         }
 
-        private static void Print(int id, int length, Matrix matrix, bool[,] eat)
+        private static void Print(int id, int length, Matrix matrix)
         {
             if (id % 10 != 0) return;
 
@@ -38,7 +55,7 @@ namespace CellsAutomate
             {
                 for (int j = 0; j < length; j++)
                 {
-                    bitmap.SetPixel(i, j, eat[i, j] ? Color.White : Color.Green);
+                    bitmap.SetPixel(i, j, matrix.Eat[i, j] ? Color.Green : Color.White);
                 }
             }
 
@@ -55,7 +72,7 @@ namespace CellsAutomate
                 }
             }
 
-            bitmap.Save($@"C:\temp\bitmaps\{id}.bmp", ImageFormat.Bmp);
+            bitmap.Save($@"C:\temp\creatures\bitmaps\{id}.bmp", ImageFormat.Bmp);
         }
     }
 }

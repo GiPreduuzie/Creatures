@@ -2,62 +2,10 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace CellsAutomate
 {
-    public class ReachMatrixBuilder
-    {
-        public bool[,] Build(
-            bool[,] placeHoldersMatrix,
-            int pointX,
-            int pointY)
-        {
-            int n = placeHoldersMatrix.GetLength(0);
-            int m = placeHoldersMatrix.GetLength(1);
-
-            return Build(placeHoldersMatrix, new bool[n, m], pointX, pointY);
-        }
-
-        public bool[,] Build(
-            bool[,] placeHoldersMatrix,
-            bool[,] reachingMatrix, 
-            int pointX,
-            int pointY)
-        {
-            int n = placeHoldersMatrix.GetLength(0);
-            int m = placeHoldersMatrix.GetLength(1);
-
-            var stack = new Stack<Point>();
-            stack.Push(new Point(pointX, pointY));
-
-            while (stack.Count != 0)
-            {
-                var current = stack.Pop();
-
-                if (
-                    current.X >= 0
-                    && current.X < m
-                    && current.Y >= 0
-                    && current.Y < n
-                    && !placeHoldersMatrix[current.X, current.Y]
-                    && !reachingMatrix[current.X, current.Y])
-                {
-                    reachingMatrix[current.X, current.Y] = true;
-
-                    foreach (var point in ActionEx.GetPoints(current.X, current.Y))
-                    {
-                        stack.Push(point);
-                    }
-                }
-            }
-
-            return reachingMatrix;
-        }
-    }
-
     public enum ActionEnum
     {
         Die,
@@ -108,84 +56,7 @@ namespace CellsAutomate
         }
     }
 
-    public class SimpleCreature
-    {
-        private int _i;
-        private int _j;
-        private readonly Random _random;
-        private int _store = 1;
-        private int _turnsOnPlace;
-
-        public Random RandomGenerator { get { return _random; } }
-
-        public SimpleCreature(int i, int j, Random random)
-        {
-            _i = i;
-            _j = j;
-            _random = random;
-        }
-
-        public Tuple<bool, ActionEnum> MyTurn(bool[,] eatMatrix)
-        {
-            if (_store == 0)
-                return Tuple.Create(false, ActionEnum.Die);
-
-            _store--;
-
-            if (_turnsOnPlace < 4 && _random.Next(3) != 1)
-            {
-                _store += 3;
-                _turnsOnPlace++;
-                return Tuple.Create(false, ActionEnum.Stay);
-            }
-            else
-            {
-                var directions2 = ActionEx
-                        .GetPoints(_i, _j)
-                        .Where(x => IsValid(eatMatrix, x))
-                        .Where(x => IsFree(eatMatrix, x))
-                        .ToArray();
-
-                if (_store > 3 && _random.Next(2) == 1 && directions2.Length != 0)
-                {
-                    _store -= 3;
-                    _turnsOnPlace++;
-
-                    return Tuple.Create(true, ActionEx.ActionByPoint(new Point(_i, _j), directions2[_random.Next(directions2.Length)]));
-                }
-                else
-                {
-                    _turnsOnPlace = 0;
-                }
-            }
-
-
-            var directions = ActionEx.GetPoints(_i, _j).Where(x => IsValid(eatMatrix, x)).Where(x => IsFree(eatMatrix, x)).ToArray();
-
-            if (!directions.Any()) return Tuple.Create(false, ActionEnum.Die);
-
-            return Tuple.Create(false, ActionEx.ActionByPoint(new Point(_i, _j), directions[_random.Next(directions.Length)]));
-        }
-
-        private bool IsFree(bool[,] eatMatrix, Point point)
-        {
-            return eatMatrix[point.X, point.Y];
-        }
-
-        private bool IsValid(bool[,] matrix, Point point)
-        {
-            if (point.X < 0 || matrix.GetLength(1) <= point.X) return false;
-            if (point.Y < 0 || matrix.GetLength(0) <= point.Y) return false;
-
-            return true;
-        }
-
-        public void SetPosition(Point pointByAction)
-        {
-            _i = pointByAction.X;
-            _j = pointByAction.Y;
-        }
-    }
+    
 
     public class Matrix
     {
@@ -193,6 +64,23 @@ namespace CellsAutomate
         public int M;
 
         public SimpleCreature[,] Cells { get; set; }
+
+        public IEnumerable<SimpleCreature> CellsAsEnumerable
+        {
+            get
+            {
+                for (int i = 0; i < N; i++)
+                {
+                    for (int j = 0; j < M; j++)
+                    {
+                        if (Cells[i,j] != null)
+                            yield return Cells[i, j];
+                    }
+                }
+            }
+        }
+
+        public bool[,] Eat { get; private set; }
 
         public int AliveCount
         {
@@ -220,19 +108,17 @@ namespace CellsAutomate
             {
                 for (int j = 0; j < M; j++)
                 {
-                    placeHoldersMatrix[i, j] = Cells != null;
+                    placeHoldersMatrix[i, j] = Cells[i, j] != null;
                 }
             }
 
 
             var reachMatrixBuilder = new ReachMatrixBuilder();
 
-            
-
-            //Do(reachingMatrix, 0, 0);
+            reachMatrixBuilder.Build(placeHoldersMatrix, reachingMatrix, 0, 0);
             reachMatrixBuilder.Build(placeHoldersMatrix, reachingMatrix, 0, M - 1);
-            //Do(reachingMatrix, N - 1, 0);
-            //Do(reachingMatrix, N - 1, M - 1);
+            reachMatrixBuilder.Build(placeHoldersMatrix, reachingMatrix, N - 1, 0);
+            reachMatrixBuilder.Build(placeHoldersMatrix, reachingMatrix, N - 1, M - 1);
 
             return reachingMatrix;
         }
@@ -244,9 +130,11 @@ namespace CellsAutomate
             {
                 for (int j = 0; j < M; j++)
                 {
-                    Cells[i, j] =  random.Next(100)%4 == 0 ? new SimpleCreature(i, j, random) : null;
+                    Cells[i, j] =  random.Next(100)%4 == 0 ? new SimpleCreature(i, j, 1, random) : null;
                 }
             }
+
+            Eat = CanBeReached();
         }
 
 
@@ -281,21 +169,17 @@ namespace CellsAutomate
             return result.ToString();
         }
 
-       
-
-        public bool[,] MakeTurn()
+        public void MakeTurn()
         {
-            var matrix = CanBeReached();
-
             for (int i = 0; i < N; i++)
             {
                 for (int j = 0; j < M; j++)
                 {
-                    MakeTurn(Cells[i, j], matrix, i, j);
+                    MakeTurn(Cells[i, j], Eat, i, j);
                 }
             }
 
-            return matrix;
+            Eat = CanBeReached();
         }
 
         private void MakeTurn(SimpleCreature simpleCreature, bool[,] eat, int i, int j)
@@ -310,7 +194,7 @@ namespace CellsAutomate
             {
                 var newPosition = ActionEx.PointByAction(result, new Point(i, j));
 
-                var child = new SimpleCreature(newPosition.X, newPosition.Y, simpleCreature.RandomGenerator);
+                var child = new SimpleCreature(newPosition.X, newPosition.Y, simpleCreature.Generation + 1, simpleCreature.RandomGenerator);
 
                 Cells[newPosition.X, newPosition.Y] = child;
 
