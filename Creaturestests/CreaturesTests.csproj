@@ -54,6 +54,8 @@
     <Compile Include="LanguageTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReachMatrixTests.cs" />
+    <Compile Include="StartAlgorithTests.cs" />
+    <Compile Include="TestBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CellsAutomate\CellsAutomate.csproj">

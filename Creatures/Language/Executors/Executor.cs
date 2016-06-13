@@ -1,21 +1,54 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using Creatures.Language.Commands;
 using Creatures.Language.Commands.Interfaces;
 
 namespace Creatures.Language.Executors
 {
+    public interface IExecutorToolset
+    {
+        int GetState(int direction);
+        int GetRandom(int maxValue);
+    }
+
+    public class ExecutorToolset : IExecutorToolset
+    {
+        Random _random;
+
+        public ExecutorToolset(Random random)
+        {
+            _random = random;
+        }
+
+        public int GetState(int direction)
+        {
+            return 4;    
+        }
+
+        public int GetRandom(int maxValue)
+        {
+            return 1;
+        }
+    }
+
     public class Executor : ICommandVisitor
     {
         readonly Dictionary<string, int?> _variables = new Dictionary<string, int?>();
         readonly StringBuilder _console = new StringBuilder();
         private Stack<bool> _conditions = new Stack<bool>();
+        private IExecutorToolset _executorToolset;
+        private bool _stop = false;
 
-        public string Execute(IEnumerable<ICommand> parsedCommands)
+        public string Execute(IEnumerable<ICommand> parsedCommands, IExecutorToolset executorToolset)
         {
+            _executorToolset = executorToolset;
+
             _conditions.Push(true);
             foreach (var parsedCommand in parsedCommands)
             {
+                if (_stop) break;
+
                 Execute(parsedCommand);
             }
             
@@ -69,10 +102,14 @@ namespace Creatures.Language.Executors
 
         public void Accept(Condition command)
         {
-            if (!_conditions.Peek()) return;
+            if (!_conditions.Peek())
+            {
+                _conditions.Push(false);
+                return;
+            }
 
             var value = _variables[command.ConditionName];
-            _conditions.Push(value > 0);
+            _conditions.Push(value >= 0);
         }
 
         public void Accept(Print command)
@@ -86,6 +123,27 @@ namespace Creatures.Language.Executors
         public void Accept(CloseCondition command)
         {
             _conditions.Pop();
+        }
+
+        public void Accept(GetState command)
+        {
+            if (!_conditions.Peek()) return;
+
+            _variables[command.NameTarget] = _executorToolset.GetState(command.Direction);
+        }
+
+        public void Accept(GetRandom command)
+        {
+            if (!_conditions.Peek()) return;
+
+            _variables[command.NameTarget] = _executorToolset.GetRandom(_variables[command.MaxValueName].Value);
+        }
+
+        public void Accept(Stop command)
+        {
+            if (!_conditions.Peek()) return;
+
+            _stop = true;
         }
     }
 }

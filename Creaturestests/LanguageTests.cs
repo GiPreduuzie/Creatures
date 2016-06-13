@@ -1,14 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using Creatures.Language.Executors;
-using Creatures.Language.Parsers;
+﻿using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Creaturestests;
 
 namespace CreaturesTests
 {
     [TestClass]
-    public class LanguageTests
+    public class LanguageTests : TestsBase
     {
         [TestMethod]
         public void SetValue()
@@ -125,25 +122,6 @@ namespace CreaturesTests
                    .AppendLine("print a");
 
             Check(commands.ToString(), 2, 1, 1);
-        }
-
-        private void Check(string commands, params int[] values)
-        {
-            var parsedCommands = new Parser().ProcessCommands(commands);
-            var output =
-                new Executor().Execute(parsedCommands)
-                    .Replace("\r\n", "\n")
-                    .Split('\n')
-                    .Where(item => !string.IsNullOrEmpty(item))
-                    .Select(int.Parse)
-                    .ToList();
-
-            Assert.AreEqual(values.Count(), output.Count());
-
-            for (var i = 0; i < values.Count(); i++)
-            {
-                Assert.AreEqual(values[i], output[i]);
-            }
         }
     }
 }

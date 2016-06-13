@@ -4,6 +4,42 @@ using System.Linq;
 
 namespace CellsAutomate
 {
+    //public enum CellState
+    //{
+    //    Nothing,
+    //    Empty,
+    //    Cell,
+    //    Food
+    //}
+
+    //public enum Direction
+    //{
+    //    Up,
+    //    Right,
+    //    Down,
+    //    Left
+    //}
+
+    //public interface ICellTool
+    //{
+    //    CellState GetState(Direction cellNumber);
+    //}
+
+    //public class Creature
+    //{
+    //    private int _store = 1;
+
+    //    public Tuple<bool, ActionEnum> MyTurn(bool[,] eatMatrix)
+    //    {
+    //        if (_store == 0)
+    //            return Tuple.Create(false, ActionEnum.Die);
+
+    //        _store--;
+
+    //    }
+    //}
+
+
     public class SimpleCreature
     {
         private int _i;

@@ -185,7 +185,7 @@ namespace CellsAutomate
         private void MakeTurn(SimpleCreature simpleCreature, bool[,] eat, int i, int j)
         {
             if (simpleCreature == null) return;
-
+            
             var resultTuple = simpleCreature.MyTurn(eat);
 
             var result = resultTuple.Item2;

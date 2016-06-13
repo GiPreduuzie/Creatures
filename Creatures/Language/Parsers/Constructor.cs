@@ -127,6 +127,50 @@ namespace Creatures.Language.Parsers
             return new CloseCondition();
         }
 
+        public ICommand GetState(string command)
+        {
+            var exception = new ArgumentException("Should be '<name_target> = getState <0..3>', but it is: " + command);
+            var parts = command.Split('=').Select(item => item.Trim()).ToList();
+            if (parts.Count != 2)
+                throw exception;
+
+            var partsLeft = parts[1].Split(' ').Select(item => item.Trim()).ToList();
+            if (parts.Count != 2)
+                throw exception;
+
+            if (IsIdentifier(parts[0]) && partsLeft[0] == "getState")
+                return new GetState(parts[0], int.Parse(partsLeft[1]));
+
+            throw exception;
+        }
+
+        public ICommand GetRandom(string command)
+        {
+            var exception = new ArgumentException("Should be '<name_target> = random <name_source>', but it is: " + command);
+            var parts = command.Split('=').Select(item => item.Trim()).ToList();
+            if (parts.Count != 2)
+                throw exception;
+
+            var partsLeft = parts[1].Split(' ').Select(item => item.Trim()).ToList();
+            if (parts.Count != 2)
+                throw exception;
+
+            if (IsIdentifier(parts[0]) && partsLeft[0] == "random" && IsIdentifier(partsLeft[1]))
+                return new GetRandom(parts[0], partsLeft[1]);
+
+            throw exception;
+        }
+
+        public ICommand Stop(string command)
+        {
+            var exception = new ArgumentException("Should be 'stop', but it is: " + command);
+
+            if (command.Trim() == "stop")
+                return new Stop();
+
+            throw exception;
+        }
+
         private string CheckTypeNamePair(string type, string value)
         {
             var exception = new ArgumentException(string.Format("Should be '{0} <name>', but it is: ", type) + value);
@@ -144,7 +188,10 @@ namespace Creatures.Language.Parsers
 
         private bool IsIdentifier(string value)
         {
-            return value.All(char.IsLetter);
+            if (value.Length == 0)
+                return false;
+
+            return value.All(x =>  char.IsLetter(x) || x == '_');
         }
     }
 }

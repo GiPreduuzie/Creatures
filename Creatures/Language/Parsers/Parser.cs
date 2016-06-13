@@ -30,7 +30,10 @@ namespace Creatures.Language.Parsers
                 constructor.Minus,
                 constructor.Print,
                 constructor.Condition,
-                constructor.CloseCondition
+                constructor.CloseCondition,
+                constructor.GetState,
+                constructor.GetRandom,
+                constructor.Stop
             };
 
             foreach (var handler in handlers)

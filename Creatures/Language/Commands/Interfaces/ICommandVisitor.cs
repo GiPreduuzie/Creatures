@@ -9,6 +9,9 @@ namespace Creatures.Language.Commands.Interfaces
         void Accept(Minus command);
         void Accept(CloneValue command);
         void Accept(Condition command);
+        void Accept(Stop command);
         void Accept(CloseCondition command);
+        void Accept(GetState command);
+        void Accept(GetRandom command);
     }
 }
