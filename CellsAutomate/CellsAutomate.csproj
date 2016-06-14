@@ -50,6 +50,12 @@
     <Compile Include="ReachMatrixBuilder.cs" />
     <Compile Include="SimpleCreature.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Creatures\Creatures.csproj">
+      <Project>{dae4f621-32bb-41e4-8e0a-10b9cfd76bd5}</Project>
+      <Name>Creatures</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

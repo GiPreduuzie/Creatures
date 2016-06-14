@@ -6,6 +6,7 @@ using Creatures.Language.Commands.Interfaces;
 
 namespace Creatures.Language.Executors
 {
+    
     public interface IExecutorToolset
     {
         int GetState(int direction);
@@ -34,9 +35,10 @@ namespace Creatures.Language.Executors
 
     public class Executor : ICommandVisitor
     {
-        readonly Dictionary<string, int?> _variables = new Dictionary<string, int?>();
-        readonly StringBuilder _console = new StringBuilder();
-        private Stack<bool> _conditions = new Stack<bool>();
+        private readonly Dictionary<string, int?> _variables = new Dictionary<string, int?>();
+        private readonly StringBuilder _console = new StringBuilder();
+        private readonly Stack<bool> _conditions = new Stack<bool>();
+
         private IExecutorToolset _executorToolset;
         private bool _stop = false;
 

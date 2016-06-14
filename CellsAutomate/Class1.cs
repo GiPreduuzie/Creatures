@@ -3,9 +3,20 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using Creatures.Language.Commands.Interfaces;
 
 namespace CellsAutomate
 {
+    public class SeedGenerator
+    {
+        public ICommand[] StartAlgorithm
+        {
+            get
+            {
+                
+            }
+        }
+    }
     public enum ActionEnum
     {
         Die,
@@ -53,6 +64,11 @@ namespace CellsAutomate
         public static Point[] GetPoints(int i, int j)
         {
             return new[] { new Point(i + 1, j), new Point(i, j + 1), new Point(i - 1, j), new Point(i, j - 1) };
+        }
+
+        public static int DirectionByPoint(Point start, Point finish)
+        {
+            throw new NotImplementedException();
         }
     }
 
