@@ -14,7 +14,7 @@ namespace CellsAutomate
             var length = 100;
 
             var matrix = new Matrix();
-            matrix.Cells = new SimpleCreature[length, length];
+            matrix.Cells = new Creature[length, length];
             matrix.N = length;
             matrix.M = length;
 
@@ -43,6 +43,10 @@ namespace CellsAutomate
             }
 
             File.WriteAllText(@"C:\Temp\Creatures\Log.txt", log.ToString());
+            Console.WriteLine(Stats.Up);
+            Console.WriteLine(Stats.Right);
+            Console.WriteLine(Stats.Down);
+            Console.WriteLine(Stats.Left);
         }
 
         private static void Print(int id, int length, Matrix matrix)

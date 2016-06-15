@@ -35,18 +35,23 @@ namespace Creatures.Language.Executors
 
     public class Executor : ICommandVisitor
     {
-        private readonly Dictionary<string, int?> _variables = new Dictionary<string, int?>();
-        private readonly StringBuilder _console = new StringBuilder();
-        private readonly Stack<bool> _conditions = new Stack<bool>();
+        private Dictionary<string, int?> _variables;
+        private StringBuilder _console;
+        private Stack<bool> _conditions;
 
         private IExecutorToolset _executorToolset;
-        private bool _stop = false;
+        private bool _stop;
 
         public string Execute(IEnumerable<ICommand> parsedCommands, IExecutorToolset executorToolset)
         {
+            _variables = new Dictionary<string, int?>();
+            _console = new StringBuilder();
+            _conditions = new Stack<bool>();
+            _conditions.Push(true);
+            _stop = false;
+
             _executorToolset = executorToolset;
 
-            _conditions.Push(true);
             foreach (var parsedCommand in parsedCommands)
             {
                 if (_stop) break;

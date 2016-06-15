@@ -7,6 +7,14 @@ using Creatures.Language.Executors;
 
 namespace CellsAutomate
 {
+    public static class Stats
+    {
+        public static int Up;
+        public static int Right;
+        public static int Down;
+        public static int Left;
+    }
+
     //public enum Direction
     //{
     //    Up,
@@ -33,7 +41,8 @@ namespace CellsAutomate
 
         public int GetRandom(int maxValue)
         {
-            return _random.Next(maxValue + 1);
+            var result = _random.Next(maxValue);
+            return result + 1;
         }
     }
 
@@ -55,12 +64,14 @@ namespace CellsAutomate
     public class Creature
     {
         private readonly Random _random;
-        private readonly Point _position;
+        private Point _position;
         private readonly Executor _executor;
         private readonly ICommand[] _commands;
 
         private int _turnsOnPlace;
         private int _store = 1;
+
+        public int Generation { get { return 1; } }
 
         public Creature(Point position, Executor executor, ICommand[] commands, Random random)
         {
@@ -75,15 +86,16 @@ namespace CellsAutomate
             if (_store == 0)
                 return Tuple.Create(false, ActionEnum.Die);
 
-            _store--;
+            //_store--;
 
             var state =
                 ActionEx
                     .GetPoints(_position.X, _position.Y)
-                    .ToDictionary(x => ActionEx.DirectionByPoint(_position, x), x => eatMatrix[x.X, x.Y] ? 4 : 0);
+                    .ToDictionary(x => ActionEx.DirectionByPoint(_position, x), x => (isValid(x, eatMatrix) && eatMatrix[x.X, x.Y]) ? 4 : 0);
 
             var result = _executor.Execute(_commands, new MyExecutorToolset(_random, state));
             var parsedResult = int.Parse(result);
+
 
             ActionEnum action;
             switch (parsedResult)
@@ -93,14 +105,34 @@ namespace CellsAutomate
                     _turnsOnPlace++;
                     if (_turnsOnPlace < 4) _store += 3;
                     break;
-                case 1: action = ActionEnum.Up; break;
-                case 2: action = ActionEnum.Right; break;
-                case 3: action = ActionEnum.Down; break;
-                case 4: action = ActionEnum.Left; break;
+                case 1: action = ActionEnum.Up; Stats.Up++; break;
+                case 2: action = ActionEnum.Right; Stats.Right++; break;
+                case 3: action = ActionEnum.Down; Stats.Down++; break;
+                case 4: action = ActionEnum.Left; Stats.Left++; break;
                 default: throw new Exception();
             }
 
             return Tuple.Create(false, action);
+        }
+
+        private bool isValid(Point x, bool[,] eatMatrix)
+        {
+            if (x.X < 0) return false;
+            if (x.Y < 0) return false;
+            if (x.X >= eatMatrix.GetLength(0)) return false;
+            if (x.Y >= eatMatrix.GetLength(1)) return false;
+
+            return true;
+        }
+
+        public Creature MakeChild(Point position)
+        {
+            return new Creature(position, _executor, _commands, _random);
+        }
+
+        internal void SetPosition(Point newPosition)
+        {
+            _position = newPosition;
         }
     }
 
@@ -133,7 +165,7 @@ namespace CellsAutomate
 
             _store--;
 
-            if (_turnsOnPlace < 4 && _random.Next(3) != 1)
+            if ((_turnsOnPlace < 4 && _store < 1) || (_turnsOnPlace < 4 && _random.Next(3) != 1))
             {
                 _store += 3;
                 _turnsOnPlace++;
