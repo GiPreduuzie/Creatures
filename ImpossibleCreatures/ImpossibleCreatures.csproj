@@ -61,10 +61,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="FillBrushes.cs" />
     <Compile Include="GamePagePaint.cs" />
     <Compile Include="TurnExecutor.cs" />
-    <Compile Include="WorkWirhGrid.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
