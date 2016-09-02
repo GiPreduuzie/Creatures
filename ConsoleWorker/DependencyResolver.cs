@@ -1,9 +1,10 @@
+using CellsAutomate;
 using CellsAutomate.Algorithms;
 using CellsAutomate.Constants;
 using CellsAutomate.Food;
 using Creatures.Language.Commands.Interfaces;
 
-namespace CellsAutomate
+namespace ConsoleWorker
 {
     public class DependencyResolver
     {
