@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -25,8 +27,11 @@ namespace ImpossibleCreatures
         private Matrix _matrix;
         private Random _random = new Random();
         private int _step = 0;
+        private Stopwatch _calculateTimer = new Stopwatch();
+        private Stopwatch _paintTimer = new Stopwatch();
 
         private readonly Rectangle[,] _squares;
+        private TurnExecutor _turnExecutor;
 
         public MainWindow()
         {
@@ -43,7 +48,7 @@ namespace ImpossibleCreatures
             {
                 Interval = new TimeSpan(0, 0, 0, LogConstants.TimeSpanSeconds, LogConstants.TimeSpanMSeconds)
             };
-            _timer.Tick += MakeTurn;
+            _timer.Tick += PrintCurrentMatrix;
         }
 
         private void Start(object sender, RoutedEventArgs e)
@@ -57,20 +62,47 @@ namespace ImpossibleCreatures
             _matrix = new Matrix(matrixSize, matrixSize, creator, new FillingFromCornersByWavesStrategy(), 1);
             _matrix.FillStartMatrixRandomly();
             Print(_step, matrixSize, _matrix);
-        }
 
-        private void MakeTurn(object sender, object o)
+            _turnExecutor = new TurnExecutor(_matrix);
+        }
+        
+        private async void MakeTurn(object sender, object o)
         {
             _step++;
-            Window.Title = _step.ToString();
+            SetWindowTitle(_step);
             if (_matrix.AliveCount == 0)
             {
                 _timer.Stop();
             }
 
-            _matrix.MakeTurn();
+            _calculateTimer.Start();
+            await Task.Factory.StartNew(_matrix.MakeTurn);
+            _calculateTimer.Stop();
 
             Print(_step, LogConstants.MatrixSize, _matrix);
+        }
+
+        private void PrintCurrentMatrix(object sender, object o)
+        {
+            _turnExecutor.Stop();
+
+            SetWindowTitle(_turnExecutor.Steps);
+
+            Print(_turnExecutor.Steps, LogConstants.MatrixSize, _matrix);
+
+            if (_matrix.AliveCount == 0)
+            {
+                _timer.Stop();
+                _turnExecutor.Stop();
+                return;
+            }
+
+            _turnExecutor.Start();
+        }
+
+        private void SetWindowTitle(int step)
+        {
+            Window.Title = $"Step: {step} / Calc time: {Math.Round(_calculateTimer.Elapsed.TotalSeconds, 2)} / Paint time: {Math.Round(_paintTimer.Elapsed.TotalSeconds, 2)}";
         }
 
         private string CreateLogOfCreature(Creature creature, int generation)
@@ -112,6 +144,7 @@ namespace ImpossibleCreatures
 
         private void Print(int id, int length, Matrix matrix)
         {
+            _paintTimer.Start();
             for (int i = 0; i < length; i++)
             {
                 for (int j = 0; j < length; j++)
@@ -144,6 +177,7 @@ namespace ImpossibleCreatures
                     PaintSquareFill(i, j, fillColor, _squares);
                 }
             }
+            _paintTimer.Stop();
         }
 
         public void CreateDirectory()
@@ -161,13 +195,17 @@ namespace ImpossibleCreatures
 
         private void start_Click(object sender, RoutedEventArgs e)
         {
-            if (_timer.IsEnabled)
+            if (_turnExecutor.IsRunning)
             {
+                _turnExecutor.Stop();
                 _timer.Stop();
+                _calculateTimer.Stop();
             }
             else
             {
+                _turnExecutor.Start();
                 _timer.Start();
+                _calculateTimer.Start();
             }
         }
 
