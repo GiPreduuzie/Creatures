@@ -21,7 +21,8 @@
         <Grid Column="0" ColumnSpan="2" Row="0" Name="MenuRow" Width="auto" Height="auto" Background="White">
             <DockPanel>
                 <Menu DockPanel.Dock="Top">
-                    <MenuItem Header="Show energy" IsCheckable="True" Name="MenuItemEnergy" />
+                    <MenuItem Header="Show energy" IsCheckable="True" Name="MenuItemEnergy" IsChecked="True" />
+                    <MenuItem Header="Sync rendering" IsCheckable="True" Name="MenuItemSyncRendering" IsChecked="True" />
                 </Menu>
                 <TextBox AcceptsReturn="True" />
             </DockPanel>
@@ -32,7 +33,9 @@
         <Grid Column="1" Row="1">
             <Button Name="onestep" Click="onestep_Click">One step forward</Button>
         </Grid>
-        <Grid Column="0" ColumnSpan="2" Row="2" Name="MainGrid" Width="auto" Height="auto" Background="White"/>
+        <Grid Column="0" ColumnSpan="2" Row="2" Name="MainGrid" Width="auto" Height="auto" Background="White">
+            <Image Name="MainImage"></Image>
+        </Grid>
     </Grid>
 
 </Window>

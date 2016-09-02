@@ -41,9 +41,7 @@ namespace ImpossibleCreatures
             var width = size;
             var height = size;
 
-            _squares = new Rectangle[width, height];
-            WorkWirhGrid.MarkTable(MainGrid, width, height);
-            WorkWirhGrid.InitalizeGrid(MainGrid, _squares, width, height);
+
 
             _timer = new DispatcherTimer
             {
@@ -63,8 +61,7 @@ namespace ImpossibleCreatures
             _matrix = _dependenciesResolver.GetMatrix();
             _matrix.FillStartMatrixRandomly();
 
-            Print(_step, matrixSize, _matrix);
-
+            PrintBitmap(_step, matrixSize, _matrix);
             _turnExecutor = new TurnExecutor(_matrix);
         }
         
@@ -81,16 +78,19 @@ namespace ImpossibleCreatures
             await Task.Factory.StartNew(_matrix.MakeTurn);
             _calculateTimer.Stop();
 
-            Print(_step, _dependenciesResolver.GetMatrixSize(), _matrix);
+            PrintBitmap(_step, dependenciesResolver.GetMatrixSize(), _matrix);
         }
 
         private void PrintCurrentMatrix(object sender, object o)
         {
-            _turnExecutor.Stop();
+            if (MenuItemSyncRendering.IsChecked)
+            {
+                _turnExecutor.Stop();
+            }
 
             SetWindowTitle(_turnExecutor.Steps);
 
-            Print(_turnExecutor.Steps, _dependenciesResolver.GetMatrixSize(), _matrix);
+            PrintBitmap(_turnExecutor.Steps, dependenciesResolver.GetMatrixSize(), _matrix);
 
             if (_matrix.AliveCount == 0)
             {
@@ -98,8 +98,10 @@ namespace ImpossibleCreatures
                 _turnExecutor.Stop();
                 return;
             }
-
-            _turnExecutor.Start();
+            if (MenuItemSyncRendering.IsChecked)
+            {
+                _turnExecutor.Start();
+            }
         }
 
         private void SetWindowTitle(int step)
