@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using CellsAutomate.Constants;
 using CellsAutomate.Tools;
 
 namespace CellsAutomate.Food

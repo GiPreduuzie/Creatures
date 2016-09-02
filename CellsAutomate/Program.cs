@@ -5,10 +5,8 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
-using CellsAutomate.Algorithms;
 using CellsAutomate.Constants;
 using CellsAutomate.Creatures;
-using CellsAutomate.Food;
 using Creatures.Language.Commands.Interfaces;
 using Creatures.Language.Parsers;
 
@@ -16,19 +14,18 @@ namespace CellsAutomate
 {
     class Program
     {
-        private static Random _random = new Random();
+        private static readonly Random Random = new Random();
         private static Dictionary<int, Color> _colors = new Dictionary<int, Color>();
 
         private static void Main(string[] args)
         {
-            var matrixSize = LogConstants.MatrixSize;
-            int scale = 500 / matrixSize;
+            var resolver = new DependencyResolver();
 
-            var commandsForGetDirection = new GetDirectionAlgorithm().Algorithm;
-            var commandsForGetAction = new GetActionAlgorithm().Algorithm;
-            var creator = new CreatorOfCreature(commandsForGetAction, commandsForGetDirection);
+            var matrixSize = resolver.GetMatrixSize();
+            var scale = 500 / matrixSize;
 
-            var matrix = new Matrix(matrixSize, matrixSize, creator, new FillingFromCornersByWavesStrategy());
+            var matrix = resolver.GetMatrix();
+
             matrix.FillStartMatrixRandomly();
             CreateDirectory();
             Print(0, matrixSize, matrix, scale);
@@ -81,7 +78,7 @@ namespace CellsAutomate
 
             var youngCreatureLog = CreateLogOfCreature(randomYoung.Creature as Creature, randomYoung.Generation);
             var mediumCreatureLog = CreateLogOfCreature(randomMedium.Creature as Creature, randomMedium.Generation);
-            var originalCreatureLog = CreateLogOfCreature(creator.CreateAbstractCreature() as Creature, 1);
+            var originalCreatureLog = CreateLogOfCreature(resolver.GetCreatureCreator().CreateAbstractCreature() as Creature, 1);
             File.WriteAllText(LogConstants.PathToLogDirectory + "\\randomYoungCommands.txt", youngCreatureLog);
             File.WriteAllText(LogConstants.PathToLogDirectory + "\\randomMediumCommands.txt", mediumCreatureLog);
             File.WriteAllText(LogConstants.PathToLogDirectory + "\\originalCommands.txt", originalCreatureLog);
@@ -121,7 +118,7 @@ namespace CellsAutomate
 
         private static T ChooseRandom<T>(IList<T> collection)
         {
-            return collection[_random.Next(collection.Count)];
+            return collection[Random.Next(collection.Count)];
         }
 
         private static void MarkParts(int matrixSize, Matrix matrix)
@@ -212,9 +209,9 @@ namespace CellsAutomate
                                 if (!_colors.ContainsKey(creature.ParentMark))
                                 {
                                     _colors[creature.ParentMark] = Color.FromArgb(
-                                        _random.Next(255),
-                                        _random.Next(255),
-                                        _random.Next(255));
+                                        Random.Next(255),
+                                        Random.Next(255),
+                                        Random.Next(255));
                                 }
                                 color = _colors[creature.ParentMark];
                             }

@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Algorithms\GetActionAlgorithm.cs" />
     <Compile Include="Algorithms\SeedGenerator.cs" />
+    <Compile Include="DependencyResolver.cs" />
     <Compile Include="Membrane.cs" />
     <Compile Include="Constants\CreatureConstants.cs" />
     <Compile Include="Constants\FoodMatrixConstants.cs" />
