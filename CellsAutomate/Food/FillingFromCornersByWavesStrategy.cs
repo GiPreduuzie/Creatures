@@ -6,6 +6,13 @@ namespace CellsAutomate.Food
 {
     public class FillingFromCornersByWavesStrategy : IFoodDistributionStrategy
     {
+        private readonly int _frequency;
+
+        public FillingFromCornersByWavesStrategy(int frequency)
+        {
+            _frequency = frequency;
+        }
+
         public void Build(bool[,] creatures, FoodMatrix eatMatrix)
         {
             Build(creatures, 0, 0, eatMatrix);

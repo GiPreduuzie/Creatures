@@ -1,6 +1,6 @@
+using System;
 using CellsAutomate;
 using CellsAutomate.Algorithms;
-using CellsAutomate.Constants;
 using CellsAutomate.Food;
 using Creatures.Language.Commands.Interfaces;
 
@@ -25,17 +25,37 @@ namespace ConsoleWorker
 
         public CreatorOfCreature GetCreatureCreator()
         {
-            return new CreatorOfCreature(GetDirectionAlgorithm(), GetActionAlgorithm());
+            return new CreatorOfCreature(GetActionAlgorithm(), GetDirectionAlgorithm());
         }
 
-        public IFoodDistributionStrategy GetFoodDistributionStrategy()
+        private IFoodDistributionStrategy GetFoodDistributionStrategy()
         {
-            return new FillingFromCornersByWavesStrategy();
+            var frequency = GetInt("food distribution frequency");
+
+            var strategy = GetString("food distibution strategy");
+            switch (strategy)
+            {
+                case "as water from corners": return new FillingFromCornersByWavesStrategy(frequency);
+                case "random rain": return new RandomRainOfFoodStrategy(frequency);
+                case "fill entire field": return new FillingOfEntireFieldStrategy(frequency);
+
+                default: throw new ArgumentException("I know nothing about this strategy: " + strategy);
+            }
         }
 
         public int GetMatrixSize()
         {
-            return LogConstants.MatrixSize;
+            return GetInt("matrix size");
+        }
+
+        private int GetInt(string key)
+        {
+            return int.Parse(GetString(key));
+        }
+
+        private string GetString(string key)
+        {
+            return System.Configuration.ConfigurationManager.AppSettings[key];
         }
     }
 }

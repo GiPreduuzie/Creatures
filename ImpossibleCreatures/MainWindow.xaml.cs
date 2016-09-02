@@ -53,7 +53,7 @@ namespace ImpossibleCreatures
             var commandsForGetAction = new GetActionAlgorithm().Algorithm;
             var creator = new CreatorOfCreature(commandsForGetAction, commandsForGetDirection);
 
-            _matrix = new Matrix(matrixSize, matrixSize, creator, new FillingFromCornersByWavesStrategy());
+            _matrix = new Matrix(matrixSize, matrixSize, creator, new FillingFromCornersByWavesStrategy(1));
             _matrix.FillStartMatrixRandomly();
             Print(_step, matrixSize, _matrix);
         }
