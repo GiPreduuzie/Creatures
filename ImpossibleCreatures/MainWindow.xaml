@@ -11,19 +11,28 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="20"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Grid Column="0" Row="0">
+        <Grid Column="0" ColumnSpan="2" Row="0" Name="MenuRow" Width="auto" Height="auto" Background="White">
+            <DockPanel>
+                <Menu DockPanel.Dock="Top">
+                    <MenuItem Header="Show energy" IsCheckable="True" Name="MenuItemEnergy" />
+                </Menu>
+                <TextBox AcceptsReturn="True" />
+            </DockPanel>
+        </Grid>
+        <Grid Column="0" Row="1">
             <Button Width="auto" Height="auto" Name="start" Click="start_Click" Foreground="Black">Start/Pause</Button>
         </Grid>
-        <Grid Column="1" Row="0">
+        <Grid Column="1" Row="1">
             <Button Name="onestep" Click="onestep_Click">One step forward</Button>
         </Grid>
-        <Grid Column="0" ColumnSpan="2" Row="1" Name="MainGrid" Width="auto" Height="auto" Background="White"/>
+        <Grid Column="0" ColumnSpan="2" Row="2" Name="MainGrid" Width="auto" Height="auto" Background="White"/>
     </Grid>
 
 </Window>

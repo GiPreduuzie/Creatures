@@ -144,43 +144,6 @@ namespace ImpossibleCreatures
             }
         }
 
-        private void Print(int id, int length, Matrix matrix)
-        {
-            _paintTimer.Start();
-            for (int i = 0; i < length; i++)
-            {
-                for (int j = 0; j < length; j++)
-                {
-                    var isThereAreFood = matrix.EatMatrix.HasOneBite(new System.Drawing.Point(i, j));
-                    var isThereAreCreature = matrix.Creatures[i, j] != null;
-                    var strokeColor = new Color();
-                    var fillColor = new Color();
-
-                    if (isThereAreCreature)
-                    {
-                        fillColor = Colors.Black;
-                        strokeColor = isThereAreFood ? Colors.YellowGreen : Colors.OrangeRed;
-                    }
-                    else
-                    {
-                        if (isThereAreFood)
-                        {
-                            fillColor = Color.FromArgb(50,154,205,50);
-                            strokeColor = fillColor;
-                        }
-                        else
-                        {
-                            fillColor = Colors.White;
-                            strokeColor = fillColor;
-                        }
-                    }
-
-                    PaintSquareStroke(i, j, strokeColor, _squares);
-                    PaintSquareFill(i, j, fillColor, _squares);
-                }
-            }
-            _paintTimer.Stop();
-        }
 
         private void start_Click(object sender, RoutedEventArgs e)
         {
