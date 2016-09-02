@@ -1,4 +1,4 @@
-﻿namespace CellsAutomate.Food
+﻿namespace CellsAutomate.Food.DistributingStrategy
 {
     public interface IFoodDistributionStrategy
     {

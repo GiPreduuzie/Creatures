@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Drawing;
 
-namespace CellsAutomate.Food
+namespace CellsAutomate.Food.DistributingStrategy
 {
     public class RandomRainOfFoodStrategy : IFoodDistributionStrategy
     {
-        private readonly int _frequency;
-        private readonly Random _random;
+        private readonly int _thikness;
+        private readonly Random _random = new Random();
 
-        public RandomRainOfFoodStrategy(int frequency)
+        public RandomRainOfFoodStrategy(double thikness)
         {
-            _frequency = frequency;
-            _random = new Random();
+            _thikness = (int) (1/thikness);
         }
-        
+
         public void Build(bool[,] creatures, FoodMatrix eatMatrix)
         {
             for (int i = 0; i < eatMatrix.Length; i++)
@@ -22,7 +21,7 @@ namespace CellsAutomate.Food
                 {
                     if (!creatures[i, j] 
                         && !eatMatrix.HasMaxFoodLevel(new Point(i, j))
-                        && _random.Next(100) % _frequency == 0)
+                        && _random.Next(100) % _thikness == 0)
                     {
                         eatMatrix.AddFood(new Point(i, j));
                     }

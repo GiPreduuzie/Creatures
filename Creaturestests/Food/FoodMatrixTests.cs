@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
 using CellsAutomate.Constants;
+using CellsAutomate.Food.DistributingStrategy;
 using Creaturestests.Food;
 
 namespace CellsAutomate.Food.Tests
@@ -12,7 +13,7 @@ namespace CellsAutomate.Food.Tests
         [TestMethod()]
         public void HasOneBiteIsTrueTest()
         {
-            var eatMatrix = new FoodMatrix(2, 2, new FillingFromCornersByWavesStrategy(1));
+            var eatMatrix = new FoodMatrix(2, 2, new FillingFromCornersByWavesStrategy(), 1);
             var point = new Point(0, 0);
 
             FrequentlyUsedMethods.RaiseFoodLevelToConstantWithAddFood(eatMatrix, point, CreatureConstants.OneBite);
@@ -23,7 +24,7 @@ namespace CellsAutomate.Food.Tests
         [TestMethod()]
         public void HasOneBiteIsFalseTest()
         {
-            var eatMatrix = new FoodMatrix(2, 2, new FillingFromCornersByWavesStrategy(1));
+            var eatMatrix = new FoodMatrix(2, 2, new FillingFromCornersByWavesStrategy(), 1);
 
             for (int i = 0; i < eatMatrix.Length; i++)
             {
@@ -37,7 +38,7 @@ namespace CellsAutomate.Food.Tests
         [TestMethod()]
         public void HasMaxFoodLevelIsTrueTest()
         {
-            var eatMatrix = new FoodMatrix(2, 2, new FillingFromCornersByWavesStrategy(1));
+            var eatMatrix = new FoodMatrix(2, 2, new FillingFromCornersByWavesStrategy(), 1);
             var point = new Point(0, 0);
 
             FrequentlyUsedMethods.RaiseFoodLevelToConstantWithAddFood(eatMatrix, point, FoodMatrixConstants.MaxFoodLevel);
@@ -48,7 +49,7 @@ namespace CellsAutomate.Food.Tests
         [TestMethod()]
         public void HasMaxFoodLevelIsFalseTest()
         {
-            var eatMatrix = new FoodMatrix(2, 2, new FillingFromCornersByWavesStrategy(1));
+            var eatMatrix = new FoodMatrix(2, 2, new FillingFromCornersByWavesStrategy(), 1);
 
             for (int i = 0; i < eatMatrix.Length; i++)
             {
@@ -64,7 +65,7 @@ namespace CellsAutomate.Food.Tests
         [TestMethod()]
         public void AddFoodTest()
         {
-            var eatMatrix = new FoodMatrix(2, 2, new FillingFromCornersByWavesStrategy(1));
+            var eatMatrix = new FoodMatrix(2, 2, new FillingFromCornersByWavesStrategy(), 1);
             var point = new Point(0, 0);
 
             FrequentlyUsedMethods.RaiseFoodLevelToConstantWithAddFood(eatMatrix, point, CreatureConstants.OneBite);
@@ -75,7 +76,7 @@ namespace CellsAutomate.Food.Tests
         [TestMethod()]
         public void TakeFoodIsTrueTest()
         {
-            var eatMatrix = new FoodMatrix(2, 2, new FillingFromCornersByWavesStrategy(1));
+            var eatMatrix = new FoodMatrix(2, 2, new FillingFromCornersByWavesStrategy(), 1);
             var point = new Point(0, 0);
 
             FrequentlyUsedMethods.RaiseFoodLevelToConstantWithAddFood(eatMatrix, point, CreatureConstants.OneBite);
@@ -94,7 +95,7 @@ namespace CellsAutomate.Food.Tests
         [TestMethod()]
         public void TakeFoodIsFalseTest()
         {
-            var eatMatrix = new FoodMatrix(2, 2, new FillingFromCornersByWavesStrategy(1));
+            var eatMatrix = new FoodMatrix(2, 2, new FillingFromCornersByWavesStrategy(), 1);
             var point = new Point(0, 0);
             Assert.IsFalse(eatMatrix.TakeFood(point));
         }

@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using CellsAutomate.Constants;
+using CellsAutomate.Food.DistributingStrategy;
 
 namespace CellsAutomate.Food
 {
@@ -8,14 +9,18 @@ namespace CellsAutomate.Food
         private readonly int[,] _matrix;
 
         private readonly IFoodDistributionStrategy _strategy;
+        private readonly int _foodDistributingFrequency;
+
+        private int _counterOfTurns = 0;
 
         public int Length => _matrix.GetLength(0);
         public int Height => _matrix.GetLength(1);
 
-        public FoodMatrix(int length, int height, IFoodDistributionStrategy strategy)
+        public FoodMatrix(int length, int height, IFoodDistributionStrategy strategy, int foodDistributingFrequency)
         {
             _matrix = new int[length, height];
             _strategy = strategy;
+            _foodDistributingFrequency = foodDistributingFrequency;
         }
 
         public bool HasOneBite(Point currentPoint)
@@ -48,7 +53,12 @@ namespace CellsAutomate.Food
 
         public void Build(bool[,] creatures)
         {
-            _strategy.Build(creatures, this);
+            if (_counterOfTurns%_foodDistributingFrequency == 0)
+            {
+                _strategy.Build(creatures, this);
+            }
+
+            _counterOfTurns++;
         }
     }
 }

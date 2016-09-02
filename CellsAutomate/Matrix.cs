@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using CellsAutomate.Food;
+using CellsAutomate.Food.DistributingStrategy;
 using CellsAutomate.Tools;
 
 namespace CellsAutomate
@@ -15,12 +16,12 @@ namespace CellsAutomate
 
         public Membrane[,] Creatures { get; set; }
 
-        public Matrix(int length, int height, Creator creator, IFoodDistributionStrategy strategy)
+        public Matrix(int length, int height, Creator creator, IFoodDistributionStrategy strategy, int foodDistributingFrequency)
         {
             Length = length;
             Height = height;
             _creator = creator;
-            EatMatrix = new FoodMatrix(length, height, strategy);
+            EatMatrix = new FoodMatrix(length, height, strategy, foodDistributingFrequency);
             Creatures = new Membrane[length, height];
         }
 

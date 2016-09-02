@@ -2,6 +2,7 @@ using System;
 using CellsAutomate;
 using CellsAutomate.Algorithms;
 using CellsAutomate.Food;
+using CellsAutomate.Food.DistributingStrategy;
 using Creatures.Language.Commands.Interfaces;
 
 namespace ConsoleWorker
@@ -10,7 +11,12 @@ namespace ConsoleWorker
     {
         public Matrix GetMatrix()
         {
-            return new Matrix(GetMatrixSize(), GetMatrixSize(), GetCreatureCreator(), GetFoodDistributionStrategy());
+            return new Matrix(
+                GetMatrixSize(), 
+                GetMatrixSize(), 
+                GetCreatureCreator(), 
+                GetFoodDistributionStrategy(), 
+                GetFoodDistributingFrequency());
         }
 
         private ICommand[] GetDirectionAlgorithm()
@@ -30,17 +36,20 @@ namespace ConsoleWorker
 
         private IFoodDistributionStrategy GetFoodDistributionStrategy()
         {
-            var frequency = GetInt("food distribution frequency");
-
             var strategy = GetString("food distibution strategy");
             switch (strategy)
             {
-                case "as water from corners": return new FillingFromCornersByWavesStrategy(frequency);
-                case "random rain": return new RandomRainOfFoodStrategy(frequency);
-                case "fill entire field": return new FillingOfEntireFieldStrategy(frequency);
+                case "as water from corners": return new FillingFromCornersByWavesStrategy();
+                case "random rain": return new RandomRainOfFoodStrategy(GetDouble("rain thikness"));
+                case "fill entire field": return new FillingOfEntireFieldStrategy();
 
                 default: throw new ArgumentException("I know nothing about this strategy: " + strategy);
             }
+        }
+
+        private int GetFoodDistributingFrequency()
+        {
+            return GetInt("food distribution frequency");
         }
 
         public int GetMatrixSize()
@@ -51,6 +60,11 @@ namespace ConsoleWorker
         private int GetInt(string key)
         {
             return int.Parse(GetString(key));
+        }
+
+        private double GetDouble(string key)
+        {
+            return double.Parse(GetString(key));
         }
 
         private string GetString(string key)

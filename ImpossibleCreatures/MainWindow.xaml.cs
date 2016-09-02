@@ -12,6 +12,7 @@ using CellsAutomate.Algorithms;
 using CellsAutomate.Constants;
 using CellsAutomate.Creatures;
 using CellsAutomate.Food;
+using CellsAutomate.Food.DistributingStrategy;
 using Creatures.Language.Commands.Interfaces;
 using Creatures.Language.Parsers;
 using Matrix = CellsAutomate.Matrix;
@@ -53,7 +54,7 @@ namespace ImpossibleCreatures
             var commandsForGetAction = new GetActionAlgorithm().Algorithm;
             var creator = new CreatorOfCreature(commandsForGetAction, commandsForGetDirection);
 
-            _matrix = new Matrix(matrixSize, matrixSize, creator, new FillingFromCornersByWavesStrategy(1));
+            _matrix = new Matrix(matrixSize, matrixSize, creator, new FillingFromCornersByWavesStrategy(), 1);
             _matrix.FillStartMatrixRandomly();
             Print(_step, matrixSize, _matrix);
         }

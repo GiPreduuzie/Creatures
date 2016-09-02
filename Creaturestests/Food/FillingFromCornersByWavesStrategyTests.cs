@@ -2,6 +2,7 @@
 using CellsAutomate.Food;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CellsAutomate.Constants;
+using CellsAutomate.Food.DistributingStrategy;
 
 namespace Creaturestests.Food
 {
@@ -11,7 +12,7 @@ namespace Creaturestests.Food
         [TestMethod()]
         public void BuildIsFullTest()
         {
-            var eatMatrix = new FoodMatrix(2, 2, new FillingFromCornersByWavesStrategy(1));
+            var eatMatrix = new FoodMatrix(2, 2, new FillingFromCornersByWavesStrategy(), 1);
             var creatures = new bool[2, 2];
 
             eatMatrix.Build(creatures);
@@ -23,7 +24,7 @@ namespace Creaturestests.Food
         [TestMethod()]
         public void BuildIsEmptyTest()
         {
-            var eatMatrix = new FoodMatrix(2, 2, new FillingFromCornersByWavesStrategy(1));
+            var eatMatrix = new FoodMatrix(2, 2, new FillingFromCornersByWavesStrategy(), 1);
             var creatures = new bool[2, 2];
 
             for (int i = 0; i < eatMatrix.Length; i++)
@@ -39,7 +40,7 @@ namespace Creaturestests.Food
         [TestMethod()]
         public void BuildWithOneFreeCellTest()
         {
-            var eatMatrix = new FoodMatrix(2, 2, new FillingFromCornersByWavesStrategy(1));
+            var eatMatrix = new FoodMatrix(2, 2, new FillingFromCornersByWavesStrategy(), 1);
             var creatures = new bool[2, 2];
             creatures[0, 0] = true;
             creatures[0, 1] = true;

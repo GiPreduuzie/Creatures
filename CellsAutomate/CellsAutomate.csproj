@@ -55,11 +55,11 @@
     <Compile Include="CreatureDead.cs" />
     <Compile Include="Creatures\BaseCreature.cs" />
     <Compile Include="Creator.cs" />
-    <Compile Include="Food\FillingFromCornersByWavesStrategy.cs" />
-    <Compile Include="Food\FillingOfEntireFieldStrategy.cs" />
+    <Compile Include="Food\DistributingStrategy\FillingFromCornersByWavesStrategy.cs" />
+    <Compile Include="Food\DistributingStrategy\FillingOfEntireFieldStrategy.cs" />
     <Compile Include="Food\FoodMatrix.cs" />
-    <Compile Include="Food\IFoodDistributionStrategy.cs" />
-    <Compile Include="Food\RandomRainOfFoodStrategy.cs" />
+    <Compile Include="Food\DistributingStrategy\IFoodDistributionStrategy.cs" />
+    <Compile Include="Food\DistributingStrategy\RandomRainOfFoodStrategy.cs" />
     <Compile Include="Matrix.cs" />
     <Compile Include="Mutator\CommandsList\CommandsList.cs" />
     <Compile Include="Mutator\CommandsList\CommandsListWithLogger.cs" />
@@ -88,7 +88,9 @@
       <Name>Creatures</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Food\FoodBehavior\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
