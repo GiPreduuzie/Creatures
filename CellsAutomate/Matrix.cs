@@ -90,7 +90,8 @@ namespace CellsAutomate
                     Creatures[i, j] = random.Next(1000) % 100 == 0 ? new Membrane(_creator.CreateAbstractCreature(), random, new Point(i, j), 1, 0, _creator) : null;
                 }
             }
-            FillMatrixWithFood();
+
+            EatMatrix.InitializeMatrixWithFood();
         }
 
         public void MakeTurn()

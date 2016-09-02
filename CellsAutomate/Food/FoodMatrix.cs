@@ -78,5 +78,16 @@ namespace CellsAutomate.Food
         {
             _foodBehavior.Manage(creatures, Height, Length, _matrix);
         }
+
+        internal void InitializeMatrixWithFood()
+        {
+            for (int i = 0; i < Length; i++)
+            {
+                for (int j = 0; j < Height; j++)
+                {
+                    AddFood(new Point(i, j));
+                }
+            }
+        }
     }
 }

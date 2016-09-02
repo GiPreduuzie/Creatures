@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImpossibleCreatures", "Impo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleWorker", "ConsoleWorker\ConsoleWorker.csproj", "{E50D46D2-0E67-4388-868F-468A49A6A178}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DependenciesResolver", "DependenciesResolver\DependenciesResolver.csproj", "{8DE32C6F-D934-42A0-AA93-AA3208683416}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{E50D46D2-0E67-4388-868F-468A49A6A178}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E50D46D2-0E67-4388-868F-468A49A6A178}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E50D46D2-0E67-4388-868F-468A49A6A178}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DE32C6F-D934-42A0-AA93-AA3208683416}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DE32C6F-D934-42A0-AA93-AA3208683416}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DE32C6F-D934-42A0-AA93-AA3208683416}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DE32C6F-D934-42A0-AA93-AA3208683416}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

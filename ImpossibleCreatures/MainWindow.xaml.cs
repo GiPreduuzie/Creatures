@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,9 +12,6 @@ using CellsAutomate;
 using CellsAutomate.Algorithms;
 using CellsAutomate.Constants;
 using CellsAutomate.Creatures;
-using CellsAutomate.Food;
-using CellsAutomate.Food.DistributingStrategy;
-using CellsAutomate.Food.FoodBehavior;
 using Creatures.Language.Commands.Interfaces;
 using Creatures.Language.Parsers;
 using Matrix = CellsAutomate.Matrix;
@@ -24,6 +20,8 @@ namespace ImpossibleCreatures
 {
     public partial class MainWindow : Window
     {
+        DependenciesResolver.DependencyResolver _dependenciesResolver = new DependenciesResolver.DependencyResolver();
+
         private DispatcherTimer _timer;
         private Matrix _matrix;
         private Random _random = new Random();
@@ -38,8 +36,10 @@ namespace ImpossibleCreatures
         {
             InitializeComponent();
 
-            var width = LogConstants.MatrixSize;
-            var height = LogConstants.MatrixSize;
+            var size = _dependenciesResolver.GetMatrixSize();
+
+            var width = size;
+            var height = size;
 
             _squares = new Rectangle[width, height];
             WorkWirhGrid.MarkTable(MainGrid, width, height);
@@ -54,14 +54,15 @@ namespace ImpossibleCreatures
 
         private void Start(object sender, RoutedEventArgs e)
         {
-            var matrixSize = LogConstants.MatrixSize;
+            var matrixSize = _dependenciesResolver.GetMatrixSize();
 
             var commandsForGetDirection = new GetDirectionAlgorithm().Algorithm;
             var commandsForGetAction = new GetActionAlgorithm().Algorithm;
             var creator = new CreatorOfCreature(commandsForGetAction, commandsForGetDirection);
 
-            _matrix = new Matrix(matrixSize, matrixSize, creator, new FillingFromCornersByWavesStrategy(), new PlainBehaviour(), 1);
+            _matrix = _dependenciesResolver.GetMatrix();
             _matrix.FillStartMatrixRandomly();
+
             Print(_step, matrixSize, _matrix);
 
             _turnExecutor = new TurnExecutor(_matrix);
@@ -80,7 +81,7 @@ namespace ImpossibleCreatures
             await Task.Factory.StartNew(_matrix.MakeTurn);
             _calculateTimer.Stop();
 
-            Print(_step, LogConstants.MatrixSize, _matrix);
+            Print(_step, _dependenciesResolver.GetMatrixSize(), _matrix);
         }
 
         private void PrintCurrentMatrix(object sender, object o)
@@ -89,7 +90,7 @@ namespace ImpossibleCreatures
 
             SetWindowTitle(_turnExecutor.Steps);
 
-            Print(_turnExecutor.Steps, LogConstants.MatrixSize, _matrix);
+            Print(_turnExecutor.Steps, _dependenciesResolver.GetMatrixSize(), _matrix);
 
             if (_matrix.AliveCount == 0)
             {
@@ -133,7 +134,7 @@ namespace ImpossibleCreatures
             return collection[_random.Next(collection.Count)];
         }
 
-        private void PrintGeneration(CellsAutomate.Matrix creatures, int turn)
+        private void PrintGeneration(Matrix creatures, int turn)
         {
             for (int i = 1; i <= turn + 1; i++)
             {
@@ -179,19 +180,6 @@ namespace ImpossibleCreatures
                 }
             }
             _paintTimer.Stop();
-        }
-
-        public void CreateDirectory()
-        {
-            if (Directory.Exists(LogConstants.PathToLogDirectory))
-            {
-                var files = new DirectoryInfo(LogConstants.PathToLogDirectory).GetFiles();
-
-                foreach (var file in files)
-                    file.Delete();
-                return;
-            }
-            Directory.CreateDirectory(LogConstants.PathToLogDirectory);
         }
 
         private void start_Click(object sender, RoutedEventArgs e)

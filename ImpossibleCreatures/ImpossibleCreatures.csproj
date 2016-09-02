@@ -110,6 +110,10 @@
       <Project>{dae4f621-32bb-41e4-8e0a-10b9cfd76bd5}</Project>
       <Name>Creatures</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DependenciesResolver\DependenciesResolver.csproj">
+      <Project>{8de32c6f-d934-42a0-aa93-aa3208683416}</Project>
+      <Name>DependenciesResolver</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using CellsAutomate.Constants;
 
 namespace CellsAutomate.Food.FoodBehavior
 {
@@ -13,6 +12,7 @@ namespace CellsAutomate.Food.FoodBehavior
 
             foreach (var point in pointsWithFood)
             {
+                eatMatrix[point.X, point.Y] += 1;
                 Grow(height, width, creatures, eatMatrix, point);
             }
         }
@@ -23,7 +23,7 @@ namespace CellsAutomate.Food.FoodBehavior
 
             foreach (var freePoint in freePoints)
             {
-                eatMatrix[freePoint.X, freePoint.Y] = FoodMatrixConstants.AddedFoodLevel;
+                eatMatrix[freePoint.X, freePoint.Y] += 1;
             }
         }
 

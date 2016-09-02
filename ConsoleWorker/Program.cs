@@ -11,6 +11,7 @@ using CellsAutomate.Creatures;
 using CellsAutomate.Mutator;
 using Creatures.Language.Commands.Interfaces;
 using Creatures.Language.Parsers;
+using DependenciesResolver;
 
 namespace ConsoleWorker
 {
@@ -23,14 +24,16 @@ namespace ConsoleWorker
         {
             var resolver = new DependencyResolver();
 
+            var pathForLogs = resolver.GetPathForLogs();
+
             var matrixSize = resolver.GetMatrixSize();
             var scale = 500 / matrixSize;
 
             var matrix = resolver.GetMatrix();
 
             matrix.FillStartMatrixRandomly();
-            CreateDirectory();
-            Print(0, matrixSize, matrix, scale);
+            CreateDirectory(pathForLogs);
+            Print(pathForLogs, 0, matrixSize, matrix, scale);
             Console.WriteLine("0:{0}", matrix.AliveCount);
 
             var log = new StringBuilder();
@@ -47,7 +50,7 @@ namespace ConsoleWorker
                 }
                 
 
-                Print(i + 1, matrixSize, matrix, scale);
+                Print(pathForLogs, i + 1, matrixSize, matrix, scale);
                 Console.WriteLine("{0}:{1}", i + 1, matrix.AliveCount);
                 var generationStat =
                     string.Join(" ",
@@ -81,11 +84,11 @@ namespace ConsoleWorker
             var youngCreatureLog = CreateLogOfCreature(randomYoung.Creature as Creature, randomYoung.Generation);
             var mediumCreatureLog = CreateLogOfCreature(randomMedium.Creature as Creature, randomMedium.Generation);
             var originalCreatureLog = CreateLogOfCreature(resolver.GetCreatureCreator().CreateAbstractCreature() as Creature, 1);
-            File.WriteAllText(LogConstants.PathToLogDirectory + "\\randomYoungCommands.txt", youngCreatureLog);
-            File.WriteAllText(LogConstants.PathToLogDirectory + "\\randomMediumCommands.txt", mediumCreatureLog);
-            File.WriteAllText(LogConstants.PathToLogDirectory + "\\originalCommands.txt", originalCreatureLog);
+            File.WriteAllText(pathForLogs + "\\randomYoungCommands.txt", youngCreatureLog);
+            File.WriteAllText(pathForLogs + "\\randomMediumCommands.txt", mediumCreatureLog);
+            File.WriteAllText(pathForLogs + "\\originalCommands.txt", originalCreatureLog);
 
-            File.WriteAllText(LogConstants.PathToLogDirectory + "\\Log.txt", log.ToString());
+            File.WriteAllText(pathForLogs + "\\Log.txt", log.ToString());
             Console.WriteLine("Up: " + Stats.Up);
             Console.WriteLine("Right: " + Stats.Right);
             Console.WriteLine("Down: " + Stats.Down);
@@ -174,7 +177,7 @@ namespace ConsoleWorker
             }
         }
 
-        private static void Print(int id, int length, Matrix matrix, int scale)
+        private static void Print(string pathForLogs, int id, int length, Matrix matrix, int scale)
         {
             //if (id % 50 != 0) return;
 
@@ -222,20 +225,20 @@ namespace ConsoleWorker
                         }
                     }
             }
-            bitmap.Save(LogConstants.PathToLogDirectory + $"\\{id}.bmp", ImageFormat.Bmp);
+            bitmap.Save(pathForLogs + $"\\{id}.bmp", ImageFormat.Bmp);
         }
 
-        public static void CreateDirectory()
+        public static void CreateDirectory(string pathForLogs)
         {
-            if (Directory.Exists(LogConstants.PathToLogDirectory))
+            if (Directory.Exists(pathForLogs))
             {
-                var files = new DirectoryInfo(LogConstants.PathToLogDirectory).GetFiles();
+                var files = new DirectoryInfo(pathForLogs).GetFiles();
 
                 foreach (var file in files)
                     file.Delete();
                 return;
             }
-            Directory.CreateDirectory(LogConstants.PathToLogDirectory);
+            Directory.CreateDirectory(pathForLogs);
         }
     }
 }

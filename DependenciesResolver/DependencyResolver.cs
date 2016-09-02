@@ -1,27 +1,29 @@
-using System;
-using CellsAutomate;
+﻿using CellsAutomate;
 using CellsAutomate.Algorithms;
-using CellsAutomate.Food;
 using CellsAutomate.Food.DistributingStrategy;
 using CellsAutomate.Food.FoodBehavior;
 using Creatures.Language.Commands.Interfaces;
+using System;
 
-namespace ConsoleWorker
+namespace DependenciesResolver
 {
     public class DependencyResolver
     {
         public Matrix GetMatrix()
         {
             return new Matrix(
-                GetMatrixSize(), 
-                GetMatrixSize(), 
+                GetMatrixSize(),
+                GetMatrixSize(),
                 GetCreatureCreator(),
-                GetFoodDistributionStrategy(), 
+                GetFoodDistributionStrategy(),
                 GetFoodBehavior(),
                 GetFoodDistributingFrequency());
         }
 
-       
+        public string GetPathForLogs()
+        {
+            return GetString("path for logs");
+        }
 
         private ICommand[] GetDirectionAlgorithm()
         {
@@ -80,7 +82,7 @@ namespace ConsoleWorker
 
         private double GetDouble(string key)
         {
-            return double.Parse(GetString(key));
+            return double.Parse(GetString(key), System.Globalization.NumberStyles.Float);
         }
 
         private string GetString(string key)
