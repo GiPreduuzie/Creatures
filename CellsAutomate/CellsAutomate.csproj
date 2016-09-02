@@ -46,6 +46,9 @@
   <ItemGroup>
     <Compile Include="Algorithms\GetActionAlgorithm.cs" />
     <Compile Include="Algorithms\SeedGenerator.cs" />
+    <Compile Include="Food\FoodBehavior\IFoodBehavior.cs" />
+    <Compile Include="Food\FoodBehavior\PlainBehaviour.cs" />
+    <Compile Include="Food\FoodBehavior\PlantGrowingBehaviour.cs" />
     <Compile Include="Membrane.cs" />
     <Compile Include="Constants\CreatureConstants.cs" />
     <Compile Include="Constants\FoodMatrixConstants.cs" />
@@ -88,9 +91,7 @@
       <Name>Creatures</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Food\FoodBehavior\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

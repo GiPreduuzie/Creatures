@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using CellsAutomate.Food;
 using CellsAutomate.Food.DistributingStrategy;
+using CellsAutomate.Food.FoodBehavior;
 using CellsAutomate.Tools;
 
 namespace CellsAutomate
@@ -11,17 +12,23 @@ namespace CellsAutomate
     {
         public int Length;
         public int Height;
-        public FoodMatrix EatMatrix { get; set; }
+        public FoodMatrix EatMatrix { get; private set; }
         private readonly Creator _creator;
 
         public Membrane[,] Creatures { get; set; }
 
-        public Matrix(int length, int height, Creator creator, IFoodDistributionStrategy strategy, int foodDistributingFrequency)
+        public Matrix(
+            int length, 
+            int height,
+            Creator creator,
+            IFoodDistributionStrategy strategy,
+            IFoodBehavior foodBehavior,
+            int foodDistributingFrequency)
         {
             Length = length;
             Height = height;
             _creator = creator;
-            EatMatrix = new FoodMatrix(length, height, strategy, foodDistributingFrequency);
+            EatMatrix = new FoodMatrix(length, height, foodDistributingFrequency, strategy, foodBehavior);
             Creatures = new Membrane[length, height];
         }
 
@@ -29,9 +36,9 @@ namespace CellsAutomate
         {
             get
             {
-                for (int i = 0; i < Length; i++)
+                for (var i = 0; i < Length; i++)
                 {
-                    for (int j = 0; j < Height; j++)
+                    for (var j = 0; j < Height; j++)
                     {
                         if (Creatures[i, j] != null)
                             yield return Creatures[i, j];

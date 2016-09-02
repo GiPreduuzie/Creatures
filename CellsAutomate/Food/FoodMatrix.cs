@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using CellsAutomate.Constants;
 using CellsAutomate.Food.DistributingStrategy;
+using CellsAutomate.Food.FoodBehavior;
 
 namespace CellsAutomate.Food
 {
@@ -9,6 +10,7 @@ namespace CellsAutomate.Food
         private readonly int[,] _matrix;
 
         private readonly IFoodDistributionStrategy _strategy;
+        private readonly IFoodBehavior _foodBehavior;
         private readonly int _foodDistributingFrequency;
 
         private int _counterOfTurns = 0;
@@ -16,11 +18,17 @@ namespace CellsAutomate.Food
         public int Length => _matrix.GetLength(0);
         public int Height => _matrix.GetLength(1);
 
-        public FoodMatrix(int length, int height, IFoodDistributionStrategy strategy, int foodDistributingFrequency)
+        public FoodMatrix(
+            int length, 
+            int height, 
+            int foodDistributingFrequency,
+            IFoodDistributionStrategy strategy,
+            IFoodBehavior foodBehavior)
         {
             _matrix = new int[length, height];
             _strategy = strategy;
             _foodDistributingFrequency = foodDistributingFrequency;
+            _foodBehavior = foodBehavior;
         }
 
         public bool HasOneBite(Point currentPoint)
@@ -53,12 +61,22 @@ namespace CellsAutomate.Food
 
         public void Build(bool[,] creatures)
         {
-            if (_counterOfTurns%_foodDistributingFrequency == 0)
-            {
-                _strategy.Build(creatures, this);
-            }
+            ManageExistingFood(creatures);
+            AddNewFood(creatures);
 
             _counterOfTurns++;
+        }
+
+        private void AddNewFood(bool[,] creatures)
+        {
+            if (_counterOfTurns%_foodDistributingFrequency != 0) return;
+
+            _strategy.Build(creatures, this);
+        }
+
+        private void ManageExistingFood(bool[,] creatures)
+        {
+            _foodBehavior.Manage(creatures, Height, Length, _matrix);
         }
     }
 }

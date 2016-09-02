@@ -3,6 +3,7 @@ using CellsAutomate;
 using CellsAutomate.Algorithms;
 using CellsAutomate.Food;
 using CellsAutomate.Food.DistributingStrategy;
+using CellsAutomate.Food.FoodBehavior;
 using Creatures.Language.Commands.Interfaces;
 
 namespace ConsoleWorker
@@ -14,10 +15,13 @@ namespace ConsoleWorker
             return new Matrix(
                 GetMatrixSize(), 
                 GetMatrixSize(), 
-                GetCreatureCreator(), 
+                GetCreatureCreator(),
                 GetFoodDistributionStrategy(), 
+                GetFoodBehavior(),
                 GetFoodDistributingFrequency());
         }
+
+       
 
         private ICommand[] GetDirectionAlgorithm()
         {
@@ -42,6 +46,18 @@ namespace ConsoleWorker
                 case "as water from corners": return new FillingFromCornersByWavesStrategy();
                 case "random rain": return new RandomRainOfFoodStrategy(GetDouble("rain thikness"));
                 case "fill entire field": return new FillingOfEntireFieldStrategy();
+
+                default: throw new ArgumentException("I know nothing about this strategy: " + strategy);
+            }
+        }
+
+        private IFoodBehavior GetFoodBehavior()
+        {
+            var strategy = GetString("food behavior");
+            switch (strategy)
+            {
+                case "plain": return new PlainBehaviour();
+                case "grow": return new PlantGrowingBehaviour();
 
                 default: throw new ArgumentException("I know nothing about this strategy: " + strategy);
             }
