@@ -2,8 +2,9 @@
 {
     internal enum VisualizationType
     {
-        FillBlackStrokeCanEat,
-        FillEnergyStrokeCanEat,
-        FillNation
+        CanEat,
+        Nation,
+        Energy,
+        Experimantal
     }
 }

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ImpossibleCreatures"
         mc:Ignorable="d"
         Name="Window"
-        Title="Impossible Creatures" Height="1023" Width="1120" Loaded="Start" WindowStartupLocation="Manual" WindowState="Maximized" >
+        Title="Impossible Creatures" Height="1023" Width="1120" Loaded="Start" WindowStartupLocation="CenterScreen" WindowState="Normal" >
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -30,9 +30,10 @@
                 </GroupBox>
                 <GroupBox Header="Visualization">
                     <StackPanel>
-                        <RadioButton Content="Fill:Black" Name="FillBlack" IsChecked="True" Checked="FillBlack_Checked" />
-                        <RadioButton Content="Fill:Energy" Name="FillEnergy" IsChecked="False" Checked="FillEnergy_Checked" />
-                        <RadioButton Content="Fill:Nation" Name="FillNation" IsChecked="False" Checked="FillNation_Checked"/>
+                        <RadioButton Content="Can eat" IsChecked="True" Checked="CanEat_Checked" />
+                        <RadioButton Content="Nation" IsChecked="False" Checked="Nation_Checked"/>
+                        <RadioButton Content="Energy" IsChecked="False" Checked="Energy_Checked"/>
+                        <RadioButton Content="Experimantal" IsChecked="False" Checked="Experimantal_Checked"/>
                         <CheckBox Content="Sync rendering" Name="MenuItemSyncRendering" IsChecked="True" />
                     </StackPanel>
                 </GroupBox>

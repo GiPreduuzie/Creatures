@@ -14,7 +14,7 @@ namespace ImpossibleCreatures
 {
     public partial class MainWindow : Window
     {
-        private VisualizationType _visualizationType = VisualizationType.FillBlackStrokeCanEat;
+        private VisualizationType _visualizationType = VisualizationType.CanEat;
 
         readonly DependenciesResolver.DependencyResolver _dependenciesResolver = new DependenciesResolver.DependencyResolver();
 
@@ -31,7 +31,7 @@ namespace ImpossibleCreatures
 
             _timer = new DispatcherTimer
             {
-                Interval = new TimeSpan(0, 0, 0, LogConstants.TimeSpanSeconds, LogConstants.TimeSpanMSeconds)
+                Interval = new TimeSpan(0, 0, 0, 0, LogConstants.TimeSpanMSeconds)
             };
             _timer.Tick += PrintCurrentMatrix;
         }
@@ -48,7 +48,7 @@ namespace ImpossibleCreatures
         private async void MakeTurn(object sender, object o)
         {
             _turnExecutor.Steps++;
-            SetWindowTitle(_turnExecutor.Steps);
+            SetWindowTitle();
             if (_matrix.AliveCount == 0)
             {
                 _timer.Stop();
@@ -114,9 +114,9 @@ namespace ImpossibleCreatures
                 _turnExecutor.Stop();
             }
 
-            SetWindowTitle(_turnExecutor.Steps);
+            _stepToMarkParts++;
+            SetWindowTitle();
 
-            
             if (_turnExecutor.Steps >= _stepToMarkParts)
             {
                 MarkParts(_dependenciesResolver.GetMatrixSize());
@@ -137,9 +137,9 @@ namespace ImpossibleCreatures
             }
         }
 
-        private void SetWindowTitle(int step)
+        private void SetWindowTitle()
         {
-            StepCount.Content = "Step: " + step;
+            StepCount.Content = "Step: " + _turnExecutor.Steps;
             CalcTime.Content = "Calc time: " + Math.Round(_calculateTimer.Elapsed.TotalSeconds, 1) + "s";
             PaintTime.Content = "Paint time: " + Math.Round(_paintTimer.Elapsed.TotalSeconds, 1) + "s";
         }
@@ -163,11 +163,6 @@ namespace ImpossibleCreatures
         private void OneStep_Click(object sender, RoutedEventArgs e)
         {
             MakeTurn(null, null);
-        }
-
-        private void FillNation_Checked(object sender, RoutedEventArgs e)
-        {
-            _visualizationType = VisualizationType.FillNation;
         }
     }
 }

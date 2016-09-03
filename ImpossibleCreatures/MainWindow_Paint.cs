@@ -4,14 +4,28 @@ namespace ImpossibleCreatures
 {
     public partial class MainWindow : Window
     {
-        private void FillBlack_Checked(object sender, RoutedEventArgs e)
+        private void CanEat_Checked(object sender, RoutedEventArgs e)
         {
-            _visualizationType = VisualizationType.FillBlackStrokeCanEat;
+            _visualizationType = VisualizationType.CanEat;
+            //PrintCurrentMatrix(null, null);
         }
 
-        private void FillEnergy_Checked(object sender, RoutedEventArgs e)
+        private void Nation_Checked(object sender, RoutedEventArgs e)
         {
-            _visualizationType = VisualizationType.FillEnergyStrokeCanEat;
+            _visualizationType = VisualizationType.Nation;
+            //PrintCurrentMatrix(null, null);
+        }
+
+        private void Energy_Checked(object sender, RoutedEventArgs e)
+        {
+            _visualizationType = VisualizationType.Energy;
+            //PrintCurrentMatrix(null, null);
+        }
+
+        private void Experimantal_Checked(object sender, RoutedEventArgs e)
+        {
+            _visualizationType = VisualizationType.Experimantal;
+            //PrintCurrentMatrix(null, null);
         }
     }
 }
