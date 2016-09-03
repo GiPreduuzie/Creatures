@@ -1,26 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using CellsAutomate;
 using CellsAutomate.Constants;
-using CellsAutomate.Creatures;
-using Creatures.Language.Commands.Interfaces;
-using Creatures.Language.Parsers;
+using Color = System.Windows.Media.Color;
 using Matrix = CellsAutomate.Matrix;
 
 namespace ImpossibleCreatures
 {
     public partial class MainWindow : Window
     {
-        DependenciesResolver.DependencyResolver _dependenciesResolver = new DependenciesResolver.DependencyResolver();
+        private VisualizationType _visualizationType = VisualizationType.FillBlackStrokeCanEat;
 
-        private DispatcherTimer _timer;
+        readonly DependenciesResolver.DependencyResolver _dependenciesResolver = new DependenciesResolver.DependencyResolver();
+
+        private readonly DispatcherTimer _timer;
         private Matrix _matrix;
         private int _step = 0;
-        private Stopwatch _calculateTimer = new Stopwatch();
-        private Stopwatch _paintTimer = new Stopwatch();
+        private readonly Stopwatch _calculateTimer = new Stopwatch();
+        private readonly Stopwatch _paintTimer = new Stopwatch();
 
         private TurnExecutor _turnExecutor;
 
@@ -36,13 +38,11 @@ namespace ImpossibleCreatures
         }
 
         private void Start(object sender, RoutedEventArgs e)
-        {
-            var matrixSize = _dependenciesResolver.GetMatrixSize();
-            
+        {          
             _matrix = _dependenciesResolver.GetMatrix();
             _matrix.FillStartMatrixRandomly();
 
-            PrintBitmap(matrixSize, _matrix);
+            PrintBitmap();
             _turnExecutor = new TurnExecutor(_matrix);
         }
         
@@ -59,19 +59,62 @@ namespace ImpossibleCreatures
             await Task.Factory.StartNew(_matrix.MakeTurn);
             _calculateTimer.Stop();
 
-            PrintBitmap(_dependenciesResolver.GetMatrixSize(), _matrix);
+            if (_step % 100 == 0)
+            {
+                MarkParts(_dependenciesResolver.GetMatrixSize());
+            }
+
+            PrintBitmap();
+        }
+
+        private void MarkParts(int matrixSize)
+        {
+            var list = new List<Membrane>();
+            for (var i = 0; i < matrixSize; i++)
+            {
+                for (var j = 0; j < matrixSize; j++)
+                {
+                    var creature = _matrix.Creatures[i, j];
+
+                    if (creature != null)
+                    {
+                        list.Add(creature);
+                    }
+                }
+            }
+
+            int n = 0;
+
+            if (list.Select(x => x.ParentMark).Distinct().Count() == 1)
+            {
+                _colorsManager.UsedColors = new Dictionary<int, Color>();
+
+                for (var i = 0; i < matrixSize; i++)
+                {
+                    for (var j = 0; j < matrixSize; j++)
+                    {
+                        var creature = _matrix.Creatures[i, j];
+
+                        if (creature != null)
+                        {
+                            creature.ParentMark = n;
+                            n++;
+                        }
+                    }
+                }
+            }
         }
 
         private void PrintCurrentMatrix(object sender, object o)
         {
-            if (MenuItemSyncRendering.IsChecked)
+            if ((bool) MenuItemSyncRendering.IsChecked)
             {
                 _turnExecutor.Stop();
             }
 
             SetWindowTitle(_turnExecutor.Steps);
 
-            PrintBitmap(_dependenciesResolver.GetMatrixSize(), _matrix);
+            PrintBitmap();
 
             if (_matrix.AliveCount == 0)
             {
@@ -79,7 +122,7 @@ namespace ImpossibleCreatures
                 _turnExecutor.Stop();
                 return;
             }
-            if (MenuItemSyncRendering.IsChecked)
+            if ((bool) MenuItemSyncRendering.IsChecked)
             {
                 _turnExecutor.Start();
             }
@@ -87,32 +130,12 @@ namespace ImpossibleCreatures
 
         private void SetWindowTitle(int step)
         {
-            Window.Title = $"Step: {step} / Calc time: {Math.Round(_calculateTimer.Elapsed.TotalSeconds, 2)} / Paint time: {Math.Round(_paintTimer.Elapsed.TotalSeconds, 2)}";
+            StepCount.Content = "Step: " + step;
+            CalcTime.Content = "Calc time: " + Math.Round(_calculateTimer.Elapsed.TotalSeconds, 1) + "s";
+            PaintTime.Content = "Paint time: " + Math.Round(_paintTimer.Elapsed.TotalSeconds, 1) + "s";
         }
 
-        private string CreateLogOfCreature(Creature creature, int generation)
-        {
-            var builder = new StringBuilder();
-            builder.AppendLine($"Generation: {generation}");
-            builder.AppendLine("- - - - - ActionCommands - - - - -");
-            builder.AppendLine(CommandsToString(creature.CommandsForGetAction));
-            builder.AppendLine("- - - - - DirectionCommands - - - - -");
-            builder.AppendLine(CommandsToString(creature.CommandsForGetDirection));
-            return builder.ToString();
-        }
-
-        private string CommandsToString(ICommand[] commands)
-        {
-            var builder = new StringBuilder();
-            var commandsToString = new CommandToStringParser();
-            for (int num = 0; num < commands.Length; num++)
-            {
-                builder.AppendLine($"{num}) " + commandsToString.ParseCommand(commands[num]));
-            }
-            return builder.ToString();
-        }
-
-        private void start_Click(object sender, RoutedEventArgs e)
+        private void Start_Click(object sender, RoutedEventArgs e)
         {
             if (_turnExecutor.IsRunning)
             {
@@ -128,9 +151,14 @@ namespace ImpossibleCreatures
             }
         }
 
-        private void onestep_Click(object sender, RoutedEventArgs e)
+        private void OneStep_Click(object sender, RoutedEventArgs e)
         {
             MakeTurn(null, null);
+        }
+
+        private void FillNation_Checked(object sender, RoutedEventArgs e)
+        {
+            _visualizationType = VisualizationType.FillNation;
         }
     }
 }

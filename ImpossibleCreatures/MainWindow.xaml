@@ -6,34 +6,39 @@
         xmlns:local="clr-namespace:ImpossibleCreatures"
         mc:Ignorable="d"
         Name="Window"
-        Title="MainWindow" Height="1000" Width="1000" Loaded="Start" >
+        Title="Impossible Creatures" Height="1023" Width="1120" Loaded="Start" >
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20"></RowDefinition>
-            <RowDefinition Height="20"></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="120"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Grid Column="0" ColumnSpan="2" Row="0" Name="MenuRow" Width="auto" Height="auto" Background="White">
-            <DockPanel>
-                <Menu DockPanel.Dock="Top">
-                    <MenuItem Header="Show energy" IsCheckable="True" Name="MenuItemEnergy" IsChecked="True" />
-                    <MenuItem Header="Sync rendering" IsCheckable="True" Name="MenuItemSyncRendering" IsChecked="True" />
-                </Menu>
-                <TextBox AcceptsReturn="True" />
-            </DockPanel>
+        <Grid Column="1">
+            <StackPanel>
+                <GroupBox Header="Info">
+                    <StackPanel>
+                        <Label Name="StepCount">Step: 0</Label>
+                        <Label Name="PaintTime">Paint time: 0</Label>
+                        <Label Name="CalcTime">Calc time: 0</Label>
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="Actions">
+                    <StackPanel>
+                        <Button Width="auto" Height="auto" Click="Start_Click">Start/Pause</Button>
+                        <Button Click="OneStep_Click">One step forward</Button>
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="Visualization">
+                    <StackPanel>
+                        <RadioButton Content="Fill:Black" Name="FillBlack" IsChecked="True" Checked="FillBlack_Checked" />
+                        <RadioButton Content="Fill:Energy" Name="FillEnergy" IsChecked="False" Checked="FillEnergy_Checked" />
+                        <RadioButton Content="Fill:Nation" Name="FillNation" IsChecked="False" Checked="FillNation_Checked"/>
+                        <CheckBox Content="Sync rendering" Name="MenuItemSyncRendering" IsChecked="True" />
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
         </Grid>
-        <Grid Column="0" Row="1">
-            <Button Width="auto" Height="auto" Name="start" Click="start_Click" Foreground="Black">Start/Pause</Button>
-        </Grid>
-        <Grid Column="1" Row="1">
-            <Button Name="onestep" Click="onestep_Click">One step forward</Button>
-        </Grid>
-        <Grid Column="0" ColumnSpan="2" Row="2" Name="MainGrid" Width="auto" Height="auto" Background="White">
+        <Grid Column="0" Name="MainGrid" Width="auto" Height="auto" Background="White">
             <Image Name="MainImage"></Image>
         </Grid>
     </Grid>

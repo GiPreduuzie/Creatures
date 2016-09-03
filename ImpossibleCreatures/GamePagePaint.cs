@@ -1,20 +1,22 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using CellsAutomate;
-using CellsAutomate.Constants;
 using Color = System.Windows.Media.Color;
-using Matrix = CellsAutomate.Matrix;
+using Point = System.Drawing.Point;
 
 namespace ImpossibleCreatures
 {
     public partial class MainWindow : Window
     {
+        private ColorsManager _colorsManager = new ColorsManager();
+
         private const int BitmapSize = 1000;
 
-        private void PrintBitmap(int length, Matrix matrix)
+        private void PrintBitmap()
         {
             _paintTimer.Start();
+
+            var size = _dependenciesResolver.GetMatrixSize();
 
             var writeableBmp = BitmapFactory.New(BitmapSize, BitmapSize);
             MainImage.Source = writeableBmp;
@@ -22,56 +24,23 @@ namespace ImpossibleCreatures
             {
                 writeableBmp.Clear(Colors.White);
 
-                for (int i = 0; i < length; i++)
+                for (int i = 0; i < size; i++)
                 {
-                    for (int j = 0; j < length; j++)
+                    for (int j = 0; j < size; j++)
                     {
-                        var isThereAreFood = matrix.EatMatrix.HasOneBite(new System.Drawing.Point(i, j));
-                        var creature = matrix.Creatures[i, j];
-                        var isThereAreCreature = creature != null;
-                        Color strokeColor;
-                        Color fillColor;
+                        var creature = _matrix.Creatures[i, j];
+                        var energy = creature != null ? creature.EnergyPoints : 0;
+                        var food = _matrix.EatMatrix.HasOneBite(new Point(i, j)) ? 1 : 0;
+                        var parent = creature != null ? creature.ParentMark : -1;
 
-                        if (isThereAreCreature)
-                        {
-                            fillColor = GetCreatureFillColor(creature);
-                            strokeColor = isThereAreFood ? Colors.YellowGreen : Colors.OrangeRed;
-                        }
-                        else
-                        {
-                            if (isThereAreFood)
-                            {
-                                fillColor = Color.FromArgb(50, 154, 205, 50);
-                                strokeColor = fillColor;
-                            }
-                            else
-                            {
-                                fillColor = Colors.White;
-                                strokeColor = fillColor;
-                            }
-                        }
+                        var colors = _colorsManager.GetColors(_visualizationType, energy, food, parent);
 
-                        DrawRectangle(writeableBmp, length, i, j, fillColor, strokeColor);
+                        DrawRectangle(writeableBmp, size, i, j, colors.FillColor, colors.StrokeColor);
                     }
                 }
             }
                 
             _paintTimer.Stop();
-        }
-
-        private Color GetCreatureFillColor(Membrane creature)
-        {
-            if (!MenuItemEnergy.IsChecked)
-                return Colors.Black;
-
-            double multiplier = (double) 255/(CreatureConstants.StartEnergyPoints*5);
-
-            int energy = (int) (creature.EnergyPoints < 0 ? 0 : creature.EnergyPoints*multiplier);
-            if (energy > 255)
-                energy = 255;
-            
-            var val = (byte) (255 - energy*multiplier);
-            return Color.FromArgb(255, val, val, val);
         }
 
         private static void DrawRectangle(WriteableBitmap writeableBmp, int matrixSize, int i, int j, Color fillColor, Color strokeColor)
