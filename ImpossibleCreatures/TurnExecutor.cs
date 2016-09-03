@@ -8,7 +8,7 @@ namespace ImpossibleCreatures
         private readonly Matrix _matrix;
         private bool _stopping;
         private Task _task;
-        public int Steps { get; private set; }
+        public int Steps { get; set; }
 
         public TurnExecutor(Matrix matrix)
         {

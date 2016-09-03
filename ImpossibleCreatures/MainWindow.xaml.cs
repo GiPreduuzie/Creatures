@@ -20,7 +20,6 @@ namespace ImpossibleCreatures
 
         private readonly DispatcherTimer _timer;
         private Matrix _matrix;
-        private int _step = 0;
         private readonly Stopwatch _calculateTimer = new Stopwatch();
         private readonly Stopwatch _paintTimer = new Stopwatch();
 
@@ -48,8 +47,8 @@ namespace ImpossibleCreatures
         
         private async void MakeTurn(object sender, object o)
         {
-            _step++;
-            SetWindowTitle(_step);
+            _turnExecutor.Steps++;
+            SetWindowTitle(_turnExecutor.Steps);
             if (_matrix.AliveCount == 0)
             {
                 _timer.Stop();
@@ -59,7 +58,7 @@ namespace ImpossibleCreatures
             await Task.Factory.StartNew(_matrix.MakeTurn);
             _calculateTimer.Stop();
 
-            if (_step % 100 == 0)
+            if (_turnExecutor.Steps % LogConstants.StepsBetweenColorChange == 0)
             {
                 MarkParts(_dependenciesResolver.GetMatrixSize());
             }
@@ -105,6 +104,7 @@ namespace ImpossibleCreatures
             }
         }
 
+        private int _stepToMarkParts = 0;
         private void PrintCurrentMatrix(object sender, object o)
         {
             if ((bool) MenuItemSyncRendering.IsChecked)
@@ -113,6 +113,13 @@ namespace ImpossibleCreatures
             }
 
             SetWindowTitle(_turnExecutor.Steps);
+
+            
+            if (_turnExecutor.Steps >= _stepToMarkParts)
+            {
+                MarkParts(_dependenciesResolver.GetMatrixSize());
+                _stepToMarkParts += LogConstants.StepsBetweenColorChange;
+            }
 
             PrintBitmap();
 
