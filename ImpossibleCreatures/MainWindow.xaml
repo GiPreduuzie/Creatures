@@ -18,13 +18,14 @@
                 <GroupBox Header="Info">
                     <StackPanel>
                         <Label Name="StepCount">Step: 0</Label>
+                        <Label Name="NationCount">Nation: 0</Label>
                         <Label Name="PaintTime">Paint time: 0</Label>
                         <Label Name="CalcTime">Calc time: 0</Label>
                     </StackPanel>
                 </GroupBox>
                 <GroupBox Header="Actions">
                     <StackPanel>
-                        <Button Width="auto" Height="auto" Click="Start_Click">Start/Pause</Button>
+                        <Button Click="Start_Click">Start/Pause</Button>
                         <Button Click="OneStep_Click">One step forward</Button>
                     </StackPanel>
                 </GroupBox>
