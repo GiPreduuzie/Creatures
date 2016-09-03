@@ -68,6 +68,8 @@ namespace ImpossibleCreatures
 
         private void MarkParts(int matrixSize)
         {
+            Debug.WriteLine("Mark parent");
+
             var list = new List<Membrane>();
             for (var i = 0; i < matrixSize; i++)
             {
@@ -86,7 +88,7 @@ namespace ImpossibleCreatures
 
             if (list.Select(x => x.ParentMark).Distinct().Count() == 1)
             {
-                _colorsManager.UsedColors = new Dictionary<int, Color>();
+                _colorsManager.Reset();
 
                 for (var i = 0; i < matrixSize; i++)
                 {

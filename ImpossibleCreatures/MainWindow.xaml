@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ImpossibleCreatures"
         mc:Ignorable="d"
         Name="Window"
-        Title="Impossible Creatures" Height="1023" Width="1120" Loaded="Start" >
+        Title="Impossible Creatures" Height="1023" Width="1120" Loaded="Start" WindowStartupLocation="Manual" WindowState="Maximized" >
 
     <Grid>
         <Grid.ColumnDefinitions>

@@ -29,9 +29,9 @@ namespace ImpossibleCreatures
                     for (int j = 0; j < size; j++)
                     {
                         var creature = _matrix.Creatures[i, j];
-                        var energy = creature != null ? creature.EnergyPoints : 0;
+                        var energy = creature?.EnergyPoints ?? 0;
                         var food = _matrix.EatMatrix.HasOneBite(new Point(i, j)) ? 1 : 0;
-                        var parent = creature != null ? creature.ParentMark : -1;
+                        var parent = creature?.ParentMark ?? -1;
 
                         var colors = _colorsManager.GetColors(_visualizationType, energy, food, parent);
 

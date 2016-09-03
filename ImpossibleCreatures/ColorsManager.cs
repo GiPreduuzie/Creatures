@@ -20,8 +20,19 @@ namespace ImpossibleCreatures
 
     internal class ColorsManager
     {
-        public Dictionary<int, Color> UsedColors = new Dictionary<int, Color>();
-        private Random _random = new Random();
+        private Dictionary<int, Color> _usedColors;
+        private readonly Random _random;
+
+        public ColorsManager()
+        {
+            _usedColors = new Dictionary<int, Color>();
+            _random = new Random();
+        }
+
+        public void Reset()
+        {
+            _usedColors = new Dictionary<int, Color>();
+        }
 
         public ColorsPair GetColors(VisualizationType visualizationType, int energy, int food, int parentMark)
         {
@@ -58,11 +69,11 @@ namespace ImpossibleCreatures
                 case VisualizationType.FillNation:
                     if (parentMark != -1)
                     {
-                        if (!UsedColors.ContainsKey(parentMark))
+                        if (!_usedColors.ContainsKey(parentMark))
                         {
-                            UsedColors[parentMark] = Color.FromArgb(255, (byte)_random.Next(255), (byte)_random.Next(255), (byte)_random.Next(255));
+                            _usedColors[parentMark] = Color.FromArgb(255, (byte)_random.Next(255), (byte)_random.Next(255), (byte)_random.Next(255));
                         }
-                        fillColor = UsedColors[parentMark];
+                        fillColor = _usedColors[parentMark];
                         strokeColor = fillColor;
                     }
                     else
