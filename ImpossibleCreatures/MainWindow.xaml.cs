@@ -16,7 +16,7 @@ namespace ImpossibleCreatures
         private VisualizationType _visualizationType = VisualizationType.CanEat;
 
         readonly DependenciesResolver.DependencyResolver _dependenciesResolver;
-
+        private int _nationsCount = 0;
         private readonly DispatcherTimer _timer;
         private Matrix _matrix;
         private readonly Stopwatch _calculateTimer = new Stopwatch();
@@ -61,7 +61,7 @@ namespace ImpossibleCreatures
             await Task.Factory.StartNew(_matrix.MakeTurn);
             _calculateTimer.Stop();
 
-            if (_turnExecutor.Steps % LogConstants.StepsBetweenColorChange == 0)
+            if (_nationsCount == 1)
             {
                 MarkParts();
             }
@@ -109,7 +109,6 @@ namespace ImpossibleCreatures
             }
         }
 
-        private int _stepToMarkParts = 0;
         private void PrintCurrentMatrix(object sender, object o)
         {
             if ((bool) MenuItemSyncRendering.IsChecked)
@@ -117,13 +116,11 @@ namespace ImpossibleCreatures
                 _turnExecutor.Stop();
             }
 
-            _stepToMarkParts++;
             ShowInfo();
 
-            if (_turnExecutor.Steps >= _stepToMarkParts)
+            if (_nationsCount == 1)
             {
                 MarkParts();
-                _stepToMarkParts += LogConstants.StepsBetweenColorChange;
             }
 
             PrintBitmap();
@@ -161,7 +158,8 @@ namespace ImpossibleCreatures
                 }
             }
 
-            NationCount.Content = "Nation: " + list.Select(x => x.ParentMark).Distinct().Count();
+            _nationsCount = list.Select(x => x.ParentMark).Distinct().Count();
+            NationCount.Content = "Nation: " + _nationsCount;
         }
 
         private void Start_Click(object sender, RoutedEventArgs e)
