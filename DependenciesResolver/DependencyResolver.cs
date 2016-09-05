@@ -58,7 +58,7 @@ namespace DependenciesResolver
 
         private Mutator GetMutator()
         {
-            return new Mutator(GetDouble("mutation probability"), new Random());
+            return new Mutator(GetDouble("mutation probability"));
         }
 
         private IFoodDistributionStrategy GetFoodDistributionStrategy()

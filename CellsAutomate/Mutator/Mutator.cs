@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using CellsAutomate.Mutator.Mutations;
 using Creatures.Language.Executors;
 
@@ -7,23 +8,26 @@ namespace CellsAutomate.Mutator
 {
     public class Mutator
     {
-        private readonly Random _random;
+        [ThreadStatic]
+        private static Random _random;
+        public static Random Random => _random ?? (_random = new Random());
+
         private const int NumOfAttempts = 5;
         private readonly double _mutationProbability;
 
         private readonly List<Func<CommandsList.CommandsList, IMutation>> _mutations;
 
-        public Mutator(double mutationProbability, Random random)
+        public Mutator(double mutationProbability)
         {
             _mutationProbability = mutationProbability;
-            _random = random;
+            
             _mutations = new List<Func<CommandsList.CommandsList, IMutation>>
             {
-                 x => new AddCommandMutation(_random, x),
-                 x => new DeleteCommandMutation(_random, x),
-                 x => new DublicateCommandMutation(_random, x),
-                 x => new ReplaceCommandMutation(_random, x),
-                 x => new SwapCommandMutation(_random, x)
+                 x => new AddCommandMutation(Random, x),
+                 x => new DeleteCommandMutation(Random, x),
+                 x => new DublicateCommandMutation(Random, x),
+                 x => new ReplaceCommandMutation(Random, x),
+                 x => new SwapCommandMutation(Random, x)
             };
         }
 
@@ -38,24 +42,27 @@ namespace CellsAutomate.Mutator
 
         public static int MUTATIONS = 0;
         public static int MUTATIONSREAL = 0;
+
+
         private void MutateSingle(CommandsList.CommandsList commandsList)
         {
-            MUTATIONS++;
+            Interlocked.Increment(ref MUTATIONS);
+            
             var mutation = GetRandomMutation().Invoke(commandsList);
             for (int i = 0; i < NumOfAttempts; i++)
             {
-                MUTATIONSREAL++;
+                Interlocked.Increment(ref MUTATIONSREAL);
                 mutation.Transform();
                 if (AssertValid(commandsList)) break;
                 mutation.Undo();
-                MUTATIONSREAL--;
+                Interlocked.Decrement(ref MUTATIONSREAL);
             }
         }
 
         private bool AssertValid(CommandsList.CommandsList commandsList)
         {
             var executor = new ValidationExecutor();
-            return executor.Execute(commandsList, new ExecutorToolset(new Random()));
+            return executor.Execute(commandsList, new ExecutorToolset(Random));
         }
 
         private int GetNumberOfMutations(CommandsList.CommandsList commandsList)
@@ -70,7 +77,7 @@ namespace CellsAutomate.Mutator
 
         private bool ShouldMutate()
         {
-            return _random.NextDouble() < _mutationProbability;
+            return Random.NextDouble() < _mutationProbability;
         }
 
         private Func<CommandsList.CommandsList, IMutation> GetRandomMutation()
@@ -80,7 +87,7 @@ namespace CellsAutomate.Mutator
 
         private T ChooseRandom<T>(IReadOnlyList<T> array)
         {
-            return array[_random.Next(array.Count)];
+            return array[Random.Next(array.Count)];
         }
     }
 }

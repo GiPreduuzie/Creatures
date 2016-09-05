@@ -16,11 +16,17 @@ namespace CellsAutomate.Mutator.Mutations.InternalClasses
 
         private Random _random;
         private ICommandsList _commands;
+        private static readonly char[] Alphabet;
 
         public CommandsCreator(Random random, ICommandsList commands)
         {
             _random = random;
             _commands = commands;
+        }
+
+        static CommandsCreator()
+        {
+            Alphabet = GetASCIILetters();
         }
 
         public NewInt CreateNewInt(int placeIndex)
@@ -147,15 +153,14 @@ namespace CellsAutomate.Mutator.Mutations.InternalClasses
         /// </summary>
         private string GetRandomName(int length)
         {
-            var alphabet = GetASCIILetters();
             string result = string.Empty;
             for (int i = 0; i < length; i++)
-                result += ChooseRandom(alphabet);
+                result += ChooseRandom(Alphabet);
 
             return result;
         }
 
-        private char[] GetASCIILetters()
+        private static char[] GetASCIILetters()
         {
             const int lowLimit = 0x61;
             const int highLimit = 0x7A;
