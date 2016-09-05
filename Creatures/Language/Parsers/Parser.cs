@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Creatures.Language.Commands.Interfaces;
+using Creatures.ResultMonad;
 
 namespace Creatures.Language.Parsers
 {
@@ -20,7 +21,7 @@ namespace Creatures.Language.Parsers
         {
             var constructor = new Constructor();
 
-            var handlers = new List<Func<string, ICommand>>
+            var handlers = new List<Func<string, IResult<ICommand>>>
             { 
                 constructor.NewInt,
                 constructor.NewArray,
@@ -36,18 +37,11 @@ namespace Creatures.Language.Parsers
                 constructor.Stop
             };
 
-            foreach (var handler in handlers)
-            {
-                try
-                {
-                    return handler(command);
-                }
-                catch
-                {
-                }
-            }
 
-            throw new ArgumentException("No proper handler found for : " + command);
+            var result = handlers.Select(x => x(command)).FirstOrDefault(x => x.IsSucceded);
+            if (result == null) throw new ArgumentException("No proper handler found for : " + command);
+
+            return result.Value;
         }
     }
 }

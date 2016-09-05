@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using CellsAutomate.Food;
 using CellsAutomate.Food.DistributingStrategy;
 using CellsAutomate.Food.FoodBehavior;
@@ -10,12 +11,17 @@ namespace CellsAutomate
 {
     public class Matrix
     {
-        public int Length;
-        public int Height;
+        public readonly int Length;
+        public readonly int Height;
         public FoodMatrix EatMatrix { get; private set; }
         private readonly Creator _creator;
 
         public Membrane[,] Creatures { get; set; }
+
+        public int GetNationsAmount()
+        {
+            return CreaturesAsEnumerable.Select(x => x.ParentMark).Distinct().Count();
+        }
 
         public Matrix(
             int length, 

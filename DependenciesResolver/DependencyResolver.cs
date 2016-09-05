@@ -4,6 +4,7 @@ using CellsAutomate.Food.DistributingStrategy;
 using CellsAutomate.Food.FoodBehavior;
 using Creatures.Language.Commands.Interfaces;
 using System;
+using System.Globalization;
 
 namespace DependenciesResolver
 {
@@ -27,7 +28,7 @@ namespace DependenciesResolver
 
         private ICommand[] GetDirectionAlgorithm()
         {
-            return new GetDirectionAlgorithm().Algorithm;
+            return new DirectionAlgorithmProvider().Algorithm;
         }
 
         private ICommand[] GetActionAlgorithm()
@@ -82,7 +83,7 @@ namespace DependenciesResolver
 
         private double GetDouble(string key)
         {
-            return double.Parse(GetString(key), System.Globalization.NumberStyles.Float);
+            return double.Parse(GetString(key), new CultureInfo("en-US"));
         }
 
         private string GetString(string key)

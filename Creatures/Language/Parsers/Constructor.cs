@@ -1,189 +1,193 @@
-﻿using System;
+﻿using System.Data;
 using System.Linq;
 using Creatures.Language.Commands;
 using Creatures.Language.Commands.Interfaces;
+using Creatures.ResultMonad;
 
 namespace Creatures.Language.Parsers
 {
     public class Constructor
     {
-        public ICommand NewInt(string command)
+        public IResult<ICommand> NewInt(string command)
         {
-            return new NewInt(CheckTypeNamePair("int", command));
+            return CheckTypeNamePair("int", command).Map(x => new NewInt(x));
         }
 
-        public ICommand NewArray(string command)
+        public IResult<ICommand> NewArray(string command)
         {
-            var exception = new ArgumentException("Should be 'array <name> : v1, v2, v3...', but it is: " + command);
+            var error = "Should be 'array <name> : v1, v2, v3...', but it is: " + command;
+            var failure = Result<ICommand>.CreateFailure(error);
 
             var parts = command.Split(':').ToList();
-            
-            if (parts.Count != 2)
-                throw exception;
+            if (parts.Count != 2) return failure;
 
-            var name = CheckTypeNamePair("array", parts[0]);
-
-            return new NewArray(name, parts[1].Split(',').Select(item => int.Parse(item.Trim())));
+            return
+                CheckTypeNamePair("array", parts[0])
+                    .Map(x => new NewArray(x, parts[1].Split(',').Select(item => int.Parse(item.Trim()))));
         }
 
-        public ICommand CloneValue(string command)
+        public IResult<ICommand> CloneValue(string command)
         {
-            var exception = new ArgumentException("Should be '<name_target> = <name_soure>', but it is: " + command);
+            var error = "Should be '<name_target> = <name_soure>', but it is: " + command;
+            var failure = Result<ICommand>.CreateFailure(error);
+
             var parts = command.Split('=').Select(item=>item.Trim()).ToList();
-            if (parts.Count != 2)
-                throw exception;
-
+            if (parts.Count != 2) return failure;
             if (IsIdentifier(parts[0]) && IsIdentifier(parts[1]))
-                return new CloneValue(parts[0], parts[1]);
+                return Result<ICommand>.CreateSuccess(new CloneValue(parts[0], parts[1]));
 
-            throw exception;
+            return failure;
         }
 
-        public ICommand SetValue(string command)
+        public IResult<ICommand> SetValue(string command)
         {
-            var exception = new ArgumentException("Should be '<name_target> = <value>', but it is: " + command);
-            var parts = command.Split('=').Select(item => item.Trim()).ToList();
-            if (parts.Count != 2)
-                throw exception;
+            var error = "Should be '<name_target> = <value>', but it is: " + command;
+            var failure = Result<ICommand>.CreateFailure(error);
 
-            var value = int.Parse(parts[1]);
+            var parts = command.Split('=').Select(item => item.Trim()).ToList();
+            if (parts.Count != 2) return failure;
+
+            int value;
+            var result = int.TryParse(parts[1], out value);
+            if (!result) return Result<ICommand>.CreateFailure($"Cannot parse '{parts[1]}' as int");
+
             if (IsIdentifier(parts[0]))
-                return new SetValue(parts[0], value);
+                return Result<ICommand>.CreateSuccess(new SetValue(parts[0], value));
 
-            throw exception;
+            return failure;
         }
 
-        public ICommand Plus(string command)
+        public IResult<ICommand> Plus(string command)
         {
-            var exception = new ArgumentException("Should be '<name_target> = <name_source1> + <name_source_2>', but it is: " + command);
+            var error = "Should be '<name_target> = <name_source1> + <name_source_2>', but it is: " + command;
+            var failure = Result<ICommand>.CreateFailure(error);
+
             var parts = command.Split('=').Select(item => item.Trim()).ToList();
-            if (parts.Count != 2)
-                throw exception;
+            if (parts.Count != 2) return failure;
 
             var partsLeft = parts[1].Split('+').Select(item => item.Trim()).ToList();
-            if (partsLeft.Count != 2)
-                throw exception;
+            if (partsLeft.Count != 2) return failure;
 
             if (IsIdentifier(parts[0]) && IsIdentifier(partsLeft[0]) && IsIdentifier(partsLeft[1]))
-                return new Plus(parts[0], partsLeft[0], partsLeft[1]);
+                return Result<ICommand>.CreateSuccess(new Plus(parts[0], partsLeft[0], partsLeft[1]));
 
-            throw exception;
+            return failure;
         }
 
-        public ICommand Minus(string command)
+        public IResult<ICommand> Minus(string command)
         {
-            var exception = new ArgumentException("Should be '<name_target> = <name_source1> - <name_source_2>', but it is: " + command);
+            var error = "Should be '<name_target> = <name_source1> - <name_source_2>', but it is: " + command;
+            var failure = Result<ICommand>.CreateFailure(error);
+
             var parts = command.Split('=').Select(item => item.Trim()).ToList();
+
             if (parts.Count != 2)
-                throw exception;
+                return failure;
 
             var partsLeft = parts[1].Split('-').Select(item => item.Trim()).ToList();
             if (partsLeft.Count != 2)
-                throw exception;
+                return failure;
 
             if (IsIdentifier(parts[0]) && IsIdentifier(partsLeft[0]) && IsIdentifier(partsLeft[1]))
-                return new Minus(parts[0], partsLeft[0], partsLeft[1]);
+                return Result<ICommand>.CreateSuccess(new Minus(parts[0], partsLeft[0], partsLeft[1]));
 
-            throw exception;
+            return failure;
         }
 
-        public ICommand Print(string command)
+        public IResult<ICommand> Print(string command)
         {
-            var exception = new ArgumentException("Should be 'print <name>', but it is: " + command);
+            var error = "Should be 'print <name>', but it is: " + command;
+            var failure = Result<ICommand>.CreateFailure(error);
 
             var parts = command.Split(' ').Select(item => item.Trim()).ToList();
-            if (parts.Count != 2)
-                throw exception;
+            if (parts.Count != 2) return failure;
+            if (parts[0] != "print") return failure;
+            if (IsIdentifier(parts[1])) return Result<ICommand>.CreateSuccess(new Print(parts[1]));
 
-            if (parts[0] != "print")
-                throw exception;
-
-            if (IsIdentifier(parts[1]))
-                return new Print(parts[1]);
-
-            throw exception;
+            return failure;
         }
 
-        public ICommand Condition(string command)
+        public IResult<ICommand> Condition(string command)
         {
-            var exception = new ArgumentException("Should be 'if <name> then', but it is: " + command);
+            var error = "Should be 'if <name> then', but it is: " + command;
+            var failure = Result<ICommand>.CreateFailure(error);
+
             var parts = command.Split(' ').Select(item => item.Trim()).ToList();
-            if (parts[0] != "if")
-                throw exception;
-            if (!IsIdentifier(parts[1]))
-                new ArgumentException("Identifier expected, but have : " + parts[1]);
-            if (parts[2] != "then")
-                throw exception;
+            if (parts[0] != "if") return failure;
+            if (!IsIdentifier(parts[1])) return Result<ICommand>.CreateFailure("Identifier expected, but have : " + parts[1]);
+            if (parts[2] != "then") return failure;
 
-            return new Condition(parts[1]);
+            return Result<ICommand>.CreateSuccess(new Condition(parts[1]));
         }
 
-        public ICommand CloseCondition(string command)
+        public IResult<ICommand> CloseCondition(string command)
         {
-            var exception = new ArgumentException("Should be 'endif', but it is: " + command);
-            if (command.Trim() != "endif")
-                throw exception;
+            var error = "Should be 'endif', but it is: " + command;
+            var failure = Result<ICommand>.CreateFailure(error);
 
-            return new CloseCondition();
+            if (command.Trim() != "endif") return failure;
+
+            return Result<ICommand>.CreateSuccess(new CloseCondition());
         }
 
-        public ICommand GetState(string command)
+        public IResult<ICommand> GetState(string command)
         {
-            var exception = new ArgumentException("Should be '<name_target> = getState <0..3>', but it is: " + command);
+            var error = "Should be '<name_target> = getState <0..3>', but it is: " + command;
+            var failure = Result<ICommand>.CreateFailure(error);
+
             var parts = command.Split('=').Select(item => item.Trim()).ToList();
-            if (parts.Count != 2)
-                throw exception;
+            if (parts.Count != 2) return failure;
 
             var partsLeft = parts[1].Split(' ').Select(item => item.Trim()).ToList();
-            if (partsLeft.Count != 2)
-                throw exception;
+            if (partsLeft.Count != 2) return failure;
 
             if (IsIdentifier(parts[0]) && partsLeft[0] == "getState" && int.Parse(partsLeft[1]) >= 0 && int.Parse(partsLeft[1]) <= 3)
-                return new GetState(parts[0], int.Parse(partsLeft[1]));
+                return Result<ICommand>.CreateSuccess(new GetState(parts[0], int.Parse(partsLeft[1])));
 
-            throw exception;
+            return failure;
         }
 
-        public ICommand GetRandom(string command)
+        public IResult<ICommand> GetRandom(string command)
         {
-            var exception = new ArgumentException("Should be '<name_target> = random <name_source>', but it is: " + command);
+            var error = "Should be '<name_target> = random <name_source>', but it is: " + command;
+            var failure = Result<ICommand>.CreateFailure(error);
+
             var parts = command.Split('=').Select(item => item.Trim()).ToList();
-            if (parts.Count != 2)
-                throw exception;
+            if (parts.Count != 2) return failure;
 
             var partsLeft = parts[1].Split(' ').Select(item => item.Trim()).ToList();
-            if (partsLeft.Count != 2)
-                throw exception;
+            if (partsLeft.Count != 2) return failure;
 
             if (IsIdentifier(parts[0]) && partsLeft[0] == "random" && IsIdentifier(partsLeft[1]))
-                return new GetRandom(parts[0], partsLeft[1]);
+                return Result<ICommand>.CreateSuccess(new GetRandom(parts[0], partsLeft[1]));
 
-            throw exception;
+            return failure;
         }
 
-        public ICommand Stop(string command)
+        public IResult<ICommand> Stop(string command)
         {
-            var exception = new ArgumentException("Should be 'stop', but it is: " + command);
+            var error = "Should be 'stop', but it is: " + command;
+            var failure = Result<ICommand>.CreateFailure(error);
 
-            if (command.Trim() == "stop")
-                return new Stop();
+            if (command.Trim() == "stop") return Result<ICommand>.CreateSuccess(new Stop());
 
-            throw exception;
+            return failure;
         }
 
-        private string CheckTypeNamePair(string type, string value)
+        private IResult<string> CheckTypeNamePair(string type, string value)
         {
-            var exception = new ArgumentException(string.Format("Should be '{0} <name>', but it is: ", type) + value);
+            var error = $"Should be '{type} <name>', but it is: " + value;
+            var failure = Result<string>.CreateFailure(error);
 
             var parts = value.Split(' ').Where(item => !string.IsNullOrWhiteSpace(item)).ToList();
             if (parts.Count != 2)
-                throw exception;
+                return failure;
             if (parts[0] != type)
-                throw exception;
+                return failure;
             if (!IsIdentifier(parts[1]))
-                new ArgumentException("Identifier expected, but have : " + parts[1]);
+                return Result<string>.CreateFailure("Identifier expected, but have : " + parts[1]);
 
-            return parts[1];
+            return Result<string>.CreateSuccess(parts[1]);
         }
 
         private bool IsIdentifier(string value)

@@ -16,30 +16,31 @@ namespace ImpossibleCreatures
         {
             _paintTimer.Start();
 
-            var size = _dependenciesResolver.GetMatrixSize();
-
             var writeableBmp = BitmapFactory.New(BitmapSize, BitmapSize);
             MainImage.Source = writeableBmp;
             using (writeableBmp.GetBitmapContext())
             {
                 writeableBmp.Clear(Colors.White);
 
-                for (int i = 0; i < size; i++)
+                var matrix = _matrix.Value;
+                for (int i = 0; i < matrix.Height; i++)
                 {
-                    for (int j = 0; j < size; j++)
+                    for (int j = 0; j < matrix.Length; j++)
                     {
-                        var creature = _matrix.Creatures[i, j];
+                        var creature = matrix.Creatures[i, j];
                         var energy = creature?.EnergyPoints ?? 0;
-                        var food = _matrix.EatMatrix.HasOneBite(new Point(i, j)) ? 1 : 0;
+                        var food = matrix.EatMatrix.HasOneBite(new Point(i, j)) ? 1 : 0;
                         var parent = creature?.ParentMark ?? -1;
 
                         var colors = _colorsManager.GetColors(_visualizationType, energy, food, parent);
 
-                        DrawRectangle(writeableBmp, size, i, j, colors.FillColor, colors.StrokeColor);
+                        DrawRectangle(writeableBmp, matrix.Length, i, j, colors.FillColor, colors.StrokeColor);
                     }
                 }
             }
-                
+
+            
+
             _paintTimer.Stop();
         }
 

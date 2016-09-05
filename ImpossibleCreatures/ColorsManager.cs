@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Media;
-using CellsAutomate.Constants;
 using Color = System.Windows.Media.Color;
 
 namespace ImpossibleCreatures

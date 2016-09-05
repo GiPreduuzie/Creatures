@@ -60,7 +60,9 @@
     <Compile Include="Language\Commands\Plus.cs" />
     <Compile Include="Language\Commands\Print.cs" />
     <Compile Include="Language\Commands\SetValue.cs" />
+    <Compile Include="ResultMonad\IResult.cs" />
     <Compile Include="Language\Parsers\Parser.cs" />
+    <Compile Include="ResultMonad\Result.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -5,7 +5,7 @@ using Creatures.Language.Parsers;
 
 namespace CellsAutomate.Algorithms
 {
-    public class GetDirectionAlgorithm
+    public class DirectionAlgorithmProvider
     {
         public ICommand[] Algorithm => new Parser().ProcessCommands(GetAlgorithm()).ToArray();
 
