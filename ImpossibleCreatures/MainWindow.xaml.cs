@@ -15,7 +15,6 @@ namespace ImpossibleCreatures
 
         private int _nationsCount = 0;
         private readonly DispatcherTimer _timer;
-        private readonly Stopwatch _calculateTimer = new Stopwatch();
         private readonly Stopwatch _paintTimer = new Stopwatch();
         private TurnExecutor _turnExecutor;
         public ExecutionSettings ExecutionSettings { get; set; } = new ExecutionSettings();
@@ -45,23 +44,9 @@ namespace ImpossibleCreatures
         
         private async void MakeTurn(object sender, object o)
         {
-            _turnExecutor.Steps++;
-            ShowInfo();
-            if (_matrix.Value.AliveCount == 0)
-            {
-                _timer.Stop();
-            }
+            await Task.Factory.StartNew(_turnExecutor.RunSingleTurn);
 
-            _calculateTimer.Start();
-            await Task.Factory.StartNew(() => _matrix.Value.MakeTurn(ExecutionSettings));
-            _calculateTimer.Stop();
-
-            if (_nationsCount == 1)
-            {
-                MarkParts();
-            }
-
-            PrintBitmap();
+            ProcessCurrentStatus();
         }
 
         private void MarkParts()
@@ -88,6 +73,17 @@ namespace ImpossibleCreatures
                 _turnExecutor.Stop();
             }
 
+            if (!ProcessCurrentStatus())
+                return;
+
+            if ((bool) MenuItemSyncRendering.IsChecked)
+            {
+                _turnExecutor.Start();
+            }
+        }
+
+        private bool ProcessCurrentStatus()
+        {
             ShowInfo();
 
             if (_nationsCount == 1)
@@ -101,19 +97,17 @@ namespace ImpossibleCreatures
             {
                 _timer.Stop();
                 _turnExecutor.Stop();
-                return;
+                return false;
             }
-            if ((bool) MenuItemSyncRendering.IsChecked)
-            {
-                _turnExecutor.Start();
-            }
+
+            return true;
         }
 
         private void ShowInfo()
         {
-            StepCount.Content = "Step: " + _turnExecutor.Steps;
-            CalcTime.Content = "Calc time: " + Math.Round(_calculateTimer.Elapsed.TotalSeconds, 1) + "s";
-            PaintTime.Content = "Paint time: " + Math.Round(_paintTimer.Elapsed.TotalSeconds, 1) + "s";
+            StepCount.Content = $"Step: {_turnExecutor.Steps}";
+            CalcTime.Content = $"Calc time: {Math.Round(_turnExecutor.LastTurnTook.TotalMilliseconds, 1)}ms";
+            PaintTime.Content = $"Paint time: {Math.Round(_paintTimer.Elapsed.TotalMilliseconds, 1)}ms";
 
             _nationsCount = _matrix.Value.GetNationsAmount();
 
@@ -126,13 +120,11 @@ namespace ImpossibleCreatures
             {
                 _turnExecutor.Stop();
                 _timer.Stop();
-                _calculateTimer.Stop();
             }
             else
             {
                 _turnExecutor.Start();
                 _timer.Start();
-                _calculateTimer.Start();
             }
         }
 

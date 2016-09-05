@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using CellsAutomate;
 
 namespace ImpossibleCreatures
@@ -10,6 +12,7 @@ namespace ImpossibleCreatures
         private bool _stopping;
         private Task _task;
         public int Steps { get; set; }
+        public TimeSpan LastTurnTook { get; private set; }
 
         public TurnExecutor(Matrix matrix, ExecutionSettings settings)
         {
@@ -38,11 +41,21 @@ namespace ImpossibleCreatures
         {
             while (!_stopping)
             {
-                _matrix.MakeTurn(_settings);
-                Steps++;
+                RunSingleTurn();
             }
 
             _stopping = false;
+        }
+
+        public void RunSingleTurn()
+        {
+            var timer = Stopwatch.StartNew();
+
+            _matrix.MakeTurn(_settings);
+
+            LastTurnTook = timer.Elapsed;
+
+            Steps++;
         }
     }
 }

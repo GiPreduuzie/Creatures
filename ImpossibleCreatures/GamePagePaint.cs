@@ -14,6 +14,7 @@ namespace ImpossibleCreatures
 
         private void PrintBitmap()
         {
+            _paintTimer.Reset();
             _paintTimer.Start();
 
             var writeableBmp = BitmapFactory.New(BitmapSize, BitmapSize);
