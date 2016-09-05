@@ -14,7 +14,7 @@ namespace ImpossibleCreatures
         private VisualizationType _visualizationType = VisualizationType.CanEat;
 
         private int _nationsCount = 0;
-        private readonly DispatcherTimer _timer;
+        public DispatcherTimer Timer { get; set; }
         private readonly Stopwatch _paintTimer = new Stopwatch();
         private TurnExecutor _turnExecutor;
         public ExecutionSettings ExecutionSettings { get; set; } = new ExecutionSettings();
@@ -26,12 +26,14 @@ namespace ImpossibleCreatures
         {
             InitializeComponent();
 
-            _timer = new DispatcherTimer
+            Timer = new DispatcherTimer
             {
-                Interval = new TimeSpan(0, 0, 0, 0, LogConstants.TimeSpanMSeconds)
+                Interval =  new TimeSpan(0, 0, 0, 0, LogConstants.TimeSpanMSeconds)
             };
 
-            _timer.Tick += PrintCurrentMatrix;
+            RefreshSpeed.Value = LogConstants.TimeSpanMSeconds;
+
+            Timer.Tick += PrintCurrentMatrix;
            
         }
 
@@ -95,7 +97,7 @@ namespace ImpossibleCreatures
 
             if (_matrix.Value.AliveCount == 0)
             {
-                _timer.Stop();
+                Timer.Stop();
                 _turnExecutor.Stop();
                 return false;
             }
@@ -119,18 +121,26 @@ namespace ImpossibleCreatures
             if (_turnExecutor.IsRunning)
             {
                 _turnExecutor.Stop();
-                _timer.Stop();
+                Timer.Stop();
             }
             else
             {
                 _turnExecutor.Start();
-                _timer.Start();
+                Timer.Start();
             }
         }
 
         private void OneStep_Click(object sender, RoutedEventArgs e)
         {
             MakeTurn(null, null);
+        }
+
+        private void RefreshSpeed_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (Timer != null)
+            {
+                Timer.Interval = TimeSpan.FromMilliseconds(e.NewValue);
+            }
         }
     }
 }

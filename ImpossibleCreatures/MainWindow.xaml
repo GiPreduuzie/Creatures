@@ -36,6 +36,13 @@
                         <RadioButton Content="Energy" IsChecked="False" Checked="Energy_Checked"/>
                         <RadioButton Content="Experimantal" IsChecked="False" Checked="Experimantal_Checked"/>
                         <CheckBox Content="Sync rendering" Name="MenuItemSyncRendering" IsChecked="True" />
+
+                        <StackPanel Orientation="Horizontal">
+                            <Label>Refresh:</Label>
+                            <Label Content="{Binding ElementName=RefreshSpeed, Path=Value}"></Label>
+                            <Label>ms</Label>
+                        </StackPanel>
+                        <Slider Minimum="50" Maximum="2000" Value="1000" Name="RefreshSpeed" IsSnapToTickEnabled="True" TickFrequency="50" ValueChanged="RefreshSpeed_OnValueChanged" />
                     </StackPanel>
                 </GroupBox>
                 <GroupBox Header="Execution" DataContext="{Binding Path=ExecutionSettings}">
