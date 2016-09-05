@@ -39,37 +39,9 @@ namespace CellsAutomate
             Creatures = new Membrane[length, height];
         }
 
-        public IEnumerable<Membrane> CreaturesAsEnumerable
-        {
-            get
-            {
-                for (var i = 0; i < Length; i++)
-                {
-                    for (var j = 0; j < Height; j++)
-                    {
-                        if (Creatures[i, j] != null)
-                            yield return Creatures[i, j];
-                    }
-                }
-            }
-        }
+        public IEnumerable<Membrane> CreaturesAsEnumerable => Creatures.OfType<Membrane>();
 
-        public int AliveCount
-        {
-            get
-            {
-                int count = 0;
-                for (int i = 0; i < Length; i++)
-                {
-                    for (int j = 0; j < Height; j++)
-                    {
-                        if (Creatures[i, j] != null) count++;
-                    }
-                }
-
-                return count;
-            }
-        }
+        public int AliveCount => CreaturesAsEnumerable.Count();
 
         private void FillMatrixWithFood()
         {
@@ -103,18 +75,7 @@ namespace CellsAutomate
 
         public void MakeTurn(ExecutionSettings settings)
         {
-            var creatures = new List<Membrane>();
-
-            for (int i = 0; i < Length; i++)
-            {
-                for (int j = 0; j < Height; j++)
-                {
-                    if (Creatures[i, j] != null)
-                    {
-                        creatures.Add(Creatures[i, j]);
-                    }
-                }
-            }
+            var creatures = CreaturesAsEnumerable.ToList();
 
             if (settings.RandomOrder)
             {
