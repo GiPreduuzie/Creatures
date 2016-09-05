@@ -31,13 +31,13 @@ namespace ImpossibleCreatures
 
             Timer = new DispatcherTimer
             {
-                Interval =  new TimeSpan(0, 0, 0, 0, LogConstants.TimeSpanMSeconds)
+                Interval = new TimeSpan(0, 0, 0, 0, LogConstants.TimeSpanMSeconds)
             };
 
             RefreshSpeed.Value = LogConstants.TimeSpanMSeconds;
 
             Timer.Tick += PrintCurrentMatrix;
-           
+
         }
 
         private void Start(object sender, RoutedEventArgs e)
@@ -46,7 +46,7 @@ namespace ImpossibleCreatures
             PrintBitmap();
             _turnExecutor = new TurnExecutor(_matrix.Value, ExecutionSettings);
         }
-        
+
         private async void MakeTurn(object sender, object o)
         {
             await Task.Factory.StartNew(_turnExecutor.RunSingleTurn);
@@ -73,7 +73,7 @@ namespace ImpossibleCreatures
 
         private void PrintCurrentMatrix(object sender, object o)
         {
-            if ((bool) MenuItemSyncRendering.IsChecked)
+            if ((bool)MenuItemSyncRendering.IsChecked)
             {
                 _turnExecutor.Stop();
             }
@@ -81,7 +81,7 @@ namespace ImpossibleCreatures
             if (!ProcessCurrentStatus())
                 return;
 
-            if ((bool) MenuItemSyncRendering.IsChecked)
+            if ((bool)MenuItemSyncRendering.IsChecked)
             {
                 _turnExecutor.Start();
             }
@@ -119,7 +119,7 @@ namespace ImpossibleCreatures
                 _matrix.Value.CreaturesAsEnumerable.Select(x => x.Creature.GenotypeLength).Average();
 
             NationCount.Content = "Nation: " + _nationsCount;
-            AverageGenotypeLength.Content = "Avg.gen: " + _averageGenotypeLength;
+            AverageGenotypeLength.Content = "Avg.gen: " + Math.Round(_averageGenotypeLength, 1);
         }
 
         private void Start_Click(object sender, RoutedEventArgs e)

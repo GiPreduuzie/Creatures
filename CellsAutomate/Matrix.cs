@@ -24,6 +24,11 @@ namespace CellsAutomate
             return CreaturesAsEnumerable.Select(x => x.ParentMark).Distinct().Count();
         }
 
+        public int GetMaxEnergy()
+        {
+            return CreaturesAsEnumerable.Select(x => x.EnergyPoints).Max();
+        }
+
         public Matrix(
             int length, 
             int height,

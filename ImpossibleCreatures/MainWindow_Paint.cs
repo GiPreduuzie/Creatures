@@ -7,25 +7,25 @@ namespace ImpossibleCreatures
         private void CanEat_Checked(object sender, RoutedEventArgs e)
         {
             _visualizationType = VisualizationType.CanEat;
-            //PrintCurrentMatrix(null, null);
+            ProcessCurrentStatus();
         }
 
         private void Nation_Checked(object sender, RoutedEventArgs e)
         {
             _visualizationType = VisualizationType.Nation;
-            //PrintCurrentMatrix(null, null);
+            ProcessCurrentStatus();
         }
 
         private void Energy_Checked(object sender, RoutedEventArgs e)
         {
             _visualizationType = VisualizationType.Energy;
-            //PrintCurrentMatrix(null, null);
+            ProcessCurrentStatus();
         }
 
         private void Experimantal_Checked(object sender, RoutedEventArgs e)
         {
             _visualizationType = VisualizationType.Experimantal;
-            //PrintCurrentMatrix(null, null);
+            ProcessCurrentStatus();
         }
     }
 }

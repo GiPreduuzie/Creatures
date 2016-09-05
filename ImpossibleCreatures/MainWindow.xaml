@@ -6,12 +6,12 @@
         xmlns:local="clr-namespace:ImpossibleCreatures"
         mc:Ignorable="d"
         Name="Window"
-        Title="Impossible Creatures" Height="1023" Width="1120" Loaded="Start" WindowStartupLocation="CenterScreen" WindowState="Normal" DataContext="{Binding ElementName=Window}">
+        Title="Impossible Creatures" Height="1023" Width="1200" Loaded="Start" WindowStartupLocation="CenterScreen" WindowState="Normal" DataContext="{Binding ElementName=Window}">
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition Width="120"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid Column="1">
             <StackPanel>
@@ -32,9 +32,9 @@
                 </GroupBox>
                 <GroupBox Header="Visualization">
                     <StackPanel>
-                        <RadioButton Content="Can eat" IsChecked="True" Checked="CanEat_Checked" />
-                        <RadioButton Content="Nation" IsChecked="False" Checked="Nation_Checked"/>
-                        <RadioButton Content="Energy" IsChecked="False" Checked="Energy_Checked"/>
+                        <RadioButton Content="Can eat" IsChecked="True" Click="CanEat_Checked" />
+                        <RadioButton Content="Nation" IsChecked="False" Click="Nation_Checked"/>
+                        <RadioButton Content="Energy" IsChecked="False" Click="Energy_Checked"/>
                         <RadioButton Content="Experimantal" IsChecked="False" Checked="Experimantal_Checked"/>
                         <CheckBox Content="Sync rendering" Name="MenuItemSyncRendering" IsChecked="True" />
 
