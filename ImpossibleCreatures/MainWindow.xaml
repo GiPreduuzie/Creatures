@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ImpossibleCreatures"
         mc:Ignorable="d"
         Name="Window"
-        Title="Impossible Creatures" Height="1023" Width="1120" Loaded="Start" WindowStartupLocation="CenterScreen" WindowState="Normal" >
+        Title="Impossible Creatures" Height="1023" Width="1120" Loaded="Start" WindowStartupLocation="CenterScreen" WindowState="Normal" DataContext="{Binding ElementName=Window}">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -36,6 +36,12 @@
                         <RadioButton Content="Energy" IsChecked="False" Checked="Energy_Checked"/>
                         <RadioButton Content="Experimantal" IsChecked="False" Checked="Experimantal_Checked"/>
                         <CheckBox Content="Sync rendering" Name="MenuItemSyncRendering" IsChecked="True" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="Execution" DataContext="{Binding Path=ExecutionSettings}">
+                    <StackPanel>
+                        <CheckBox Content="Random order" x:Name="RandomOrder" IsChecked="{Binding Path=RandomOrder, Mode=TwoWay}" />
+                        <CheckBox Content="Multithreading" x:Name="Multithreading" IsChecked="{Binding Path=RunInParallel, Mode=TwoWay}" />
                     </StackPanel>
                 </GroupBox>
             </StackPanel>

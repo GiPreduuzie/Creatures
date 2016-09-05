@@ -19,6 +19,7 @@ namespace ConsoleWorker
     {
         private static readonly Random Random = new Random();
         private static Dictionary<int, Color> _colors = new Dictionary<int, Color>();
+        private static readonly ExecutionSettings ExecutionSettings = new ExecutionSettings();
 
         private static void Main(string[] args)
         {
@@ -42,7 +43,7 @@ namespace ConsoleWorker
             {
                 if (matrix.AliveCount == 0)
                     break;
-                matrix.MakeTurn();
+                matrix.MakeTurn(ExecutionSettings);
 
                 if (i % 100 == 0)
                 {

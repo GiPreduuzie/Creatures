@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using CellsAutomate.Food;
 using CellsAutomate.Food.DistributingStrategy;
 using CellsAutomate.Food.FoodBehavior;
@@ -100,7 +101,7 @@ namespace CellsAutomate
             EatMatrix.InitializeMatrixWithFood();
         }
 
-        public void MakeTurn()
+        public void MakeTurn(ExecutionSettings settings)
         {
             var creatures = new List<Membrane>();
 
@@ -115,9 +116,22 @@ namespace CellsAutomate
                 }
             }
 
-            foreach (var item in creatures)
+            if (settings.RandomOrder)
             {
-                MakeTurn(item);
+                var random = new Random();
+                creatures = creatures.OrderBy(x => random.Next()).ToList();
+            }
+
+            if (settings.RunInParallel)
+            {
+                Parallel.ForEach(creatures, MakeTurn);
+            }
+            else
+            {
+                foreach (var item in creatures)
+                {
+                    MakeTurn(item);
+                }
             }
 
             FillMatrixWithFood();
@@ -178,5 +192,12 @@ namespace CellsAutomate
             creature.Move(Creatures, newPosition);
             Stats.AddStats(direction);
         }
+    }
+
+    public class ExecutionSettings
+    {
+        public bool RunInParallel { get; set; }
+
+        public bool RandomOrder { get; set; }
     }
 }

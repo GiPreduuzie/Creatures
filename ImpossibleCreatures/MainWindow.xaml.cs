@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using CellsAutomate;
 using CellsAutomate.Constants;
 using Matrix = CellsAutomate.Matrix;
 
@@ -17,6 +18,7 @@ namespace ImpossibleCreatures
         private readonly Stopwatch _calculateTimer = new Stopwatch();
         private readonly Stopwatch _paintTimer = new Stopwatch();
         private TurnExecutor _turnExecutor;
+        public ExecutionSettings ExecutionSettings { get; set; } = new ExecutionSettings();
 
         private readonly Lazy<Matrix> _matrix = new Lazy<Matrix>(() => new DependenciesResolver.DependencyResolver().GetMatrix());
 
@@ -38,7 +40,7 @@ namespace ImpossibleCreatures
         {
             _matrix.Value.FillStartMatrixRandomly();
             PrintBitmap();
-            _turnExecutor = new TurnExecutor(_matrix.Value);
+            _turnExecutor = new TurnExecutor(_matrix.Value, ExecutionSettings);
         }
         
         private async void MakeTurn(object sender, object o)
@@ -51,7 +53,7 @@ namespace ImpossibleCreatures
             }
 
             _calculateTimer.Start();
-            await Task.Factory.StartNew(_matrix.Value.MakeTurn);
+            await Task.Factory.StartNew(() => _matrix.Value.MakeTurn(ExecutionSettings));
             _calculateTimer.Stop();
 
             if (_nationsCount == 1)

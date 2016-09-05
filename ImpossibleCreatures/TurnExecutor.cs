@@ -6,13 +6,15 @@ namespace ImpossibleCreatures
     public class TurnExecutor
     {
         private readonly Matrix _matrix;
+        private readonly ExecutionSettings _settings;
         private bool _stopping;
         private Task _task;
         public int Steps { get; set; }
 
-        public TurnExecutor(Matrix matrix)
+        public TurnExecutor(Matrix matrix, ExecutionSettings settings)
         {
             _matrix = matrix;
+            _settings = settings;
         }
 
         public void Start()
@@ -36,7 +38,7 @@ namespace ImpossibleCreatures
         {
             while (!_stopping)
             {
-                _matrix.MakeTurn();
+                _matrix.MakeTurn(_settings);
                 Steps++;
             }
 
