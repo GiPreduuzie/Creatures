@@ -32,10 +32,11 @@
                 </GroupBox>
                 <GroupBox Header="Visualization">
                     <StackPanel>
-                        <RadioButton Content="Can eat" IsChecked="True" Click="CanEat_Checked" />
-                        <RadioButton Content="Nation" IsChecked="False" Click="Nation_Checked"/>
-                        <RadioButton Content="Energy" IsChecked="False" Click="Energy_Checked"/>
-                        <RadioButton Content="Experimantal" IsChecked="False" Checked="Experimantal_Checked"/>
+                        <RadioButton Tag="CanEat" Content="Can eat" IsChecked="True" Click="Visualisavion_Checked" />
+                        <RadioButton Tag="Nation" Content="Nation" IsChecked="False" Click="Visualisavion_Checked"/>
+                        <RadioButton Tag="Energy" Content="Energy" IsChecked="False" Click="Visualisavion_Checked"/>
+                        <RadioButton Tag="Food" Content="Food" IsChecked="False" Click="Visualisavion_Checked"/>
+                        <RadioButton Tag="Experimantal" Content="Experimantal" IsChecked="False" Checked="Visualisavion_Checked"/>
                         <CheckBox Content="Sync rendering" Name="MenuItemSyncRendering" IsChecked="True" />
 
                         <StackPanel Orientation="Horizontal">

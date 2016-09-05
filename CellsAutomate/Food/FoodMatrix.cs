@@ -54,9 +54,27 @@ namespace CellsAutomate.Food
             return true;
         }
 
-        private int GetLevelOfFood(Point currentPoint)
+        public int GetLevelOfFood(Point currentPoint)
         {
             return _matrix[currentPoint.X, currentPoint.Y];
+        }
+
+        public int GetMaxLevelOfFood()
+        {
+            var result = -1;
+
+            for (var i = 0; i < Length; i++)
+            {
+                for (var j = 0; j < Height; j++)
+                {
+                    if (_matrix[i, j] > result)
+                    {
+                        result = _matrix[i, j];
+                    }
+                }
+            }
+
+            return result;
         }
 
         public void Build(bool[,] creatures)

@@ -5,6 +5,7 @@
         CanEat,
         Nation,
         Energy,
+        Food,
         Experimantal
     }
 }

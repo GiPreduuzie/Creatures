@@ -18,6 +18,7 @@ namespace ImpossibleCreatures
             _paintTimer.Start();
             var matrix = _matrix.Value;
             var maxEnergy = matrix.GetMaxEnergy();
+            var maxFood = matrix.EatMatrix.GetMaxLevelOfFood();
 
             var writeableBmp = BitmapFactory.New(BitmapSize, BitmapSize);
             MainImage.Source = writeableBmp;
@@ -31,10 +32,10 @@ namespace ImpossibleCreatures
                     {
                         var creature = matrix.Creatures[i, j];
                         var energy = creature?.EnergyPoints ?? 0;
-                        var food = matrix.EatMatrix.HasOneBite(new Point(i, j)) ? 1 : 0;
+                        var food = matrix.EatMatrix.GetLevelOfFood(new Point(i, j));
                         var parent = creature?.ParentMark ?? -1;
 
-                        var colors = _colorsManager.GetColors(_visualizationType, energy, maxEnergy, food, parent);
+                        var colors = _colorsManager.GetColors(_visualizationType, energy, maxEnergy, food, maxFood, parent);
 
                         DrawRectangle(writeableBmp, matrix.Length, i, j, colors.FillColor, colors.StrokeColor);
                     }

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Threading;
 using CellsAutomate;
 using CellsAutomate.Constants;
@@ -147,6 +148,13 @@ namespace ImpossibleCreatures
             {
                 Timer.Interval = TimeSpan.FromMilliseconds(e.NewValue);
             }
+        }
+
+        private void Visualisavion_Checked(object sender, RoutedEventArgs e)
+        {
+            var radioButton = (RadioButton)sender;
+            _visualizationType = (VisualizationType)Enum.Parse(typeof(VisualizationType), radioButton.Tag.ToString());
+            ProcessCurrentStatus();
         }
     }
 }

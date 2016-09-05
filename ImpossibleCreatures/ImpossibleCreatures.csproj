@@ -63,7 +63,6 @@
     </ApplicationDefinition>
     <Compile Include="ColorsManager.cs" />
     <Compile Include="GamePagePaint.cs" />
-    <Compile Include="MainWindow_Paint.cs" />
     <Compile Include="TurnExecutor.cs" />
     <Compile Include="VisualizationType.cs" />
     <Page Include="MainWindow.xaml">
