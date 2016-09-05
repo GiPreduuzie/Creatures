@@ -71,7 +71,7 @@ namespace ImpossibleCreatures
                 case VisualizationType.Energy:
                     if (energy == 0)
                     {
-                        fillColor = food != 0 ? Color.FromArgb(50, 154, 205, 50) : Colors.White;
+                        fillColor = food != 0 ? Color.FromArgb(128, 154, 205, 50) : Colors.White;
                         strokeColor = fillColor;
                     }
                     else
@@ -83,7 +83,7 @@ namespace ImpossibleCreatures
                 case VisualizationType.Food:
                     if (food == 0)
                     {
-                        fillColor = Colors.White;
+                        fillColor = energy == 0 ? Colors.White : Color.FromArgb(128, 128, 128, 128);
                         strokeColor = fillColor;
                     }
                     else
