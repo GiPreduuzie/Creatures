@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -15,6 +16,8 @@ namespace ImpossibleCreatures
 
         private int _nationsCount = 0;
         public DispatcherTimer Timer { get; set; }
+        private double _averageGenotypeLength = 0;
+
         private readonly Stopwatch _paintTimer = new Stopwatch();
         private TurnExecutor _turnExecutor;
         public ExecutionSettings ExecutionSettings { get; set; } = new ExecutionSettings();
@@ -112,8 +115,11 @@ namespace ImpossibleCreatures
             PaintTime.Content = $"Paint time: {Math.Round(_paintTimer.Elapsed.TotalMilliseconds, 1)}ms";
 
             _nationsCount = _matrix.Value.GetNationsAmount();
+            _averageGenotypeLength =
+                _matrix.Value.CreaturesAsEnumerable.Select(x => x.Creature.GenotypeLength).Average();
 
             NationCount.Content = "Nation: " + _nationsCount;
+            AverageGenotypeLength.Content = "Avg.gen: " + _averageGenotypeLength;
         }
 
         private void Start_Click(object sender, RoutedEventArgs e)

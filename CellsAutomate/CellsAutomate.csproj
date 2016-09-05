@@ -46,6 +46,10 @@
   <ItemGroup>
     <Compile Include="Algorithms\GetActionAlgorithm.cs" />
     <Compile Include="Algorithms\SeedGenerator.cs" />
+    <Compile Include="ChildCreatingStrategies\IChildCreatingStrategy.cs" />
+    <Compile Include="ChildCreatingStrategies\LivegivingPrice.cs" />
+    <Compile Include="ChildCreatingStrategies\LogarithmicPenaltyStrategy.cs" />
+    <Compile Include="ChildCreatingStrategies\PlainChildCreatingStrategy.cs" />
     <Compile Include="Food\FoodBehavior\IFoodBehavior.cs" />
     <Compile Include="Food\FoodBehavior\PlainBehaviour.cs" />
     <Compile Include="Food\FoodBehavior\PlantGrowingBehaviour.cs" />

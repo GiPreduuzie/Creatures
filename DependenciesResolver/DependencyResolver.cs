@@ -5,6 +5,8 @@ using CellsAutomate.Food.FoodBehavior;
 using Creatures.Language.Commands.Interfaces;
 using System;
 using System.Globalization;
+using CellsAutomate.ChildCreatingStrategies;
+using CellsAutomate.Constants;
 using CellsAutomate.Mutator;
 
 namespace DependenciesResolver
@@ -39,7 +41,19 @@ namespace DependenciesResolver
 
         public CreatorOfCreature GetCreatureCreator()
         {
-            return new CreatorOfCreature(GetMutator(), GetActionAlgorithm(), GetDirectionAlgorithm());
+            return new CreatorOfCreature(GetMutator(), GetActionAlgorithm(), GetDirectionAlgorithm(), GetChildCreatingStrategy());
+        }
+
+        private IChildCreatingStrategy GetChildCreatingStrategy()
+        {
+            var strategy = GetString("child creation price");
+            switch (strategy)
+            {
+                case "constant": return new PlainChildCreatingStrategy(new LivegivingPrice(CreatureConstants.ChildPrice));
+                case "logarithmic penality": return new LogarithmicPenaltyStrategy(CreatureConstants.ChildPrice);
+
+                default: throw new ArgumentException("I know nothing about such strategy: " + strategy);
+            }
         }
 
         private Mutator GetMutator()

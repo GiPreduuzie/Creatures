@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using CellsAutomate.ChildCreatingStrategies;
+using CellsAutomate.Constants;
 using CellsAutomate.Creatures;
 using CellsAutomate.Mutator.CommandsList;
 using Creatures.Language.Commands.Interfaces;
@@ -11,7 +13,7 @@ namespace CellsAutomate
     public abstract class Creator
     {
         public abstract BaseCreature CreateAbstractCreature();
-        public abstract BaseCreature MakeChild(BaseCreature parent);
+        public abstract Tuple<BaseCreature, LivegivingPrice> MakeChild(BaseCreature parent);
     }
 
     public class CreatorOfCreature : Creator
@@ -19,12 +21,18 @@ namespace CellsAutomate
         private readonly Mutator.Mutator _mutator;
         private readonly ICommand[] _commandsForGetDirection;
         private readonly ICommand[] _commandsForGetAction;
+        private readonly IChildCreatingStrategy _childCreatingStrategy;
 
-        public CreatorOfCreature(Mutator.Mutator mutator, ICommand[] commandsForGetAction, ICommand[] commandsForGetDirection)
+        public CreatorOfCreature(
+            Mutator.Mutator mutator,
+            ICommand[] commandsForGetAction,
+            ICommand[] commandsForGetDirection,
+            IChildCreatingStrategy childCreatingStrategy)
         {
             _mutator = mutator;
             _commandsForGetAction = commandsForGetAction;
             _commandsForGetDirection = commandsForGetDirection;
+            _childCreatingStrategy = childCreatingStrategy;
         }
 
         public override BaseCreature CreateAbstractCreature()
@@ -33,16 +41,17 @@ namespace CellsAutomate
             return new Creature(executor, _commandsForGetDirection, _commandsForGetAction);
         }
 
-        public override BaseCreature MakeChild(BaseCreature parent)
+        public override Tuple<BaseCreature, LivegivingPrice> MakeChild(BaseCreature parent)
         {
             var parentAsCreature = parent as Creature;
             if (parentAsCreature == null) throw new ArgumentException();
 
             var childsDirections = Mutate(parentAsCreature.CommandsForGetDirection);
             var childsActions = Mutate(parentAsCreature.CommandsForGetAction);
+
             var executor = new Executor();
-            var child = new Creature(executor, childsDirections, childsActions);
-            return child;
+            BaseCreature child = new Creature(executor, childsDirections, childsActions);
+            return Tuple.Create(child, _childCreatingStrategy.CountPrice(childsActions, childsDirections));
         }
 
         private ICommand[] Mutate(ICommand[] commands)
@@ -60,12 +69,11 @@ namespace CellsAutomate
             return new SimpleCreature();
         }
 
-        public override BaseCreature MakeChild(BaseCreature parent)
+        public override Tuple<BaseCreature, LivegivingPrice> MakeChild(BaseCreature parent)
         {
             if(!(parent is SimpleCreature))throw new ArgumentException();
-            return new SimpleCreature();
+            BaseCreature simpleCreature = new SimpleCreature();
+            return Tuple.Create(simpleCreature, new LivegivingPrice(CreatureConstants.ChildPrice));
         }
     }
-
-
 }

@@ -36,5 +36,7 @@ namespace CellsAutomate.Creatures
 
             return random.Next(2) == 1 ? ActionEnum.Eat : ActionEnum.Go;
         }
+
+        public override int GenotypeLength => 0;
     }
 }

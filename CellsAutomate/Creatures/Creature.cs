@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using CellsAutomate.Food;
-using CellsAutomate.Mutator.CommandsList;
 using Creatures.Language.Commands.Interfaces;
 using Creatures.Language.Executors;
 using CellsAutomate.Tools;
@@ -64,7 +61,7 @@ namespace CellsAutomate.Creatures
             
             return ActionEx.ActionByNumber(int.Parse(result));
         }
+
+        public override int GenotypeLength => CommandsForGetAction.Length + CommandsForGetDirection.Length;
     }
-
-
 }

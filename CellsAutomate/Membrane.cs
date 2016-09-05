@@ -68,9 +68,9 @@ namespace CellsAutomate
 
         public Membrane MakeChild(Point childPosition)
         {
-            EnergyPoints -= CreatureConstants.ChildPrice;
             var child = _creator.MakeChild(Creature);
-            return new Membrane(child, _random, childPosition, Generation + 1, _parentMark, _creator);
+            EnergyPoints -= child.Item2.Price;
+            return new Membrane(child.Item1, _random, childPosition, Generation + 1, _parentMark, _creator);
         }
         
         public void Move(Membrane[,] creatures, Point newPosition)

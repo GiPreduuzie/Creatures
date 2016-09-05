@@ -21,6 +21,7 @@
                         <Label Name="NationCount">Nation: 0</Label>
                         <Label Name="PaintTime">Paint time: 0</Label>
                         <Label Name="CalcTime">Calc time: 0</Label>
+                        <Label Name="AverageGenotypeLength">Average genotype length: 0</Label>
                     </StackPanel>
                 </GroupBox>
                 <GroupBox Header="Actions">

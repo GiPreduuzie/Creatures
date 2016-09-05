@@ -18,5 +18,7 @@ namespace CellsAutomate.Creatures
                 ? DirectionEnum.Stay : GetDirection(eatMatrix, creatures, position, random);
             return Tuple.Create(action, direction);
         }
+
+        public abstract int GenotypeLength { get; }
     }
 }
