@@ -5,6 +5,7 @@ using CellsAutomate.Food.FoodBehavior;
 using Creatures.Language.Commands.Interfaces;
 using System;
 using System.Globalization;
+using CellsAutomate.Mutator;
 
 namespace DependenciesResolver
 {
@@ -38,7 +39,12 @@ namespace DependenciesResolver
 
         public CreatorOfCreature GetCreatureCreator()
         {
-            return new CreatorOfCreature(GetActionAlgorithm(), GetDirectionAlgorithm());
+            return new CreatorOfCreature(GetMutator(), GetActionAlgorithm(), GetDirectionAlgorithm());
+        }
+
+        private Mutator GetMutator()
+        {
+            return new Mutator(GetDouble("mutation probability"), new Random());
         }
 
         private IFoodDistributionStrategy GetFoodDistributionStrategy()

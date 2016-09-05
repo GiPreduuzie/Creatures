@@ -16,11 +16,13 @@ namespace CellsAutomate
 
     public class CreatorOfCreature : Creator
     {
+        private readonly Mutator.Mutator _mutator;
         private readonly ICommand[] _commandsForGetDirection;
         private readonly ICommand[] _commandsForGetAction;
 
-        public CreatorOfCreature(ICommand[] commandsForGetAction, ICommand[] commandsForGetDirection)
+        public CreatorOfCreature(Mutator.Mutator mutator, ICommand[] commandsForGetAction, ICommand[] commandsForGetDirection)
         {
+            _mutator = mutator;
             _commandsForGetAction = commandsForGetAction;
             _commandsForGetDirection = commandsForGetDirection;
         }
@@ -46,8 +48,7 @@ namespace CellsAutomate
         private ICommand[] Mutate(ICommand[] commands)
         {
             var commandsList = new CommandsList(commands);
-            var mutator = new Mutator.Mutator(new Random(), commandsList);
-            mutator.Mutate();
+            _mutator.Mutate(commandsList);
             return commandsList.ToArray();
         }
     }
