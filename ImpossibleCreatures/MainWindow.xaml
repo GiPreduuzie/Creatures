@@ -56,7 +56,7 @@
             </StackPanel>
         </Grid>
         <Grid Column="0" Name="MainGrid" Width="auto" Height="auto" Background="White">
-            <Image Name="MainImage"></Image>
+            <Image Name="MainImage" MouseLeftButtonUp="MainImage_OnMouseLeftButtonUp"></Image>
         </Grid>
     </Grid>
 

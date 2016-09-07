@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Color = System.Windows.Media.Color;
@@ -65,6 +66,20 @@ namespace ImpossibleCreatures
                 (i + 1)*shapeSize - 1 - borderSize,
                 (j + 1)*shapeSize - 1 - borderSize,
                 fillColor);
+        }
+
+        private void MainImage_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            double cellSize = MainImage.ActualHeight/_matrix.Value.Length;
+
+            var position = e.GetPosition(MainImage);
+
+            int cellX = (int)(position.X/cellSize);
+            int cellY = (int)(position.Y / cellSize);
+
+            var creature = _matrix.Value.Creatures[cellX, cellY];
+
+            MessageBox.Show(this, $"Location: ({cellX}, {cellY})\r\nEnergy: {creature?.EnergyPoints}", "Creature details");
         }
     }
 }
