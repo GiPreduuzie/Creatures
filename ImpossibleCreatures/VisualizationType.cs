@@ -6,6 +6,7 @@
         Nation,
         Energy,
         Food,
+        Age,
         Experimantal
     }
 }

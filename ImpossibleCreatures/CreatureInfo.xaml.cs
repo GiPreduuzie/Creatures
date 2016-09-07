@@ -30,6 +30,7 @@ namespace ImpossibleCreatures
 
             Location.Content = $"({membrane.Position.X}, {membrane.Position.Y})";
             Energy.Content = membrane.EnergyPoints;
+            Age.Content = membrane.Age;
             Generation.Content = membrane.Generation;
             GenLength.Content = creature.GenotypeLength;
 

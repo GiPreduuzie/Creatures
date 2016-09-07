@@ -39,6 +39,7 @@
                         <RadioButton Tag="Nation" Content="Nation" IsChecked="False" Click="Visualisavion_Checked"/>
                         <RadioButton Tag="Energy" Content="Energy" IsChecked="False" Click="Visualisavion_Checked"/>
                         <RadioButton Tag="Food" Content="Food" IsChecked="False" Click="Visualisavion_Checked"/>
+                        <RadioButton Tag="Age" Content="Age" IsChecked="False" Click="Visualisavion_Checked"/>
                         <RadioButton Tag="Experimantal" Content="Experimantal" IsChecked="False" Checked="Visualisavion_Checked"/>
                         <CheckBox Content="Sync rendering" Name="MenuItemSyncRendering" IsChecked="True" />
 

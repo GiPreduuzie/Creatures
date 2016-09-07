@@ -33,7 +33,15 @@ namespace ImpossibleCreatures
             _usedColors = new Dictionary<int, Color>();
         }
 
-        public ColorsPair GetColors(VisualizationType visualizationType, int energy, int maxEnergy, int food, int maxFood, int parentMark)
+        public ColorsPair GetColors(
+            VisualizationType visualizationType,
+            int energy, 
+            int maxEnergy,
+            int age,
+            int maxAge,
+            int food,
+            int maxFood,
+            int parentMark)
         {
             var fillColor = new Color();
             var strokeColor = new Color();
@@ -89,6 +97,18 @@ namespace ImpossibleCreatures
                     else
                     {
                         fillColor = GetFoodColor(food, maxFood);
+                        strokeColor = fillColor;
+                    }
+                    break;
+                case VisualizationType.Age:
+                    if (energy == 0)
+                    {
+                        fillColor = food != 0 ? Color.FromArgb(128, 154, 205, 50) : Colors.White;
+                        strokeColor = fillColor;
+                    }
+                    else
+                    {
+                        fillColor = GetEnergyColor(age, maxAge);
                         strokeColor = fillColor;
                     }
                     break;

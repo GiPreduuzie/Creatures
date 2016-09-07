@@ -15,6 +15,7 @@ namespace CellsAutomate
         public Point Position { get; set; }
         public int Generation { get; }
         public int EnergyPoints { get; private set; } = CreatureConstants.StartEnergyPoints;
+        public int Age { get; private set; } = 0;
         public BaseCreature Creature { get; }
         private readonly Creator _creator;
 
@@ -33,6 +34,7 @@ namespace CellsAutomate
         {
             if (HasToDie()) return Tuple.Create(ActionEnum.Die, DirectionEnum.Stay);
 
+            Age++;
             EnergyPoints -= CreatureConstants.MinFoodToSurvive;
 
             var result = Creature.MyTurn(eatMatrix, creatures, Position, _random, HasOneBite(eatMatrix), EnergyPoints);

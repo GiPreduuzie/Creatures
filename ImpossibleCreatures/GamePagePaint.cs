@@ -20,6 +20,7 @@ namespace ImpossibleCreatures
             var matrix = _matrix.Value;
             var maxEnergy = matrix.GetMaxEnergy();
             var maxFood = matrix.EatMatrix.GetMaxLevelOfFood();
+            var maxAge = matrix.GetMaxAge();
 
             var writeableBmp = BitmapFactory.New(BitmapSize, BitmapSize);
             MainImage.Source = writeableBmp;
@@ -35,8 +36,9 @@ namespace ImpossibleCreatures
                         var energy = creature?.EnergyPoints ?? 0;
                         var food = matrix.EatMatrix.GetLevelOfFood(new Point(i, j));
                         var parent = creature?.ParentMark ?? -1;
+                        var age = creature?.Age ?? 0;
 
-                        var colors = _colorsManager.GetColors(_visualizationType, energy, maxEnergy, food, maxFood, parent);
+                        var colors = _colorsManager.GetColors(_visualizationType, energy, maxEnergy, age, maxAge, food, maxFood, parent);
 
                         DrawRectangle(writeableBmp, matrix.Length, i, j, colors.FillColor, colors.StrokeColor);
                     }

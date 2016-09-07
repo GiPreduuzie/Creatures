@@ -17,6 +17,7 @@
             <StackPanel>
                 <Label>Location</Label>
                 <Label>Energy</Label>
+                <Label>Age</Label>
                 <Label>Generation</Label>
                 <Label>Gen. length</Label>
             </StackPanel>
@@ -26,6 +27,7 @@
             <StackPanel>
                 <Label Name="Location"></Label>
                 <Label Name="Energy"></Label>
+                <Label Name="Age"></Label>
                 <Label Name="Generation"></Label>
                 <Label Name="GenLength"></Label>
             </StackPanel>

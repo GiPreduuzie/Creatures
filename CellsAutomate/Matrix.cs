@@ -29,6 +29,11 @@ namespace CellsAutomate
             return CreaturesAsEnumerable.Select(x => x.EnergyPoints).Max();
         }
 
+        public int GetMaxAge()
+        {
+            return CreaturesAsEnumerable.Select(x => x.Age).Max();
+        }
+
         public Matrix(
             int length, 
             int height,
