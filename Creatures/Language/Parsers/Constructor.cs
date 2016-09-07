@@ -132,7 +132,7 @@ namespace Creatures.Language.Parsers
 
         public IResult<ICommand> GetState(string command)
         {
-            var error = "Should be '<name_target> = getState <0..3>', but it is: " + command;
+            var error = "Should be '<name_target> = getState <0..n>', but it is: " + command;
             var failure = Result<ICommand>.CreateFailure(error);
 
             var parts = command.Split('=').Select(item => item.Trim()).ToList();
@@ -141,7 +141,7 @@ namespace Creatures.Language.Parsers
             var partsLeft = parts[1].Split(' ').Select(item => item.Trim()).ToList();
             if (partsLeft.Count != 2) return failure;
 
-            if (IsIdentifier(parts[0]) && partsLeft[0] == "getState" && int.Parse(partsLeft[1]) >= 0 && int.Parse(partsLeft[1]) <= 3)
+            if (IsIdentifier(parts[0]) && partsLeft[0] == "getState" && int.Parse(partsLeft[1]) >= 0)
                 return Result<ICommand>.CreateSuccess(new GetState(parts[0], int.Parse(partsLeft[1])));
 
             return failure;

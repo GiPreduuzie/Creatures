@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithms\GetActionAlgorithm.cs" />
+    <Compile Include="Algorithms\ActionAlgorithm.cs" />
     <Compile Include="Algorithms\SeedGenerator.cs" />
     <Compile Include="ChildCreatingStrategies\IChildCreatingStrategy.cs" />
     <Compile Include="ChildCreatingStrategies\LivegivingPrice.cs" />

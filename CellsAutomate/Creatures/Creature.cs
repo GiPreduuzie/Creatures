@@ -48,13 +48,19 @@ namespace CellsAutomate.Creatures
             return DirectionEx.DirectionByNumber(int.Parse(result));
         }
 
-        protected override ActionEnum GetAction(Random random, bool hasOneBite, int energyPoints)
+        protected override ActionEnum GetAction(
+            Random random,
+            bool hasOneBite, 
+            int energyPoints,
+            int foodOnCell)
         {
             var state = new Dictionary<int, int>
             {
                 {0, energyPoints < CreatureConstants.CriticalLevelOfFood ? 0 : -1},
                 {1, hasOneBite ? 0 : -1},
-                {2, energyPoints >= CreatureConstants.ChildPrice ? 0 : -1}
+                {2, energyPoints >= CreatureConstants.ChildPrice ? 0 : -1},
+                {3, energyPoints },
+                {4, foodOnCell }
             };
 
             var result = _executor.Execute(CommandsForGetAction, new MyExecutorToolset(random, state));

@@ -29,7 +29,8 @@ namespace CellsAutomate
             _creator = creator;
         }
 
-        public Tuple<ActionEnum, DirectionEnum> Turn(FoodMatrix eatMatrix, 
+        public Tuple<ActionEnum, DirectionEnum> Turn(
+            FoodMatrix eatMatrix, 
             Membrane[,] creatures)
         {
             if (HasToDie()) return Tuple.Create(ActionEnum.Die, DirectionEnum.Stay);
@@ -39,7 +40,9 @@ namespace CellsAutomate
 
             var result = Creature.MyTurn(eatMatrix, creatures, Position, _random, HasOneBite(eatMatrix), EnergyPoints);
 
-            return result.Item1 == ActionEnum.MakeChild ? Tuple.Create(ActionEnum.MakeChild, GetDirectionForChild(creatures)) : result;
+            return result.Item1 == ActionEnum.MakeChild 
+                ? Tuple.Create(ActionEnum.MakeChild, GetDirectionForChild(creatures)) 
+                : result;
         }
 
         private bool HasOneBite(FoodMatrix eatMatrix)

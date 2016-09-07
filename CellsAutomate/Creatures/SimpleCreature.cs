@@ -26,7 +26,7 @@ namespace CellsAutomate.Creatures
             return directionsWithFood.Count == 0 ? directions.ElementAt(random.Next(directions.Count)) : directionsWithFood.ElementAt(random.Next(directionsWithFood.Count));
         }
 
-        protected override ActionEnum GetAction(Random random, bool hasOneBite, int energyPoints)
+        protected override ActionEnum GetAction(Random random, bool hasOneBite, int energyPoints, int foodOnCell)
         {
             if (energyPoints < CreatureConstants.CriticalLevelOfFood)
                 return hasOneBite ? ActionEnum.Eat : ActionEnum.Go;

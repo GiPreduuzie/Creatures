@@ -36,7 +36,7 @@ namespace DependenciesResolver
 
         private ICommand[] GetActionAlgorithm()
         {
-            return new GetActionAlgorithm().Algorithm;
+            return new ActionExperimentalAlgorithm().Algorithm;
         }
 
         public CreatorOfCreature GetCreatureCreator()

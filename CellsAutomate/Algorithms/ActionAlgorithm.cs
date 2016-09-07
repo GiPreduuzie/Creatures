@@ -2,10 +2,60 @@
 using System.Text;
 using Creatures.Language.Commands.Interfaces;
 using Creatures.Language.Parsers;
+using CellsAutomate.Constants;
 
 namespace CellsAutomate.Algorithms
 {
-    public class GetActionAlgorithm
+    public static class StateMeanings
+    {
+        public static int MyEnergy = 3;
+        public static int FoodOnMyCell = 4;
+    }
+
+    public class ActionExperimentalAlgorithm
+    {
+        public ICommand[] Algorithm => new Parser().ProcessCommands(GetAlgorithm()).ToArray();
+
+        private string GetAlgorithm()
+        {
+            var commands =
+                new StringBuilder()
+                    .AppendLine("int state")
+                    .AppendLine("state = getState " + StateMeanings.MyEnergy)
+                    .AppendLine("starvingLevel = " + CreatureConstants.ChildPrice)
+                    .AppendLine("int starving")
+                    .AppendLine("starving = starvingLevel - state")
+
+                    .AppendLine("if starving then")
+                    .AppendLine("    int foodOnCell")
+                    .AppendLine("    foodOnCell = getState " + StateMeanings.FoodOnMyCell)
+                    .AppendLine("    int haveToGo")
+                    .AppendLine("    liveCost = " + CreatureConstants.MinFoodToSurvive)
+                    .AppendLine("    haveToGo = liveCost - foodOnCell")
+                    
+                    .AppendLine("    if haveToGo then")
+                    .AppendLine("        int go")
+                    .AppendLine("        go = " + (int)ActionEnum.Go)
+                    .AppendLine("        print go")
+                    .AppendLine("        stop")
+                    .AppendLine("    endif")
+
+                    .AppendLine("    int eat")
+                    .AppendLine("    eat = " + (int)ActionEnum.Eat)
+                    .AppendLine("    print eat")
+                    .AppendLine("    stop")
+                    .AppendLine("endif")
+
+                    .AppendLine("int child")
+                    .AppendLine("child = " + (int)ActionEnum.MakeChild)
+                    .AppendLine("print child");
+
+            return commands.ToString();
+        }
+    }
+
+
+    public class ActionAlgorithm
     {
         public ICommand[] Algorithm => new Parser().ProcessCommands(GetAlgorithm()).ToArray();
 

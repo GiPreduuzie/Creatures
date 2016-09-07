@@ -21,17 +21,17 @@ namespace CellsAutomate
 
         public int GetNationsAmount()
         {
-            return CreaturesAsEnumerable.Select(x => x.ParentMark).Distinct().Count();
+            return CreaturesAsEnumerable.Any() ? CreaturesAsEnumerable.Select(x => x.ParentMark).Distinct().Count() : 0;
         }
 
         public int GetMaxEnergy()
         {
-            return CreaturesAsEnumerable.Select(x => x.EnergyPoints).Max();
+            return CreaturesAsEnumerable.Any() ? CreaturesAsEnumerable.Select(x => x.EnergyPoints).Max() : 0;
         }
 
         public int GetMaxAge()
         {
-            return CreaturesAsEnumerable.Select(x => x.Age).Max();
+            return CreaturesAsEnumerable.Any() ? CreaturesAsEnumerable.Select(x => x.Age).Max() : 0;
         }
 
         public Matrix(

@@ -116,8 +116,9 @@ namespace ImpossibleCreatures
             PaintTime.Content = $"Paint time: {Math.Round(_paintTimer.Elapsed.TotalMilliseconds, 1)}ms";
 
             _nationsCount = _matrix.Value.GetNationsAmount();
-            _averageGenotypeLength =
-                _matrix.Value.CreaturesAsEnumerable.Select(x => x.Creature.GenotypeLength).Average();
+
+            var creatures = _matrix.Value.CreaturesAsEnumerable;
+            _averageGenotypeLength = creatures.Any() ? creatures.Select(x => x.Creature.GenotypeLength).Average() : 0;
 
             NationCount.Content = "Nation: " + _nationsCount;
             AverageGenotypeLength.Content = "Avg.gen: " + Math.Round(_averageGenotypeLength, 1);
