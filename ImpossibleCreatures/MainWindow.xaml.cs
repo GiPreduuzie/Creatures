@@ -129,11 +129,16 @@ namespace ImpossibleCreatures
             {
                 _turnExecutor.Stop();
                 Timer.Stop();
+                ProcessCurrentStatus();
+                ButtonStartStop.Content = "Start";
+                ButtonOneStep.IsEnabled = true;
             }
             else
             {
                 _turnExecutor.Start();
                 Timer.Start();
+                ButtonStartStop.Content = "Stop";
+                ButtonOneStep.IsEnabled = false;
             }
         }
 

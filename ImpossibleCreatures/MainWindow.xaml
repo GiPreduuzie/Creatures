@@ -6,13 +6,16 @@
         xmlns:local="clr-namespace:ImpossibleCreatures"
         mc:Ignorable="d"
         Name="Window"
-        Title="Impossible Creatures" Height="1023" Width="1200" Loaded="Start" WindowStartupLocation="CenterScreen" WindowState="Normal" DataContext="{Binding ElementName=Window}">
+        Title="Impossible Creatures" Height="1023" Width="1150" Loaded="Start" WindowStartupLocation="CenterScreen" WindowState="Normal" DataContext="{Binding ElementName=Window}">
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="150"></ColumnDefinition>
         </Grid.ColumnDefinitions>
+        <Grid Column="0" Name="MainGrid" Width="auto" Height="auto" Background="White">
+            <Image Name="MainImage" MouseLeftButtonUp="MainImage_OnMouseLeftButtonUp"></Image>
+        </Grid>
         <Grid Column="1">
             <StackPanel>
                 <GroupBox Header="Info">
@@ -21,13 +24,13 @@
                         <Label Name="NationCount">Nation: 0</Label>
                         <Label Name="PaintTime">Paint time: 0</Label>
                         <Label Name="CalcTime">Calc time: 0</Label>
-                        <Label Name="AverageGenotypeLength">Average genotype length: 0</Label>
+                        <Label Name="AverageGenotypeLength">Avg.gen: 0</Label>
                     </StackPanel>
                 </GroupBox>
                 <GroupBox Header="Actions">
                     <StackPanel>
-                        <Button Click="Start_Click">Start/Pause</Button>
-                        <Button Click="OneStep_Click">One step forward</Button>
+                        <Button Name="ButtonStartStop" Click="Start_Click">Start</Button>
+                        <Button Name="ButtonOneStep" Click="OneStep_Click">One step forward</Button>
                     </StackPanel>
                 </GroupBox>
                 <GroupBox Header="Visualization">
@@ -55,9 +58,5 @@
                 </GroupBox>
             </StackPanel>
         </Grid>
-        <Grid Column="0" Name="MainGrid" Width="auto" Height="auto" Background="White">
-            <Image Name="MainImage" MouseLeftButtonUp="MainImage_OnMouseLeftButtonUp"></Image>
-        </Grid>
     </Grid>
-
 </Window>

@@ -79,7 +79,11 @@ namespace ImpossibleCreatures
 
             var creature = _matrix.Value.Creatures[cellX, cellY];
 
-            MessageBox.Show(this, $"Location: ({cellX}, {cellY})\r\nEnergy: {creature?.EnergyPoints}", "Creature details");
+            if (creature != null)
+            {
+                var creatureInfo = new CreatureInfo(creature);
+                creatureInfo.Show();
+            }
         }
     }
 }

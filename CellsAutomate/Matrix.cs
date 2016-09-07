@@ -164,6 +164,6 @@ namespace CellsAutomate
     {
         public bool RunInParallel { get; set; }
 
-        public bool RandomOrder { get; set; }
+        public bool RandomOrder { get; set; } = true;
     }
 }

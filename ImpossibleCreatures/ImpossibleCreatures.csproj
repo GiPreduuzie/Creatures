@@ -62,9 +62,16 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ColorsManager.cs" />
+    <Compile Include="CreatureInfo.xaml.cs">
+      <DependentUpon>CreatureInfo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GamePagePaint.cs" />
     <Compile Include="TurnExecutor.cs" />
     <Compile Include="VisualizationType.cs" />
+    <Page Include="CreatureInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
