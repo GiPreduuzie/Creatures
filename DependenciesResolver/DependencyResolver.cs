@@ -51,6 +51,7 @@ namespace DependenciesResolver
             {
                 case "constant": return new PlainChildCreatingStrategy(new LivegivingPrice(CreatureConstants.ChildPrice));
                 case "logarithmic penality": return new LogarithmicPenaltyStrategy(CreatureConstants.ChildPrice);
+                case "linear penality": return new LinearPenaltyStrategy(CreatureConstants.ChildPrice);
 
                 default: throw new ArgumentException("I know nothing about such strategy: " + strategy);
             }

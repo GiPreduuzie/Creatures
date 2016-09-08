@@ -50,7 +50,9 @@ namespace CellsAutomate.Tools
 
         public static DirectionEnum DirectionByNumber(int number)
         {
-            switch (number)
+            var itemsAmount = Enum.GetNames(typeof(DirectionEnum)).Length;
+
+            switch (number % itemsAmount)
             {
                 case 0: return DirectionEnum.Stay;
                 case 1: return DirectionEnum.Up;

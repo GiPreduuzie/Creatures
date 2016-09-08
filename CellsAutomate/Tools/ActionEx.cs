@@ -6,7 +6,8 @@ namespace CellsAutomate.Tools
     {
         public static ActionEnum ActionByNumber(int number)
         {
-            switch (number)
+            var itemsAmount = Enum.GetNames(typeof(ActionEnum)).Length;
+            switch (number % itemsAmount)
             {
                 case 0: return ActionEnum.Die;
                 case 1: return ActionEnum.MakeChild;

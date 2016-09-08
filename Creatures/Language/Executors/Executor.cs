@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Creatures.Language.Commands;
 using Creatures.Language.Commands.Interfaces;
@@ -46,7 +47,8 @@ namespace Creatures.Language.Executors
 
         public int GetState(int condition)
         {
-            return _state[condition];
+            var maxKey = _state.Keys.Max();
+            return _state[condition % (maxKey + 1)];
         }
 
         public int GetRandom(int maxValue)

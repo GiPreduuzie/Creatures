@@ -47,6 +47,7 @@
     <Compile Include="Algorithms\ActionAlgorithm.cs" />
     <Compile Include="Algorithms\SeedGenerator.cs" />
     <Compile Include="ChildCreatingStrategies\IChildCreatingStrategy.cs" />
+    <Compile Include="ChildCreatingStrategies\LinearPenaltyStrategy.cs" />
     <Compile Include="ChildCreatingStrategies\LivegivingPrice.cs" />
     <Compile Include="ChildCreatingStrategies\LogarithmicPenaltyStrategy.cs" />
     <Compile Include="ChildCreatingStrategies\PlainChildCreatingStrategy.cs" />
