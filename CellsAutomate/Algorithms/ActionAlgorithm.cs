@@ -24,6 +24,7 @@ namespace CellsAutomate.Algorithms
                     .AppendLine("state = getState " + StateMeanings.MyEnergy)
                     .AppendLine("int starvingLevel")
                     .AppendLine("starvingLevel = " + CreatureConstants.ChildPrice)
+                    .AppendLine("int starvingLevel")
                     .AppendLine("int starving")
                     .AppendLine("starving = starvingLevel - state")
                     

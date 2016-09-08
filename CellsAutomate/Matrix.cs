@@ -129,7 +129,7 @@ namespace CellsAutomate
                     default: throw new Exception();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 MakeTurnDie(currentCreature.Position);
                 EXCEPTIONS++;

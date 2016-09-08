@@ -43,8 +43,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Language\Commands\CloseCondition.cs" />
+    <Compile Include="Language\Commands\GetFromMemory.cs" />
     <Compile Include="Language\Commands\GetRandom.cs" />
     <Compile Include="Language\Commands\GetState.cs" />
+    <Compile Include="Language\Commands\SetToMemory.cs" />
     <Compile Include="Language\Commands\Stop.cs" />
     <Compile Include="Language\Executors\Executor.cs" />
     <Compile Include="Language\Commands\CloneValue.cs" />

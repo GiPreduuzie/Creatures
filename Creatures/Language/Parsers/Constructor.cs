@@ -174,6 +174,39 @@ namespace Creatures.Language.Parsers
             return failure;
         }
 
+        public IResult<ICommand> SetToMemory(string command)
+        {
+            var error = "Should be 'setToMemory <key name> <value name>', but it is: " + command;
+            var failure = Result<ICommand>.CreateFailure(error);
+
+            var parts = command.Trim().Split(' ').Select(x => x.Trim()).ToArray();
+
+            if (parts.Length != 3) return failure;
+            if (parts[0] != "setToMemory") return failure;
+            if (!IsIdentifier(parts[1])) return failure;
+            if (!IsIdentifier(parts[2])) return failure;
+
+            return Result<ICommand>.CreateSuccess(new SetToMemory(parts[1], parts[2]));
+        }
+
+        public IResult<ICommand> GetFromMemory(string command)
+        {
+            var error = "Should be '<target> = getFromMemory <key name>', but it is: " + command;
+            var failure = Result<ICommand>.CreateFailure(error);
+
+            var parts = command.Trim().Split('=').Select(x => x.Trim()).ToArray();
+
+            if (parts.Length != 2) return failure;
+            if (!IsIdentifier(parts[0])) return failure;
+
+            var rightParts = parts[1].Split(' ').Select(x => x.Trim()).ToArray();
+            if (rightParts[0] != "getFromMemory") return failure;
+            if (!IsIdentifier(rightParts[1])) return failure;
+
+            return Result<ICommand>.CreateSuccess(new GetFromMemory(parts[0], rightParts[1]));
+        }
+
+
         private IResult<string> CheckTypeNamePair(string type, string value)
         {
             var error = $"Should be '{type} <name>', but it is: " + value;

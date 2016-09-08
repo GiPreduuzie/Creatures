@@ -93,5 +93,19 @@ namespace Creaturestests.MutatorTests
             _isEqual = command.TargetName == comparableCommand.TargetName &&
                        command.MaxValueName == comparableCommand.MaxValueName;
         }
+
+        public void Accept(SetToMemory command)
+        {
+            var comparableCommand = _second as SetToMemory;
+            _isEqual = command.ValueName == comparableCommand.ValueName &&
+                       command.KeyName == comparableCommand.KeyName;
+        }
+
+        public void Accept(GetFromMemory command)
+        {
+            var comparableCommand = _second as GetFromMemory;
+            _isEqual = command.TargetName == comparableCommand.TargetName &&
+                       command.KeyName == comparableCommand.KeyName;
+        }
     }
 }

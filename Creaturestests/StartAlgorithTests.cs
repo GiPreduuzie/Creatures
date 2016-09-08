@@ -27,6 +27,16 @@ namespace Creaturestests
             return result;
         }
 
+        public void SetMemory(int key, int value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetMemory(int key)
+        {
+            throw new NotImplementedException();
+        }
+
         public int GetState(int direction)
         {
             return _state[direction];

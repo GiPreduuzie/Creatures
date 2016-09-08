@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CellsAutomate.Mutator.CommandsList;
 using Creatures.Language.Commands;
+using Creatures.Language.Commands.Interfaces;
 
 namespace CellsAutomate.Mutator.Mutations.InternalClasses
 {
@@ -82,6 +83,20 @@ namespace CellsAutomate.Mutator.Mutations.InternalClasses
             var direction = GetRandomDirection();
             var command = new GetState(declaration.Name, direction);
             return command;
+        }
+
+        public ICommand CreateGetFromMemory(int placeIndex)
+        {
+            return new GetFromMemory(
+                GetRandomDeclarationBefore(placeIndex).Name,
+                GetRandomDeclarationBefore(placeIndex).Name);
+        }
+
+        public ICommand CreateSetToMemory(int placeIndex)
+        {
+            return new SetToMemory(
+                GetRandomDeclarationBefore(placeIndex).Name,
+                GetRandomDeclarationBefore(placeIndex).Name);
         }
 
         public Minus CreateMinus(int placeIndex)
@@ -181,5 +196,8 @@ namespace CellsAutomate.Mutator.Mutations.InternalClasses
         {
             return _random.Next(MinimalDirection, MaximalDirection + 1);
         }
+
+
+     
     }
 }

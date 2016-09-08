@@ -13,5 +13,7 @@ namespace Creatures.Language.Commands.Interfaces
         void Accept(CloseCondition command);
         void Accept(GetState command);
         void Accept(GetRandom command);
+        void Accept(SetToMemory command);
+        void Accept(GetFromMemory command);
     }
 }

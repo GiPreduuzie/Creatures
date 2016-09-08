@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,11 +13,14 @@ namespace Creatures.Language.Executors
     {
         int GetState(int direction);
         int GetRandom(int maxValue);
+        void SetMemory(int key, int value);
+        int GetMemory(int key);
     }
 
     public class ExecutorToolset : IExecutorToolset
     {
         Random _random;
+        Dictionary<int, int> _memory = new Dictionary<int, int>();
 
         public ExecutorToolset(Random random)
         {
@@ -32,12 +36,23 @@ namespace Creatures.Language.Executors
         {
             return 1;
         }
+
+        public void SetMemory(int key, int value)
+        {
+            _memory[key] = value;
+        }
+
+        public int GetMemory(int key)
+        {
+            return _memory.ContainsKey(key) ? _memory[key] : 0;
+        }
     }
 
     public class MyExecutorToolset : IExecutorToolset
     {
         private readonly Random _random;
         private readonly IDictionary<int, int> _state;
+        private readonly IDictionary<int, int> _memory = new Dictionary<int, int>();
 
         public MyExecutorToolset(Random random, IDictionary<int, int> state)
         {
@@ -55,6 +70,16 @@ namespace Creatures.Language.Executors
         {
             var result = _random.Next(maxValue);
             return result + 1;
+        }
+
+        public void SetMemory(int key, int value)
+        {
+            _memory[key] = value;
+        }
+
+        public int GetMemory(int key)
+        {
+            return _memory.ContainsKey(key) ? _memory[key] : 0;
         }
     }
 
@@ -169,6 +194,16 @@ namespace Creatures.Language.Executors
             if (!_conditions.Peek()) return;
 
             _variables[command.TargetName] = _executorToolset.GetRandom(_variables[command.MaxValueName].Value);
+        }
+
+        public void Accept(SetToMemory command)
+        {
+            _executorToolset.SetMemory(_variables[command.KeyName].Value, _variables[command.ValueName].Value);
+        }
+
+        public void Accept(GetFromMemory command)
+        {
+            _variables[command.TargetName] = _executorToolset.GetMemory(_variables[command.KeyName].Value);
         }
 
         public void Accept(Stop command)

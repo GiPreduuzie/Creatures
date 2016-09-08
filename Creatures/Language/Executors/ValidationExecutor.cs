@@ -5,7 +5,7 @@ using Creatures.Language.Commands.Interfaces;
 
 namespace Creatures.Language.Executors
 {
-    public class ValidationExecutor:ICommandVisitor
+    public class ValidationExecutor : ICommandVisitor
     {
         private Dictionary<string, int?> _variables;
         private StringBuilder _console;
@@ -166,6 +166,31 @@ namespace Creatures.Language.Executors
             }
 
             _variables[command.TargetName] = _executorToolset.GetRandom(_variables[command.MaxValueName].Value);
+        }
+
+        public void Accept(SetToMemory command)
+        {
+            if (!_variables.ContainsKey(command.KeyName) ||
+               !_variables.ContainsKey(command.ValueName) ||
+               _variables[command.KeyName] == null ||
+               _variables[command.ValueName] == null)
+            {
+                _isExecutable = false;
+                return;
+            }
+
+            _executorToolset.SetMemory(_variables[command.KeyName].Value, _variables[command.ValueName].Value);
+        }
+
+        public void Accept(GetFromMemory command)
+        {
+            if (!_variables.ContainsKey(command.TargetName) || !_variables.ContainsKey(command.KeyName))
+            {
+                _isExecutable = false;
+                return;
+            }
+
+            _variables[command.TargetName] = _executorToolset.GetMemory(_variables[command.KeyName].Value);
         }
 
         public void Accept(Stop command)

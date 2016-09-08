@@ -32,7 +32,9 @@ namespace CellsAutomate.Mutator.Mutations
                 AddPlus,
                 AddPrint,
                 AddSetValue,
-                AddStop
+                AddStop,
+                AddGetFromMemory,
+                AddSetToMemory
             };
         }
 
@@ -115,6 +117,18 @@ namespace CellsAutomate.Mutator.Mutations
         private void AddGetState(int insertIndex)
         {
             var command = _creator.CreateGetState(insertIndex);
+            Insert(command, insertIndex);
+        }
+
+        private void AddGetFromMemory(int insertIndex)
+        {
+            var command = _creator.CreateGetFromMemory(insertIndex);
+            Insert(command, insertIndex);
+        }
+
+        private void AddSetToMemory(int insertIndex)
+        {
+            var command = _creator.CreateSetToMemory(insertIndex);
             Insert(command, insertIndex);
         }
 

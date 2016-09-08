@@ -96,6 +96,16 @@ namespace Creatures.Language.Parsers
             AddToResult($"{command.TargetName} = random {command.MaxValueName}");
         }
 
+        public void Accept(SetToMemory command)
+        {
+            AddToResult($"setToMemory {command.KeyName} {command.ValueName}");
+        }
+
+        public void Accept(GetFromMemory command)
+        {
+            AddToResult($"{command.TargetName} = getFromMemory {command.KeyName}");
+        }
+
         private void AddToResult(string value)
         {
             _builder.AppendLine("".PadLeft(_embeddedCondtions*4, ' ') + value);
