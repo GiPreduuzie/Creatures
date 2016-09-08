@@ -22,14 +22,16 @@ namespace CellsAutomate.Algorithms
                 new StringBuilder()
                     .AppendLine("int state")
                     .AppendLine("state = getState " + StateMeanings.MyEnergy)
+                    .AppendLine("int starvingLevel")
                     .AppendLine("starvingLevel = " + CreatureConstants.ChildPrice)
                     .AppendLine("int starving")
                     .AppendLine("starving = starvingLevel - state")
-
+                    
                     .AppendLine("if starving then")
                     .AppendLine("    int foodOnCell")
                     .AppendLine("    foodOnCell = getState " + StateMeanings.FoodOnMyCell)
                     .AppendLine("    int haveToGo")
+                    .AppendLine("    int liveCost")
                     .AppendLine("    liveCost = " + CreatureConstants.MinFoodToSurvive)
                     .AppendLine("    haveToGo = liveCost - foodOnCell")
                     
