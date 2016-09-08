@@ -61,13 +61,16 @@ namespace ImpossibleCreatures
                 (j + 1)*shapeSize - 1,
                 strokeColor);
 
-            // inner
-            writeableBmp.FillRectangle(
-                i*shapeSize + borderSize,
-                j*shapeSize + borderSize,
-                (i + 1)*shapeSize - 1 - borderSize,
-                (j + 1)*shapeSize - 1 - borderSize,
-                fillColor);
+            if (fillColor != strokeColor)
+            {
+                // inner
+                writeableBmp.FillRectangle(
+                    i*shapeSize + borderSize,
+                    j*shapeSize + borderSize,
+                    (i + 1)*shapeSize - 1 - borderSize,
+                    (j + 1)*shapeSize - 1 - borderSize,
+                    fillColor);
+            }
         }
 
         private void MainImage_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
