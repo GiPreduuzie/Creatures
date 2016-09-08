@@ -9,6 +9,6 @@ namespace CellsAutomate.ChildCreatingStrategies
 {
     public interface IChildCreatingStrategy
     {
-        LivegivingPrice CountPrice(ICommand[] childsActions, ICommand[] childsDirections);
+        LivegivingPrice CountPrice(int childsActionsLength);
     }
 }

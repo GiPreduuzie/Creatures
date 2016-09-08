@@ -34,7 +34,9 @@ namespace Creatures.Language.Parsers
                 constructor.CloseCondition,
                 constructor.GetState,
                 constructor.GetRandom,
-                constructor.Stop
+                constructor.Stop,
+                constructor.GetFromMemory,
+                constructor.SetToMemory
             };
 
 

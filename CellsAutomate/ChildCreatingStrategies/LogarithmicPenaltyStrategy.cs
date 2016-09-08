@@ -12,9 +12,9 @@ namespace CellsAutomate.ChildCreatingStrategies
             _basicPrice = basicPrice;
         }
 
-        public LivegivingPrice CountPrice(ICommand[] childsActions, ICommand[] childsDirections)
+        public LivegivingPrice CountPrice(int childsActionsLength)
         {
-            var price = Math.Log(childsActions.Length + childsDirections.Length, 10);
+            var price = Math.Log(childsActionsLength, 10);
             return new LivegivingPrice(_basicPrice + (int)price);
         }
     }

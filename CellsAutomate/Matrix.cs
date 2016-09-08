@@ -7,6 +7,7 @@ using CellsAutomate.Food;
 using CellsAutomate.Food.DistributingStrategy;
 using CellsAutomate.Food.FoodBehavior;
 using CellsAutomate.Tools;
+using CellsAutomate.ChildCreatingStrategies;
 
 namespace CellsAutomate
 {
@@ -16,6 +17,7 @@ namespace CellsAutomate
         public readonly int Height;
         public FoodMatrix EatMatrix { get; private set; }
         private readonly Creator _creator;
+        private readonly IChildCreatingStrategy _childCreatingStrategy;
 
         public Membrane[,] Creatures { get; set; }
 
@@ -40,13 +42,15 @@ namespace CellsAutomate
             Creator creator,
             IFoodDistributionStrategy strategy,
             IFoodBehavior foodBehavior,
-            int foodDistributingFrequency)
+            int foodDistributingFrequency,
+            IChildCreatingStrategy childCreatingStrategy)
         {
             Length = length;
             Height = height;
             _creator = creator;
             EatMatrix = new FoodMatrix(length, height, foodDistributingFrequency, strategy, foodBehavior);
             Creatures = new Membrane[length, height];
+            _childCreatingStrategy = childCreatingStrategy;
         }
 
         public IEnumerable<Membrane> CreaturesAsEnumerable => Creatures.OfType<Membrane>();
@@ -147,10 +151,16 @@ namespace CellsAutomate
             if (direction == DirectionEnum.Stay)
                 return;
             var childPoint = DirectionEx.PointByDirection(direction, creature.Position);
-            if (CommonMethods.IsValidAndFree(childPoint, Creatures))
+            if (CommonMethods.IsValidAndFree(childPoint, Creatures) && HasEnoughtEnergyForChild(creature))
             {
                 Creatures[childPoint.X, childPoint.Y] = creature.MakeChild(childPoint);
             }
+        }
+
+        private bool HasEnoughtEnergyForChild(Membrane creature)
+        {
+            var energyPoints = creature.EnergyPoints;
+            return energyPoints >= _childCreatingStrategy.CountPrice(creature.Creature.GenotypeLength).Price;
         }
 
         private void MakeTurnGo(DirectionEnum direction, Membrane creature)

@@ -35,8 +35,6 @@ namespace ImpossibleCreatures
             GenLength.Content = creature.GenotypeLength;
 
             ActionCode.Text = new CommandPrinter().ParseCommands(creature.CommandsForGetAction);
-
-            DirectionCode.Text = new CommandPrinter().ParseCommands(creature.CommandsForGetDirection);
         }
     }
 }

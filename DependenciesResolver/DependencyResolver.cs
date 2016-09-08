@@ -21,7 +21,8 @@ namespace DependenciesResolver
                 GetCreatureCreator(),
                 GetFoodDistributionStrategy(),
                 GetFoodBehavior(),
-                GetFoodDistributingFrequency());
+                GetFoodDistributingFrequency(),
+                GetChildCreatingStrategy());
         }
 
         public string GetPathForLogs()
@@ -31,7 +32,7 @@ namespace DependenciesResolver
 
         private ICommand[] GetDirectionAlgorithm()
         {
-            return new DirectionAlgorithmProvider().Algorithm;
+            return new ICommand[0];
         }
 
         private ICommand[] GetActionAlgorithm()

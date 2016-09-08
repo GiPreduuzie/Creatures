@@ -11,7 +11,7 @@ namespace CellsAutomate.ChildCreatingStrategies
             _price = price;
         }
 
-        public LivegivingPrice CountPrice(ICommand[] childsActions, ICommand[] childsDirections)
+        public LivegivingPrice CountPrice(int childsActionsLength)
         {
             return _price;
         }

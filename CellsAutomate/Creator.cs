@@ -38,7 +38,7 @@ namespace CellsAutomate
         public override BaseCreature CreateAbstractCreature()
         {
             var executor = new Executor();
-            return new Creature(executor, _commandsForGetDirection, _commandsForGetAction);
+            return new Creature(executor, _commandsForGetAction);
         }
 
         public override Tuple<BaseCreature, LivegivingPrice> MakeChild(BaseCreature parent)
@@ -46,12 +46,11 @@ namespace CellsAutomate
             var parentAsCreature = parent as Creature;
             if (parentAsCreature == null) throw new ArgumentException();
 
-            var childsDirections = Mutate(parentAsCreature.CommandsForGetDirection);
             var childsActions = Mutate(parentAsCreature.CommandsForGetAction);
 
             var executor = new Executor();
-            BaseCreature child = new Creature(executor, childsDirections, childsActions);
-            return Tuple.Create(child, _childCreatingStrategy.CountPrice(childsActions, childsDirections));
+            BaseCreature child = new Creature(executor, childsActions);
+            return Tuple.Create(child, _childCreatingStrategy.CountPrice(childsActions.Length));
         }
 
         private ICommand[] Mutate(ICommand[] commands)

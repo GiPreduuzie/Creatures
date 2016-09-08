@@ -106,8 +106,6 @@ namespace ConsoleWorker
             builder.AppendLine($"Generation: {generation}");
             builder.AppendLine("- - - - - ActionCommands - - - - -");
             builder.AppendLine(CommandsToString(creature.CommandsForGetAction));
-            builder.AppendLine("- - - - - DirectionCommands - - - - -");
-            builder.AppendLine(CommandsToString(creature.CommandsForGetDirection));
             return builder.ToString();
         }
 

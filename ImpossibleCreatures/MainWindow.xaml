@@ -48,7 +48,7 @@
                             <Label Content="{Binding ElementName=RefreshSpeed, Path=Value}"></Label>
                             <Label>ms</Label>
                         </StackPanel>
-                        <Slider Minimum="50" Maximum="2000" Value="1000" Name="RefreshSpeed" IsSnapToTickEnabled="True" TickFrequency="50" ValueChanged="RefreshSpeed_OnValueChanged" />
+                        <Slider Minimum="50" Maximum="2000" Value="50" Name="RefreshSpeed" IsSnapToTickEnabled="True" TickFrequency="50" ValueChanged="RefreshSpeed_OnValueChanged" />
                     </StackPanel>
                 </GroupBox>
                 <GroupBox Header="Execution" DataContext="{Binding Path=ExecutionSettings}">

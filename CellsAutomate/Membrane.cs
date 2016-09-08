@@ -19,7 +19,13 @@ namespace CellsAutomate
         public BaseCreature Creature { get; }
         private readonly Creator _creator;
 
-        public Membrane(BaseCreature creature, Random random, Point position, int generation, int parentMark, Creator creator)
+        public Membrane(
+            BaseCreature creature, 
+            Random random, 
+            Point position,
+            int generation,
+            int parentMark,
+            Creator creator)
         {
             Creature = creature;
             _random = random;

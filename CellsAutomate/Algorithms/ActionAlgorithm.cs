@@ -8,9 +8,15 @@ namespace CellsAutomate.Algorithms
 {
     public static class StateMeanings
     {
-        public static int MyEnergy = 3;
-        public static int FoodOnMyCell = 4;
+        public static int UpState = 0;
+        public static int RightState = 1;
+        public static int DownState = 2;
+        public static int LeftState = 3;
+
+        public static int MyEnergy = 4;
+        public static int FoodOnMyCell = 5;
     }
+
 
     public class ActionExperimentalAlgorithm
     {
@@ -24,10 +30,9 @@ namespace CellsAutomate.Algorithms
                     .AppendLine("state = getState " + StateMeanings.MyEnergy)
                     .AppendLine("int starvingLevel")
                     .AppendLine("starvingLevel = " + CreatureConstants.ChildPrice)
-                    .AppendLine("int starvingLevel")
                     .AppendLine("int starving")
                     .AppendLine("starving = starvingLevel - state")
-                    
+
                     .AppendLine("if starving then")
                     .AppendLine("    int foodOnCell")
                     .AppendLine("    foodOnCell = getState " + StateMeanings.FoodOnMyCell)
@@ -35,23 +40,28 @@ namespace CellsAutomate.Algorithms
                     .AppendLine("    int liveCost")
                     .AppendLine("    liveCost = " + CreatureConstants.MinFoodToSurvive)
                     .AppendLine("    haveToGo = liveCost - foodOnCell")
-                    
+
                     .AppendLine("    if haveToGo then")
                     .AppendLine("        int go")
                     .AppendLine("        go = " + (int)ActionEnum.Go)
+                    .AppendLine("        int randomGo")
+                    .AppendLine("        randomGo = random state")
                     .AppendLine("        print go")
+                    .AppendLine("        print randomGo")
                     .AppendLine("        stop")
                     .AppendLine("    endif")
 
                     .AppendLine("    int eat")
                     .AppendLine("    eat = " + (int)ActionEnum.Eat)
                     .AppendLine("    print eat")
+                    .AppendLine("    print state")
                     .AppendLine("    stop")
                     .AppendLine("endif")
 
                     .AppendLine("int child")
                     .AppendLine("child = " + (int)ActionEnum.MakeChild)
-                    .AppendLine("print child");
+                    .AppendLine("print child")
+                    .AppendLine("print state");
 
             return commands.ToString();
         }
