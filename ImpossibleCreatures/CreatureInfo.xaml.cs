@@ -34,9 +34,9 @@ namespace ImpossibleCreatures
             Generation.Content = membrane.Generation;
             GenLength.Content = creature.GenotypeLength;
 
-            ActionCode.Text = new CommandToStringParser().ParseCommands(creature.CommandsForGetAction);
+            ActionCode.Text = new CommandPrinter().ParseCommands(creature.CommandsForGetAction);
 
-            DirectionCode.Text = new CommandToStringParser().ParseCommands(creature.CommandsForGetDirection);
+            DirectionCode.Text = new CommandPrinter().ParseCommands(creature.CommandsForGetDirection);
         }
     }
 }

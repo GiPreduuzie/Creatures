@@ -7,11 +7,12 @@ using Creatures.Language.Commands.Interfaces;
 
 namespace Creatures.Language.Parsers
 {
-    public class CommandToStringParser : ICommandVisitor
+    public class CommandPrinter : ICommandVisitor
     {
-        private StringBuilder _builder;
+        private readonly StringBuilder _builder;
+        private int _embeddedCondtions;
 
-        public CommandToStringParser()
+        public CommandPrinter()
         {
             _builder = new StringBuilder();
         }
@@ -40,57 +41,64 @@ namespace Creatures.Language.Parsers
 
         public void Accept(NewInt command)
         {
-            _builder.AppendLine($"int {command.Name}");
+            AddToResult($"int {command.Name}");
         }
 
         public void Accept(SetValue command)
         {
-            _builder.AppendLine($"{command.TargetName} = {command.Value}");
+            AddToResult($"{command.TargetName} = {command.Value}");
         }
 
         public void Accept(Plus command)
         {
-            _builder.AppendLine($"{command.TargetName} = {command.FirstSource} + {command.SecondSource}");
+            AddToResult($"{command.TargetName} = {command.FirstSource} + {command.SecondSource}");
         }
 
         public void Accept(Print command)
         {
-            _builder.AppendLine($"print {command.Variable}");
+            AddToResult($"print {command.Variable}");
         }
 
         public void Accept(Minus command)
         {
-            _builder.AppendLine($"{command.TargetName} = {command.FirstSource} - {command.SecondSource}");
+            AddToResult($"{command.TargetName} = {command.FirstSource} - {command.SecondSource}");
         }
 
         public void Accept(CloneValue command)
         {
-            _builder.AppendLine($"{command.TargetName} = {command.SourceName}");
+            AddToResult($"{command.TargetName} = {command.SourceName}");
         }
 
         public void Accept(Condition command)
         {
-            _builder.AppendLine($"if {command.ConditionName} then");
+            AddToResult($"if {command.ConditionName} then");
+            _embeddedCondtions++;
         }
 
         public void Accept(Stop command)
         {
-            _builder.AppendLine("stop");
+            AddToResult("stop");
         }
 
         public void Accept(CloseCondition command)
         {
-            _builder.AppendLine("endif");
+            _embeddedCondtions--;
+            AddToResult("endif");
         }
 
         public void Accept(GetState command)
         {
-            _builder.AppendLine($"{command.TargetName} = getState {command.Direction}");
+            AddToResult($"{command.TargetName} = getState {command.Direction}");
         }
 
         public void Accept(GetRandom command)
         {
-            _builder.AppendLine($"{command.TargetName} = random {command.MaxValueName}");
+            AddToResult($"{command.TargetName} = random {command.MaxValueName}");
+        }
+
+        private void AddToResult(string value)
+        {
+            _builder.AppendLine("".PadLeft(_embeddedCondtions*4, ' ') + value);
         }
     }
 }

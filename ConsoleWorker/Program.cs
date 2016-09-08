@@ -114,7 +114,7 @@ namespace ConsoleWorker
         private static string CommandsToString(ICommand[] commands)
         {
             var builder=new StringBuilder();
-            var commandsToString = new CommandToStringParser();
+            var commandsToString = new CommandPrinter();
             for (int num = 0; num < commands.Length; num++)
             {
                 builder.AppendLine($"{num}) "+commandsToString.ParseCommand(commands[num]));

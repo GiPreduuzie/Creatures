@@ -9,7 +9,7 @@ namespace CellsAutomate.Mutator.CommandsList
     {
         private ICommandsList _commands;
         private ILogger _logger;
-        private CommandToStringParser _toStringParser = new CommandToStringParser();
+        private CommandPrinter _printer = new CommandPrinter();
         public int Count => _commands.Count;
 
         public CommandsListWithLogger(ICommandsList commands, ILogger logger)
@@ -20,14 +20,14 @@ namespace CellsAutomate.Mutator.CommandsList
 
         public void Insert(int index, ICommand item)
         {
-            var parsedCommand = _toStringParser.ParseCommand(item);
+            var parsedCommand = _printer.ParseCommand(item);
             _commands.Insert(index, item);
             _logger.Write($"Command \"{parsedCommand}\" inserted at \"{index}\"\n");
         }
 
         public void RemoveAt(int index)
         {
-            var parsedCommand = _toStringParser.ParseCommand(_commands[index]);
+            var parsedCommand = _printer.ParseCommand(_commands[index]);
             _commands.RemoveAt(index);
             _logger.Write($"Command \"{parsedCommand}\" deleted from \"{index}\"\n");
         }
@@ -37,9 +37,9 @@ namespace CellsAutomate.Mutator.CommandsList
             get { return _commands[index]; }
             set
             {
-                var parsedCommand = _toStringParser.ParseCommand(_commands[index]);
+                var parsedCommand = _printer.ParseCommand(_commands[index]);
                 _commands[index] = value;
-                var parsedInput = _toStringParser.ParseCommand(_commands[index]);
+                var parsedInput = _printer.ParseCommand(_commands[index]);
                 _logger.Write($"Command \"{parsedCommand}\" replaced \"{parsedInput}\" at {index}\n");
             }
         }
