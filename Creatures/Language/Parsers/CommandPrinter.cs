@@ -106,6 +106,16 @@ namespace Creatures.Language.Parsers
             AddToResult($"{command.TargetName} = getFromMemory {command.KeyName}");
         }
 
+        public void Accept(SendMessage command)
+        {
+            AddToResult($"sendMessage {command.ReceiverPosition} {command.Message}");
+        }
+
+        public void Accept(GetFromMessageQueue command)
+        {
+            AddToResult($"{command.TargetName} = getFromMessageQueue");
+        }
+
         private void AddToResult(string value)
         {
             _builder.AppendLine("".PadLeft(_embeddedCondtions*4, ' ') + value);

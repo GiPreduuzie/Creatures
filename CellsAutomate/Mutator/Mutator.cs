@@ -62,7 +62,7 @@ namespace CellsAutomate.Mutator
         private bool AssertValid(CommandsList.CommandsList commandsList)
         {
             var executor = new ValidationExecutor();
-            return executor.Execute(commandsList, new ExecutorToolset(Random));
+            return executor.Execute(commandsList, new ExecutorToolsetForValidator(Random));
         }
 
         private int GetNumberOfMutations(CommandsList.CommandsList commandsList)

@@ -99,6 +99,19 @@ namespace CellsAutomate.Mutator.Mutations.InternalClasses
                 GetRandomDeclarationBefore(placeIndex).Name);
         }
 
+        public ICommand CreateSendMessage(int placeIndex)
+        {
+            return new SendMessage(
+                 GetRandomDeclarationBefore(placeIndex).Name,
+                 GetRandomDeclarationBefore(placeIndex).Name);
+        }
+
+        public ICommand CreateGetFromMessageQueue(int placeIndex)
+        {
+            return new GetFromMessageQueue(
+                GetRandomDeclarationBefore(placeIndex).Name);
+        }
+
         public Minus CreateMinus(int placeIndex)
         {
             var declarations = GetRandomDeclarationsBefore(placeIndex, 3);
@@ -197,7 +210,6 @@ namespace CellsAutomate.Mutator.Mutations.InternalClasses
             return _random.Next(MinimalDirection, MaximalDirection + 1);
         }
 
-
-     
+    
     }
 }

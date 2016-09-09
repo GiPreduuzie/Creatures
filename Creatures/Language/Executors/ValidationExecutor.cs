@@ -193,10 +193,34 @@ namespace Creatures.Language.Executors
             _variables[command.TargetName] = _executorToolset.GetMemory(_variables[command.KeyName].Value);
         }
 
+        public void Accept(SendMessage command)
+        {
+            if (!_variables.ContainsKey(command.ReceiverPosition) ||
+               !_variables.ContainsKey(command.Message) ||
+               _variables[command.ReceiverPosition] == null ||
+               _variables[command.Message] == null)
+            {
+                _isExecutable = false;
+                return;
+            }
+
+            _executorToolset.SendMessage(_variables[command.ReceiverPosition].Value, _variables[command.Message].Value);
+        }
+
+        public void Accept(GetFromMessageQueue command)
+        {
+            if (!_variables.ContainsKey(command.TargetName))
+            {
+                _isExecutable = false;
+                return;
+            }
+
+            _variables[command.TargetName] = _executorToolset.GetMessageFromQueue();
+        }
+
         public void Accept(Stop command)
         {       
             _stop = true;
         }
-
     }
 }

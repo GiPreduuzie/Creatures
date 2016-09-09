@@ -10,7 +10,7 @@ namespace Creaturestests
     {
         protected void Check(string commands, params int[] values)
         {
-            Check(commands, new ExecutorToolset(new Random()), values);
+            Check(commands, new ExecutorToolsetForValidator(new Random()), values);
         }
 
         protected void Check(string commands, IExecutorToolset executorToolset, params int[] values)

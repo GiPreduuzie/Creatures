@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Creatures.Language.Commands;
+﻿using Creatures.Language.Commands;
 using Creatures.Language.Commands.Interfaces;
 
 namespace Creaturestests.MutatorTests
@@ -106,6 +101,19 @@ namespace Creaturestests.MutatorTests
             var comparableCommand = _second as GetFromMemory;
             _isEqual = command.TargetName == comparableCommand.TargetName &&
                        command.KeyName == comparableCommand.KeyName;
+        }
+
+        public void Accept(SendMessage command)
+        {
+            var comparableCommand = _second as SendMessage;
+            _isEqual = command.Message == comparableCommand.Message &&
+                       command.ReceiverPosition == comparableCommand.ReceiverPosition;
+        }
+
+        public void Accept(GetFromMessageQueue command)
+        {
+            var comparableCommand = _second as GetFromMessageQueue;
+            _isEqual = command.TargetName == comparableCommand.TargetName;
         }
     }
 }

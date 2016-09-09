@@ -31,7 +31,11 @@ namespace CellsAutomate.Mutator.Mutations
                 _creator.CreatePlus,
                 _creator.CreatePrint,
                 _creator.CreateSetValue,
-                _creator.CreateStop
+                _creator.CreateStop,
+                _creator.CreateGetFromMemory,
+                _creator.CreateSetToMemory,
+                _creator.CreateGetFromMessageQueue,
+                _creator.CreateSendMessage
             };
         }
 

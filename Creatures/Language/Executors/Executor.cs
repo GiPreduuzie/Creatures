@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using Creatures.Language.Commands;
 using Creatures.Language.Commands.Interfaces;
@@ -15,14 +16,16 @@ namespace Creatures.Language.Executors
         int GetRandom(int maxValue);
         void SetMemory(int key, int value);
         int GetMemory(int key);
+        void SendMessage(int receiverPosition, int message);
+        int GetMessageFromQueue();
     }
 
-    public class ExecutorToolset : IExecutorToolset
+    public class ExecutorToolsetForValidator : IExecutorToolset
     {
         Random _random;
-        Dictionary<int, int> _memory = new Dictionary<int, int>();
+        readonly Dictionary<int, int> _memory = new Dictionary<int, int>();
 
-        public ExecutorToolset(Random random)
+        public ExecutorToolsetForValidator(Random random)
         {
             _random = random;
         }
@@ -45,6 +48,15 @@ namespace Creatures.Language.Executors
         public int GetMemory(int key)
         {
             return _memory.ContainsKey(key) ? _memory[key] : 0;
+        }
+
+        public void SendMessage(int receiverPosition, int message)
+        {
+        }
+
+        public int GetMessageFromQueue()
+        {
+            return -1;
         }
     }
 
@@ -81,6 +93,17 @@ namespace Creatures.Language.Executors
         public int GetMemory(int key)
         {
             return _memory.ContainsKey(key) ? _memory[key] : 0;
+        }
+
+        public void SendMessage(int receiverPosition, int message)
+        {
+            // TODO :: impliment
+        }
+
+        public int GetMessageFromQueue()
+        {
+            // TODO :: impliment
+            return -1;
         }
     }
 
@@ -205,6 +228,16 @@ namespace Creatures.Language.Executors
         public void Accept(GetFromMemory command)
         {
             _variables[command.TargetName] = _executorToolset.GetMemory(_variables[command.KeyName].Value);
+        }
+
+        public void Accept(SendMessage command)
+        {
+            _executorToolset.SendMessage(_variables[command.ReceiverPosition].Value, _variables[command.Message].Value);
+        }
+
+        public void Accept(GetFromMessageQueue command)
+        {
+            _variables[command.TargetName] = _executorToolset.GetMessageFromQueue();
         }
 
         public void Accept(Stop command)

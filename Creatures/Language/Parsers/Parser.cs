@@ -22,7 +22,7 @@ namespace Creatures.Language.Parsers
             var constructor = new Constructor();
 
             var handlers = new List<Func<string, IResult<ICommand>>>
-            { 
+            {
                 constructor.NewInt,
                 constructor.NewArray,
                 constructor.CloneValue,
@@ -36,7 +36,9 @@ namespace Creatures.Language.Parsers
                 constructor.GetRandom,
                 constructor.Stop,
                 constructor.GetFromMemory,
-                constructor.SetToMemory
+                constructor.SetToMemory,
+                constructor.SendMessage,
+                constructor.GetFromMessageQueue
             };
 
 

@@ -2,16 +2,14 @@
 
 namespace Creatures.Language.Commands
 {
-    public class GetFromMemory : ICommandSetter
+    public class GetFromMessageQueue : ICommandSetter
     {
-        public GetFromMemory(string targetName, string keyName)
+        public GetFromMessageQueue(string targetName)
         {
             TargetName = targetName;
-            KeyName = keyName;
         }
 
         public string TargetName { get; }
-        public string KeyName { get; }
 
 
         public void AcceptVisitor(ICommandVisitor visitor)
@@ -21,7 +19,7 @@ namespace Creatures.Language.Commands
 
         public bool ContainsAsArgument(string variable)
         {
-            return TargetName == variable || KeyName == variable;
+            return TargetName == variable;
         }
     }
 }

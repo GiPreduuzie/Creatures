@@ -15,5 +15,7 @@ namespace Creatures.Language.Commands.Interfaces
         void Accept(GetRandom command);
         void Accept(SetToMemory command);
         void Accept(GetFromMemory command);
+        void Accept(SendMessage command);
+        void Accept(GetFromMessageQueue command);
     }
 }

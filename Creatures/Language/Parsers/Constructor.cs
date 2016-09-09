@@ -206,6 +206,36 @@ namespace Creatures.Language.Parsers
             return Result<ICommand>.CreateSuccess(new GetFromMemory(parts[0], rightParts[1]));
         }
 
+        public IResult<ICommand> SendMessage(string command)
+        {
+            var error = "Should be 'sendMessage <receiver name> <message>', but it is: " + command;
+            var failure = Result<ICommand>.CreateFailure(error);
+
+            var parts = command.Trim().Split(' ').Select(x => x.Trim()).ToArray();
+
+            if (parts.Length != 3) return failure;
+            if (parts[0] != "sendMessage") return failure;
+            if (!IsIdentifier(parts[1])) return failure;
+            if (!IsIdentifier(parts[2])) return failure;
+
+            return Result<ICommand>.CreateSuccess(new SetToMemory(parts[1], parts[2]));
+        }
+
+        public IResult<ICommand> GetFromMessageQueue(string command)
+        {
+            var error = "Should be '<target> = getFromMessageQueue', but it is: " + command;
+            var failure = Result<ICommand>.CreateFailure(error);
+
+            var parts = command.Trim().Split('=').Select(x => x.Trim()).ToArray();
+
+            if (parts.Length != 2) return failure;
+            if (!IsIdentifier(parts[0])) return failure;
+
+            var rightParts = parts[1].Split(' ').Select(x => x.Trim()).ToArray();
+            if (rightParts[0] != "getFromMessageQueue") return failure;
+
+            return Result<ICommand>.CreateSuccess(new GetFromMessageQueue(parts[0]));
+        }
 
         private IResult<string> CheckTypeNamePair(string type, string value)
         {

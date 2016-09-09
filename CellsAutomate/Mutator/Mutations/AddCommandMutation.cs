@@ -34,7 +34,9 @@ namespace CellsAutomate.Mutator.Mutations
                 AddSetValue,
                 AddStop,
                 AddGetFromMemory,
-                AddSetToMemory
+                AddSetToMemory,
+                AddSendMessage,
+                AddGetFromMessageQueue
             };
         }
 
@@ -129,6 +131,18 @@ namespace CellsAutomate.Mutator.Mutations
         private void AddSetToMemory(int insertIndex)
         {
             var command = _creator.CreateSetToMemory(insertIndex);
+            Insert(command, insertIndex);
+        }
+
+        private void AddSendMessage(int insertIndex)
+        {
+            var command = _creator.CreateSendMessage(insertIndex);
+            Insert(command, insertIndex);
+        }
+
+        private void AddGetFromMessageQueue(int insertIndex)
+        {
+            var command = _creator.CreateGetFromMessageQueue(insertIndex);
             Insert(command, insertIndex);
         }
 

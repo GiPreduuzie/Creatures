@@ -37,6 +37,16 @@ namespace Creaturestests
             throw new NotImplementedException();
         }
 
+        public void SendMessage(int receiverPosition, int message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetMessageFromQueue()
+        {
+            throw new NotImplementedException();
+        }
+
         public int GetState(int direction)
         {
             return _state[direction];
