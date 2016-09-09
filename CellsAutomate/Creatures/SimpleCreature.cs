@@ -43,5 +43,9 @@ namespace CellsAutomate.Creatures
         }
 
         public override int GenotypeLength => 0;
+        public override void ReceiveMessage(int message)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

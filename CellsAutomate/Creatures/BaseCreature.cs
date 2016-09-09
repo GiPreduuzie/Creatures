@@ -27,5 +27,7 @@ namespace CellsAutomate.Creatures
         }
 
         public abstract int GenotypeLength { get; }
+
+        public abstract void ReceiveMessage(int message);
     }
 }

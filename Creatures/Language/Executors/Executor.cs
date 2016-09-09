@@ -2,7 +2,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using Creatures.Language.Commands;
 using Creatures.Language.Commands.Interfaces;
@@ -65,12 +64,16 @@ namespace Creatures.Language.Executors
         private readonly Random _random;
         private readonly IDictionary<int, int> _state;
         private readonly IDictionary<int, int> _memory;
+        private readonly Action<int, int> _sendMessage;
+        private readonly Queue<int> _messages;
 
-        public MyExecutorToolset(Random random,  IDictionary<int, int> state, IDictionary<int, int> memory)
+        public MyExecutorToolset(Random random,  IDictionary<int, int> state, IDictionary<int, int> memory, Action<int, int> sendMessage, Queue<int> messages)
         {
             _random = random;
             _state = state;
             _memory = memory;
+            _sendMessage = sendMessage;
+            _messages = messages;
         }
 
         public int GetState(int condition)
@@ -97,13 +100,13 @@ namespace Creatures.Language.Executors
 
         public void SendMessage(int receiverPosition, int message)
         {
-            // TODO :: impliment
+            var position = receiverPosition%4;
+            _sendMessage(position, message);
         }
 
         public int GetMessageFromQueue()
         {
-            // TODO :: impliment
-            return -1;
+            return _messages.Dequeue();
         }
     }
 

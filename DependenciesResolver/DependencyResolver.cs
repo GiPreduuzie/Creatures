@@ -30,11 +30,6 @@ namespace DependenciesResolver
             return GetString("path for logs");
         }
 
-        private ICommand[] GetDirectionAlgorithm()
-        {
-            return new ICommand[0];
-        }
-
         private ICommand[] GetActionAlgorithm()
         {
             return new ActionExperimentalAlgorithm().Algorithm;
@@ -42,7 +37,7 @@ namespace DependenciesResolver
 
         public CreatorOfCreature GetCreatureCreator()
         {
-            return new CreatorOfCreature(GetMutator(), GetActionAlgorithm(), GetDirectionAlgorithm(), GetChildCreatingStrategy());
+            return new CreatorOfCreature(GetMutator(), GetActionAlgorithm(), GetChildCreatingStrategy());
         }
 
         private IChildCreatingStrategy GetChildCreatingStrategy()

@@ -80,7 +80,7 @@ namespace CellsAutomate
             {
                 for (int j = 0; j < Height; j++)
                 {
-                    Creatures[i, j] = random.Next(1000) % 100 == 0 ? new Membrane(_creator.CreateAbstractCreature(), random, new Point(i, j), 1, 0, _creator) : null;
+                    Creatures[i, j] = random.Next(1000) % 100 == 0 ? new Membrane(_creator.CreateAbstractCreature(SendMessage), random, new Point(i, j), 1, 0, _creator) : null;
                 }
             }
 
@@ -110,6 +110,34 @@ namespace CellsAutomate
             }
 
             FillMatrixWithFood();
+        }
+
+
+        private void SendMessage(Point currentPosition, int receiverPosition, int message)
+        {
+            Point point;
+            switch (receiverPosition)
+            {
+                case 0:
+                    point = new Point(currentPosition.X, currentPosition.Y - 1);
+                    break;
+                case 1:
+                    point = new Point(currentPosition.X + 1, currentPosition.Y);
+                    break;
+                case 2:
+                    point = new Point(currentPosition.X, currentPosition.Y + 1);
+                    break;
+                case 3:
+                    point = new Point(currentPosition.X - 1, currentPosition.Y);
+                    break;
+                default: throw new Exception();
+            }
+
+            var value = Creatures[point.X, point.Y];
+            if (value == null) return;
+
+            value.Creature.ReceiveMessage(message);
+
         }
 
         private void MakeTurn(Membrane currentCreature)
@@ -153,7 +181,7 @@ namespace CellsAutomate
             var childPoint = DirectionEx.PointByDirection(direction, creature.Position);
             if (CommonMethods.IsValidAndFree(childPoint, Creatures) && HasEnoughtEnergyForChild(creature))
             {
-                Creatures[childPoint.X, childPoint.Y] = creature.MakeChild(childPoint);
+                Creatures[childPoint.X, childPoint.Y] = creature.MakeChild(childPoint, SendMessage);
             }
         }
 

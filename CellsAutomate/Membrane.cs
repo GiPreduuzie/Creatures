@@ -77,9 +77,9 @@ namespace CellsAutomate
             }
         }
 
-        public Membrane MakeChild(Point childPosition)
+        public Membrane MakeChild(Point childPosition, Action<Point, int, int> sendMessage)
         {
-            var child = _creator.MakeChild(Creature);
+            var child = _creator.MakeChild(Creature, sendMessage);
             EnergyPoints -= child.Item2.Price;
             return new Membrane(child.Item1, _random, childPosition, Generation + 1, _parentMark, _creator);
         }

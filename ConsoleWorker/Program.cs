@@ -84,7 +84,8 @@ namespace ConsoleWorker
 
             var youngCreatureLog = CreateLogOfCreature(randomYoung.Creature as Creature, randomYoung.Generation);
             var mediumCreatureLog = CreateLogOfCreature(randomMedium.Creature as Creature, randomMedium.Generation);
-            var originalCreatureLog = CreateLogOfCreature(resolver.GetCreatureCreator().CreateAbstractCreature() as Creature, 1);
+            var originalCreatureLog = CreateLogOfCreature(resolver.GetCreatureCreator().CreateAbstractCreature(
+                (point, adress, message) => { }) as Creature, 1);
             File.WriteAllText(pathForLogs + "\\randomYoungCommands.txt", youngCreatureLog);
             File.WriteAllText(pathForLogs + "\\randomMediumCommands.txt", mediumCreatureLog);
             File.WriteAllText(pathForLogs + "\\originalCommands.txt", originalCreatureLog);
