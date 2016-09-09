@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Odbc;
 using System.Drawing;
 using CellsAutomate.Food;
 using Creatures.Language.Commands.Interfaces;
@@ -14,8 +13,8 @@ namespace CellsAutomate.Creatures
     {
         private Action<Point, int, int> _sendMessage;
         private readonly Executor _executor;
-        private readonly Dictionary<int, int> _creatureMemory = new Dictionary<int, int>();
-        private Queue<int> _receivedMessages = new Queue<int>();
+        public Dictionary<int, int> CreatureMemory { get; } = new Dictionary<int, int>();
+        public Queue<int> ReceivedMessages { get; } = new Queue<int>();
 
         public ICommand[] CommandsForGetAction { get; }
 
@@ -40,7 +39,7 @@ namespace CellsAutomate.Creatures
             environmentState.Add(4, energyPoints);
             environmentState.Add(5, foodOnCell);
 
-            var result = _executor.Execute(CommandsForGetAction, new MyExecutorToolset(random, environmentState, _creatureMemory, (x, y) => _sendMessage(position, x, y), _receivedMessages));
+            var result = _executor.Execute(CommandsForGetAction, new MyExecutorToolset(random, environmentState, CreatureMemory, (x, y) => _sendMessage(position, x, y), ReceivedMessages));
             var results = result
                 .Split('\n')
                 .Where(x => !string.IsNullOrWhiteSpace(x))
@@ -77,10 +76,10 @@ namespace CellsAutomate.Creatures
 
         public override void ReceiveMessage(int message)
         {
-            if (_receivedMessages.Count > 100)
-                _receivedMessages.Dequeue();
+            if (ReceivedMessages.Count > 100)
+                ReceivedMessages.Dequeue();
 
-            _receivedMessages.Enqueue(message);
+            ReceivedMessages.Enqueue(message);
         }
     }
 }

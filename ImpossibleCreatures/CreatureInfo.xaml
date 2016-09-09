@@ -37,10 +37,23 @@
                 <TextBox Name="ActionCode" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" />
             </GroupBox>
         </Grid>
-        <Grid Column="3" >
-            <GroupBox Header="Direction code">
-                <TextBox Name="DirectionCode" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" />
-            </GroupBox>
+        <Grid Column="3">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid Row="0">
+                    <GroupBox Header="Memory" >
+                        <TextBox Name="Memory" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" />
+                    </GroupBox>
+                </Grid>
+                <Grid Row="1">
+                    <GroupBox Header="Received messages">
+                        <TextBox Name="ReceivedMessages" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" />
+                    </GroupBox>
+                </Grid>
+            </Grid>
         </Grid>
     </Grid>
 </Window>
