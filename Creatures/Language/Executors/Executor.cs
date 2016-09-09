@@ -106,6 +106,9 @@ namespace Creatures.Language.Executors
 
         public int GetMessageFromQueue()
         {
+            if (_messages.Count == 0)
+                return -1;
+
             return _messages.Dequeue();
         }
     }
