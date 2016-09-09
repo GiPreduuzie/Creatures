@@ -12,6 +12,8 @@ namespace CellsAutomate.Creatures
     public class Creature : BaseCreature
     {
         private readonly Executor _executor;
+        private Dictionary<int, int> _creatureMemory = new Dictionary<int, int>();
+
         public ICommand[] CommandsForGetAction { get; }
 
         public Creature(
@@ -34,7 +36,7 @@ namespace CellsAutomate.Creatures
             environmentState.Add(4, energyPoints);
             environmentState.Add(5, foodOnCell);
 
-            var result = _executor.Execute(CommandsForGetAction, new MyExecutorToolset(random, environmentState));
+            var result = _executor.Execute(CommandsForGetAction, new MyExecutorToolset(random, environmentState, _creatureMemory));
             var results = result
                 .Split('\n')
                 .Where(x => !string.IsNullOrWhiteSpace(x))

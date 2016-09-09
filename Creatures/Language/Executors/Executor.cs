@@ -52,12 +52,13 @@ namespace Creatures.Language.Executors
     {
         private readonly Random _random;
         private readonly IDictionary<int, int> _state;
-        private readonly IDictionary<int, int> _memory = new Dictionary<int, int>();
+        private readonly IDictionary<int, int> _memory;
 
-        public MyExecutorToolset(Random random, IDictionary<int, int> state)
+        public MyExecutorToolset(Random random,  IDictionary<int, int> state, IDictionary<int, int> memory)
         {
             _random = random;
             _state = state;
+            _memory = memory;
         }
 
         public int GetState(int condition)
