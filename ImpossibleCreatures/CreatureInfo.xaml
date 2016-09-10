@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ImpossibleCreatures"
         mc:Ignorable="d"
-        Title="Creature Info" Height="500" Width="900">
+        Title="Creature Info" Height="500" Width="900" Deactivated="Window_Deactivated">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="70"></ColumnDefinition>

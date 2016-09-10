@@ -49,5 +49,10 @@ namespace ImpossibleCreatures
 
             return itemString.ToString();
         }
+
+        private void Window_Deactivated(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
