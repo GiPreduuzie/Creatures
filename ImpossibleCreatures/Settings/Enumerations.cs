@@ -2,14 +2,21 @@
 {
     internal enum ChildCreationPrice
     {
-        Constant,
+        LinearPenality,
         LogarithmicPenality,
-        LinearPenality
+        Constant
     }
 
     internal enum FoodBehavior
     {
         Grow,
         Plain
+    }
+
+    internal enum FoodDistibutionStrategy
+    {
+        AsWaterFromCorners,
+        RandomRain,
+        FillEntireField
     }
 }

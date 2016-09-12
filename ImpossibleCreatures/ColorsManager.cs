@@ -96,9 +96,11 @@ namespace ImpossibleCreatures
 
         private Color GetFoodColor(int food, int maxFood)
         {
-            var r = (byte)(0);
-            var g = (byte)(255 * ((food * 1.0) / maxFood));
-            var b = (byte)(0);
+            var k = food * 1.0 / maxFood;
+
+            var r = (byte)(154 * k);
+            var g = (byte)(205 * k);
+            var b = (byte)(50 * k);
 
             var color = Color.FromArgb(255, r, g, b);
             return color;

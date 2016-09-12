@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using CellsAutomate;
+using ImpossibleCreatures.Settings;
 using Matrix = CellsAutomate.Matrix;
 
 namespace ImpossibleCreatures
@@ -22,14 +23,41 @@ namespace ImpossibleCreatures
         private TurnExecutor _turnExecutor;
         public ExecutionSettings ExecutionSettings { get; set; } = new ExecutionSettings();
 
-        private Lazy<Matrix> _matrix = new Lazy<Matrix>(() => new DependenciesResolver.DependencyResolver().GetMatrix());
+        private Matrix _matrix;
+        private Matrix Matrix => _matrix ?? (_matrix = GetMatrix());
 
+        private Matrix GetMatrix()
+        {
+            var settingsManager = new SettingsManager();
+
+            return new Matrix(
+                settingsManager.GetMatrixSize(ComboBoxMatrixSize),
+                settingsManager.GetMatrixSize(ComboBoxMatrixSize),
+                settingsManager.GetCreatureCreator(ComboBoxChildCreationPrice),
+                settingsManager.GetFoodDistributionStrategy(ComboBoxFoodDistibutionStrategy),
+                settingsManager.GetFoodBehavior(ComboBoxFoodBehavior),
+                settingsManager.GetFoodDistributingFrequency(SliderFoodDistributingFrequency),
+                settingsManager.GetChildCreatingStrategy(ComboBoxChildCreationPrice));
+        }
 
         public MainWindow()
         {
             InitializeComponent();
 
-            var time = (int) RefreshSpeed.Value;
+            FillCombobox(ComboBoxMatrixSize, new[] { "100", "150", "200", "250", "300" });
+            ComboBoxMatrixSize.SelectionChanged += ComboBox_SelectionChanged;
+
+            FillCombobox(ComboBoxChildCreationPrice, Enum.GetNames(typeof(ChildCreationPrice)));
+            ComboBoxChildCreationPrice.SelectionChanged += ComboBox_SelectionChanged;
+
+            FillCombobox(ComboBoxFoodDistibutionStrategy, Enum.GetNames(typeof(FoodDistibutionStrategy)));
+            ComboBoxFoodDistibutionStrategy.SelectionChanged += ComboBox_SelectionChanged;
+
+            FillCombobox(ComboBoxFoodBehavior, Enum.GetNames(typeof(FoodBehavior)));
+            ComboBoxFoodBehavior.SelectionChanged += ComboBox_SelectionChanged;
+
+
+            var time = (int)RefreshSpeed.Value;
 
             _timer = new DispatcherTimer
             {
@@ -42,11 +70,19 @@ namespace ImpossibleCreatures
 
         }
 
+        private void FillCombobox(ComboBox combobox, string[] items)
+        {
+            for (int i = 0; i < items.Length; i++)
+            {
+                combobox.Items.Add(new ComboBoxItem { Content = items[i], IsSelected = i == 0 });
+            }
+        }
+
         private void Start(object sender, RoutedEventArgs e)
         {
-            _matrix.Value.FillStartMatrixRandomly();
+            Matrix.FillStartMatrixRandomly();
             PrintBitmap();
-            _turnExecutor = new TurnExecutor(_matrix.Value, ExecutionSettings);
+            _turnExecutor = new TurnExecutor(Matrix, ExecutionSettings);
         }
 
         private async void MakeTurn(object sender, object o)
@@ -64,7 +100,7 @@ namespace ImpossibleCreatures
 
             _colorsManager.Reset();
 
-            foreach (var creature in _matrix.Value.CreaturesAsEnumerable)
+            foreach (var creature in Matrix.CreaturesAsEnumerable)
             {
                 creature.ParentMark = n;
                 n++;
@@ -74,7 +110,7 @@ namespace ImpossibleCreatures
 
         private void PrintCurrentMatrix(object sender, object o)
         {
-            
+
 
             if ((bool)MenuItemSyncRendering.IsChecked)
             {
@@ -101,7 +137,7 @@ namespace ImpossibleCreatures
 
             PrintBitmap();
 
-            if (_matrix.Value.AliveCount == 0)
+            if (Matrix.AliveCount == 0)
             {
                 _timer.Stop();
                 _turnExecutor.Stop();
@@ -117,9 +153,9 @@ namespace ImpossibleCreatures
             CalcTime.Content = $"Calc time: {Math.Round(_turnExecutor.LastTurnTook.TotalMilliseconds, 1)}ms";
             PaintTime.Content = $"Paint time: {Math.Round(_paintTimer.Elapsed.TotalMilliseconds, 1)}ms";
 
-            _nationsCount = _matrix.Value.GetNationsAmount();
+            _nationsCount = Matrix.GetNationsAmount();
 
-            var creatures = _matrix.Value.CreaturesAsEnumerable;
+            var creatures = Matrix.CreaturesAsEnumerable;
             _averageGenotypeLength = creatures.Any() ? creatures.Select(x => x.Creature.GenotypeLength).Average() : 0;
 
             NationCount.Content = "Nation: " + _nationsCount;
@@ -183,19 +219,37 @@ namespace ImpossibleCreatures
             _nationsCount = 0;
             _averageGenotypeLength = 0;
 
-            _matrix = new Lazy<Matrix>(() => new DependenciesResolver.DependencyResolver().GetMatrix());
+            _matrix = GetMatrix();
 
-            _matrix.Value.FillStartMatrixRandomly();
+            Matrix.FillStartMatrixRandomly();
             PrintBitmap();
-            _turnExecutor = new TurnExecutor(_matrix.Value, ExecutionSettings);
+            _turnExecutor = new TurnExecutor(Matrix, ExecutionSettings);
 
             _turnExecutor.Start();
             _timer.Start();
+
+            ButtonStartStop.Content = "Stop";
+
+            ButtonStartStop.IsEnabled = true;
+            ButtonOneStep.IsEnabled = true;
+            ButtonRepaint.IsEnabled = true;
         }
 
         private void PaintGrid_Click(object sender, RoutedEventArgs e)
         {
             PrintBitmap();
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ButtonStartStop.IsEnabled = false;
+            ButtonOneStep.IsEnabled = false;
+            ButtonRepaint.IsEnabled = false;
+        }
+
+        private void SliderFoodDistributingFrequency_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            //ComboBox_SelectionChanged(null, null);
         }
     }
 }

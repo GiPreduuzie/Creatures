@@ -7,7 +7,7 @@ namespace CellsAutomate.Food
 {
     public class FoodMatrix
     {
-        private readonly int[,] _matrix;
+        private readonly int[,] Matrix;
 
         private readonly IFoodDistributionStrategy _strategy;
         private readonly IFoodBehavior _foodBehavior;
@@ -15,8 +15,8 @@ namespace CellsAutomate.Food
 
         private int _counterOfTurns = 0;
 
-        public int Length => _matrix.GetLength(0);
-        public int Height => _matrix.GetLength(1);
+        public int Length => Matrix.GetLength(0);
+        public int Height => Matrix.GetLength(1);
 
         public FoodMatrix(
             int length, 
@@ -25,7 +25,7 @@ namespace CellsAutomate.Food
             IFoodDistributionStrategy strategy,
             IFoodBehavior foodBehavior)
         {
-            _matrix = new int[length, height];
+            Matrix = new int[length, height];
             _strategy = strategy;
             _foodDistributingFrequency = foodDistributingFrequency;
             _foodBehavior = foodBehavior;
@@ -43,20 +43,20 @@ namespace CellsAutomate.Food
 
         public void AddFood(Point currentPoint)
         {
-            _matrix[currentPoint.X, currentPoint.Y] += FoodMatrixConstants.AddedFoodLevel;
+            Matrix[currentPoint.X, currentPoint.Y] += FoodMatrixConstants.AddedFoodLevel;
         }
 
         public bool TakeFood(Point currentPoint)
         {
             if (!HasOneBite(currentPoint))
                 return false;
-            _matrix[currentPoint.X, currentPoint.Y] -= CreatureConstants.OneBite;
+            Matrix[currentPoint.X, currentPoint.Y] -= CreatureConstants.OneBite;
             return true;
         }
 
         public int GetLevelOfFood(Point currentPoint)
         {
-            return _matrix[currentPoint.X, currentPoint.Y];
+            return Matrix[currentPoint.X, currentPoint.Y];
         }
 
         public int GetMaxLevelOfFood()
@@ -67,9 +67,9 @@ namespace CellsAutomate.Food
             {
                 for (var j = 0; j < Height; j++)
                 {
-                    if (_matrix[i, j] > result)
+                    if (Matrix[i, j] > result)
                     {
-                        result = _matrix[i, j];
+                        result = Matrix[i, j];
                     }
                 }
             }
@@ -94,7 +94,7 @@ namespace CellsAutomate.Food
 
         private void ManageExistingFood(bool[,] creatures)
         {
-            _foodBehavior.Manage(creatures, Height, Length, _matrix);
+            _foodBehavior.Manage(creatures, Height, Length, Matrix);
         }
 
         internal void InitializeMatrixWithFood()

@@ -13,6 +13,10 @@ namespace DependenciesResolver
 {
     public class DependencyResolver
     {
+        public DependencyResolver(MainWindow )
+        {
+            
+        }
         public Matrix GetMatrix()
         {
             return new Matrix(

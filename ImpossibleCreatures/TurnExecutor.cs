@@ -7,7 +7,7 @@ namespace ImpossibleCreatures
 {
     public class TurnExecutor
     {
-        private readonly Matrix _matrix;
+        private readonly Matrix Matrix;
         private readonly ExecutionSettings _settings;
         private bool _stopping;
         private Task _task;
@@ -16,7 +16,7 @@ namespace ImpossibleCreatures
 
         public TurnExecutor(Matrix matrix, ExecutionSettings settings)
         {
-            _matrix = matrix;
+            Matrix = matrix;
             _settings = settings;
         }
 
@@ -51,7 +51,7 @@ namespace ImpossibleCreatures
         {
             var timer = Stopwatch.StartNew();
 
-            _matrix.MakeTurn(_settings);
+            Matrix.MakeTurn(_settings);
 
             LastTurnTook = timer.Elapsed;
 

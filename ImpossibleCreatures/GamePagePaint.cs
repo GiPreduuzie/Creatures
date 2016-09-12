@@ -17,7 +17,7 @@ namespace ImpossibleCreatures
         {
             _paintTimer.Reset();
             _paintTimer.Start();
-            var matrix = _matrix.Value;
+            var matrix = Matrix;
             var maxEnergy = matrix.GetMaxEnergy();
             var maxFood = matrix.EatMatrix.GetMaxLevelOfFood();
             var maxAge = matrix.GetMaxAge();
@@ -77,14 +77,14 @@ namespace ImpossibleCreatures
 
         private void MainImage_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            double cellSize = MainImage.ActualHeight / _matrix.Value.Length;
+            double cellSize = MainImage.ActualHeight / Matrix.Length;
 
             var position = e.GetPosition(MainImage);
 
             int cellX = (int)(position.X / cellSize);
             int cellY = (int)(position.Y / cellSize);
 
-            var creature = _matrix.Value.Creatures[cellX, cellY];
+            var creature = Matrix.Creatures[cellX, cellY];
 
             if (creature != null)
             {

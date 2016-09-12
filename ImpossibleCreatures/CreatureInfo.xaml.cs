@@ -46,7 +46,7 @@ namespace ImpossibleCreatures
 
             StringBuilder itemString = new StringBuilder();
             foreach (var item in items)
-                itemString.AppendLine(string.Format(format, item.Key, item.Value));
+                itemString.AppendLine(string.Format(format, item.Key, item));
 
             return itemString.ToString();
         }

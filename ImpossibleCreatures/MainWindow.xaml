@@ -6,12 +6,12 @@
         xmlns:local="clr-namespace:ImpossibleCreatures"
         mc:Ignorable="d"
         Name="Window"
-        Title="Impossible Creatures" Height="1023" Width="1150" Loaded="Start" WindowStartupLocation="CenterScreen" WindowState="Normal" DataContext="{Binding ElementName=Window}">
+        Title="Impossible Creatures" Height="1023" Width="1250" Loaded="Start" WindowStartupLocation="CenterScreen" WindowState="Normal" DataContext="{Binding ElementName=Window}">
 
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="150"></ColumnDefinition>
+            <ColumnDefinition Width="250"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid Column="0" Name="MainGrid" Width="auto" Height="auto" Background="White">
             <Image Name="MainImage" MouseLeftButtonUp="MainImage_OnMouseLeftButtonUp"></Image>
@@ -64,19 +64,18 @@
                 <GroupBox Header="Settings">
                     <StackPanel>
                         <Label>Matrix size:</Label>
-                        <ComboBox Name="MatrixSize">
-                            <ComboBoxItem IsSelected="True">100</ComboBoxItem>
-                            <ComboBoxItem>150</ComboBoxItem>
-                            <ComboBoxItem>200</ComboBoxItem>
-                            <ComboBoxItem>250</ComboBoxItem>
-                            <ComboBoxItem>300</ComboBoxItem>
-                        </ComboBox>
+                        <ComboBox Name="ComboBoxMatrixSize"></ComboBox>
                         <Label>Child creation price:</Label>
-                        <ComboBox Name="ChildCreationPrice">
-                            <ComboBoxItem IsSelected="True">LinearPenality</ComboBoxItem>
-                            <ComboBoxItem>LogarithmicPenality</ComboBoxItem>
-                            <ComboBoxItem>Constant</ComboBoxItem>
-                        </ComboBox>
+                        <ComboBox Name="ComboBoxChildCreationPrice"></ComboBox>
+                        <Label>Food distibution strategy:</Label>
+                        <ComboBox Name="ComboBoxFoodDistibutionStrategy"></ComboBox>  
+                        <Label>Food behavior:</Label>
+                        <ComboBox Name="ComboBoxFoodBehavior"></ComboBox>
+                        <StackPanel Orientation="Horizontal">
+                            <Label>Food distributing frequency:</Label>
+                            <Label Content="{Binding ElementName=SliderFoodDistributingFrequency, Path=Value}"></Label>
+                        </StackPanel>
+                        <Slider Minimum="10" Maximum="100000" Value="10000" Name="SliderFoodDistributingFrequency" IsSnapToTickEnabled="True" TickFrequency="10" ValueChanged="SliderFoodDistributingFrequency_ValueChanged"/>
                     </StackPanel>
                 </GroupBox>
             </StackPanel>
