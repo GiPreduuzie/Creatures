@@ -66,6 +66,8 @@
       <DependentUpon>CreatureInfo.xaml</DependentUpon>
     </Compile>
     <Compile Include="GamePagePaint.cs" />
+    <Compile Include="SettingsManager.cs" />
+    <Compile Include="Settings\Enumerations.cs" />
     <Compile Include="TurnExecutor.cs" />
     <Compile Include="VisualizationType.cs" />
     <Page Include="CreatureInfo.xaml">

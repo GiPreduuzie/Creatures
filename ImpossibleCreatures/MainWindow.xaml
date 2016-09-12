@@ -61,6 +61,24 @@
                         <CheckBox Content="Multithreading" x:Name="Multithreading" IsChecked="{Binding Path=RunInParallel, Mode=TwoWay}" />
                     </StackPanel>
                 </GroupBox>
+                <GroupBox Header="Settings">
+                    <StackPanel>
+                        <Label>Matrix size:</Label>
+                        <ComboBox Name="MatrixSize">
+                            <ComboBoxItem IsSelected="True">100</ComboBoxItem>
+                            <ComboBoxItem>150</ComboBoxItem>
+                            <ComboBoxItem>200</ComboBoxItem>
+                            <ComboBoxItem>250</ComboBoxItem>
+                            <ComboBoxItem>300</ComboBoxItem>
+                        </ComboBox>
+                        <Label>Child creation price:</Label>
+                        <ComboBox Name="ChildCreationPrice">
+                            <ComboBoxItem IsSelected="True">LinearPenality</ComboBoxItem>
+                            <ComboBoxItem>LogarithmicPenality</ComboBoxItem>
+                            <ComboBoxItem>Constant</ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+                </GroupBox>
             </StackPanel>
         </Grid>
     </Grid>

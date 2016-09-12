@@ -6,7 +6,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using CellsAutomate;
-using CellsAutomate.Constants;
 using Matrix = CellsAutomate.Matrix;
 
 namespace ImpossibleCreatures
@@ -15,9 +14,9 @@ namespace ImpossibleCreatures
     {
         private VisualizationType _visualizationType = VisualizationType.CanEat;
 
-        private int _nationsCount = 0;
-        public DispatcherTimer Timer { get; set; }
-        private double _averageGenotypeLength = 0;
+        private int _nationsCount;
+        private readonly DispatcherTimer _timer;
+        private double _averageGenotypeLength;
 
         private readonly Stopwatch _paintTimer = new Stopwatch();
         private TurnExecutor _turnExecutor;
@@ -32,14 +31,14 @@ namespace ImpossibleCreatures
 
             var time = (int) RefreshSpeed.Value;
 
-            Timer = new DispatcherTimer
+            _timer = new DispatcherTimer
             {
                 Interval = new TimeSpan(0, 0, 0, 0, time)
             };
 
             RefreshSpeed.Value = time;
 
-            Timer.Tick += PrintCurrentMatrix;
+            _timer.Tick += PrintCurrentMatrix;
 
         }
 
@@ -104,7 +103,7 @@ namespace ImpossibleCreatures
 
             if (_matrix.Value.AliveCount == 0)
             {
-                Timer.Stop();
+                _timer.Stop();
                 _turnExecutor.Stop();
                 return false;
             }
@@ -132,7 +131,7 @@ namespace ImpossibleCreatures
             if (_turnExecutor.IsRunning)
             {
                 _turnExecutor.Stop();
-                Timer.Stop();
+                _timer.Stop();
                 ProcessCurrentStatus();
                 ButtonStartStop.Content = "Start";
                 ButtonOneStep.IsEnabled = true;
@@ -140,7 +139,7 @@ namespace ImpossibleCreatures
             else
             {
                 _turnExecutor.Start();
-                Timer.Start();
+                _timer.Start();
                 ButtonStartStop.Content = "Stop";
                 ButtonOneStep.IsEnabled = false;
             }
@@ -163,9 +162,9 @@ namespace ImpossibleCreatures
 
         private void RefreshSpeed_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (Timer != null)
+            if (_timer != null)
             {
-                Timer.Interval = TimeSpan.FromMilliseconds(e.NewValue);
+                _timer.Interval = TimeSpan.FromMilliseconds(e.NewValue);
             }
         }
 
@@ -179,7 +178,7 @@ namespace ImpossibleCreatures
         private void Restart_Click(object sender, RoutedEventArgs e)
         {
             _turnExecutor.Stop();
-            Timer.Stop();
+            _timer.Stop();
 
             _nationsCount = 0;
             _averageGenotypeLength = 0;
@@ -191,7 +190,7 @@ namespace ImpossibleCreatures
             _turnExecutor = new TurnExecutor(_matrix.Value, ExecutionSettings);
 
             _turnExecutor.Start();
-            Timer.Start();
+            _timer.Start();
         }
 
         private void PaintGrid_Click(object sender, RoutedEventArgs e)
