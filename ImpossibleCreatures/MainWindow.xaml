@@ -43,6 +43,8 @@
                         <RadioButton Tag="Food" Content="Food" IsChecked="False" Click="Visualisavion_Checked"/>
                         <RadioButton Tag="Age" Content="Age" IsChecked="False" Click="Visualisavion_Checked"/>
                         <RadioButton Tag="Experimantal" Content="Experimantal" IsChecked="False" Checked="Visualisavion_Checked"/>
+                        <CheckBox Content="Grid" Name="PaintGrid" IsChecked="True" Click="PaintGrid_Click" />
+                        <CheckBox Content="Easy close" Name="EasyClose" IsChecked="False" />
                         <CheckBox Content="Sync rendering" Name="MenuItemSyncRendering" IsChecked="True" />
 
                         <StackPanel Orientation="Horizontal">

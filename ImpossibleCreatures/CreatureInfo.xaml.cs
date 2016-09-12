@@ -15,12 +15,15 @@ namespace ImpossibleCreatures
     {
         private bool _isClosed = false;
 
-        public CreatureInfo(Membrane membrane)
+        public CreatureInfo(Membrane membrane, bool easyClosing)
         {
             InitializeComponent();
 
-            Deactivated += Window_Deactivated;
-            Closing += CreatureInfo_Closing;
+            if (easyClosing)
+            {
+                Deactivated += Window_Deactivated;
+                Closing += CreatureInfo_Closing;
+            }
 
             var creature = (Creature)membrane.Creature;
 

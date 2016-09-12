@@ -48,45 +48,47 @@ namespace ImpossibleCreatures
             _paintTimer.Stop();
         }
 
-        private static void DrawRectangle(WriteableBitmap writeableBmp, int matrixSize, int i, int j, Color fillColor, Color strokeColor)
+        private void DrawRectangle(WriteableBitmap writeableBmp, int matrixSize, int i, int j, Color fillColor, Color strokeColor)
         {
-            int shapeSize = BitmapSize/matrixSize;
+            int shapeSize = BitmapSize / matrixSize;
             int borderSize = 2;
+            var gridThickness = (bool)PaintGrid.IsChecked ? 1 : 0;
+
 
             // outer
             writeableBmp.FillRectangle(
-                i*shapeSize,
-                j*shapeSize,
-                (i + 1)*shapeSize - 1,
-                (j + 1)*shapeSize - 1,
+                i * shapeSize,
+                j * shapeSize,
+                (i + 1) * shapeSize - gridThickness,
+                (j + 1) * shapeSize - gridThickness,
                 strokeColor);
 
             if (fillColor != strokeColor)
             {
                 // inner
                 writeableBmp.FillRectangle(
-                    i*shapeSize + borderSize,
-                    j*shapeSize + borderSize,
-                    (i + 1)*shapeSize - 1 - borderSize,
-                    (j + 1)*shapeSize - 1 - borderSize,
+                    i * shapeSize + borderSize,
+                    j * shapeSize + borderSize,
+                    (i + 1) * shapeSize - 1 - borderSize,
+                    (j + 1) * shapeSize - 1 - borderSize,
                     fillColor);
             }
         }
 
         private void MainImage_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            double cellSize = MainImage.ActualHeight/_matrix.Value.Length;
+            double cellSize = MainImage.ActualHeight / _matrix.Value.Length;
 
             var position = e.GetPosition(MainImage);
 
-            int cellX = (int)(position.X/cellSize);
+            int cellX = (int)(position.X / cellSize);
             int cellY = (int)(position.Y / cellSize);
 
             var creature = _matrix.Value.Creatures[cellX, cellY];
 
             if (creature != null)
             {
-                var creatureInfo = new CreatureInfo(creature);
+                var creatureInfo = new CreatureInfo(creature, (bool)EasyClose.IsChecked);
                 creatureInfo.Show();
             }
         }

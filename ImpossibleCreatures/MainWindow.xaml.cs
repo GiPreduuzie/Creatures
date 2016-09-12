@@ -30,12 +30,14 @@ namespace ImpossibleCreatures
         {
             InitializeComponent();
 
+            var time = (int) RefreshSpeed.Value;
+
             Timer = new DispatcherTimer
             {
-                Interval = new TimeSpan(0, 0, 0, 0, LogConstants.TimeSpanMSeconds)
+                Interval = new TimeSpan(0, 0, 0, 0, time)
             };
 
-            RefreshSpeed.Value = LogConstants.TimeSpanMSeconds;
+            RefreshSpeed.Value = time;
 
             Timer.Tick += PrintCurrentMatrix;
 
@@ -73,6 +75,8 @@ namespace ImpossibleCreatures
 
         private void PrintCurrentMatrix(object sender, object o)
         {
+            
+
             if ((bool)MenuItemSyncRendering.IsChecked)
             {
                 _turnExecutor.Stop();
@@ -188,6 +192,11 @@ namespace ImpossibleCreatures
 
             _turnExecutor.Start();
             Timer.Start();
+        }
+
+        private void PaintGrid_Click(object sender, RoutedEventArgs e)
+        {
+            PrintBitmap();
         }
     }
 }

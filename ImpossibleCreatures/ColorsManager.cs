@@ -35,7 +35,7 @@ namespace ImpossibleCreatures
 
         public ColorsPair GetColors(
             VisualizationType visualizationType,
-            int energy, 
+            int energy,
             int maxEnergy,
             int age,
             int maxAge,
@@ -50,7 +50,7 @@ namespace ImpossibleCreatures
                 case VisualizationType.CanEat:
                     if (energy == 0)
                     {
-                        fillColor = food != 0 ? Color.FromArgb(50, 154, 205, 50) : Colors.White;
+                        fillColor = FoodColor(food);
                     }
                     else
                     {
@@ -60,7 +60,7 @@ namespace ImpossibleCreatures
                 case VisualizationType.Nation:
                     if (energy == 0)
                     {
-                        fillColor = food != 0 ? Color.FromArgb(50, 154, 205, 50) : Colors.White;
+                        fillColor = FoodColor(food);
                     }
                     else
                     {
@@ -72,34 +72,13 @@ namespace ImpossibleCreatures
                     }
                     break;
                 case VisualizationType.Energy:
-                    if (energy == 0)
-                    {
-                        fillColor = food != 0 ? Color.FromArgb(128, 154, 205, 50) : Colors.White;
-                    }
-                    else
-                    {
-                        fillColor = GetEnergyColor(energy, maxEnergy);
-                    }
+                    fillColor = energy == 0 ? FoodColor(food) : GetEnergyColor(energy, maxEnergy);
                     break;
                 case VisualizationType.Food:
-                    if (food == 0)
-                    {
-                        fillColor = energy == 0 ? Colors.White : Color.FromArgb(128, 128, 128, 128);
-                    }
-                    else
-                    {
-                        fillColor = GetFoodColor(food, maxFood);
-                    }
+                    fillColor = GetFoodColor(food, maxFood);
                     break;
                 case VisualizationType.Age:
-                    if (energy == 0)
-                    {
-                        fillColor = food != 0 ? Color.FromArgb(128, 154, 205, 50) : Colors.White;
-                    }
-                    else
-                    {
-                        fillColor = GetEnergyColor(age, maxAge);
-                    }
+                    fillColor = energy == 0 ? FoodColor(food) : GetEnergyColor(age, maxAge);
                     break;
                 case VisualizationType.Experimantal:
 
@@ -108,6 +87,11 @@ namespace ImpossibleCreatures
             }
 
             return new ColorsPair(fillColor, fillColor);
+        }
+
+        private Color FoodColor(int food)
+        {
+            return food != 0 ? Color.FromArgb(50, 154, 205, 50) : Colors.White;
         }
 
         private Color GetFoodColor(int food, int maxFood)
