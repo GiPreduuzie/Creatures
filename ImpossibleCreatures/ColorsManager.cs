@@ -44,7 +44,6 @@ namespace ImpossibleCreatures
             int parentMark)
         {
             var fillColor = new Color();
-            var strokeColor = new Color();
 
             switch (visualizationType)
             {
@@ -52,19 +51,16 @@ namespace ImpossibleCreatures
                     if (energy == 0)
                     {
                         fillColor = food != 0 ? Color.FromArgb(50, 154, 205, 50) : Colors.White;
-                        strokeColor = fillColor;
                     }
                     else
                     {
                         fillColor = food != 0 ? Colors.YellowGreen : Colors.OrangeRed;
-                        strokeColor = fillColor;
                     }
                     break;
                 case VisualizationType.Nation:
                     if (energy == 0)
                     {
-                        fillColor = Colors.White;
-                        strokeColor = fillColor;
+                        fillColor = food != 0 ? Color.FromArgb(50, 154, 205, 50) : Colors.White;
                     }
                     else
                     {
@@ -73,43 +69,36 @@ namespace ImpossibleCreatures
                             _usedColors[parentMark] = Color.FromArgb(255, (byte)_random.Next(255), (byte)_random.Next(255), (byte)_random.Next(255));
                         }
                         fillColor = _usedColors[parentMark];
-                        strokeColor = fillColor;
                     }
                     break;
                 case VisualizationType.Energy:
                     if (energy == 0)
                     {
                         fillColor = food != 0 ? Color.FromArgb(128, 154, 205, 50) : Colors.White;
-                        strokeColor = fillColor;
                     }
                     else
                     {
                         fillColor = GetEnergyColor(energy, maxEnergy);
-                        strokeColor = fillColor;
                     }
                     break;
                 case VisualizationType.Food:
                     if (food == 0)
                     {
                         fillColor = energy == 0 ? Colors.White : Color.FromArgb(128, 128, 128, 128);
-                        strokeColor = fillColor;
                     }
                     else
                     {
                         fillColor = GetFoodColor(food, maxFood);
-                        strokeColor = fillColor;
                     }
                     break;
                 case VisualizationType.Age:
                     if (energy == 0)
                     {
                         fillColor = food != 0 ? Color.FromArgb(128, 154, 205, 50) : Colors.White;
-                        strokeColor = fillColor;
                     }
                     else
                     {
                         fillColor = GetEnergyColor(age, maxAge);
-                        strokeColor = fillColor;
                     }
                     break;
                 case VisualizationType.Experimantal:
@@ -118,7 +107,7 @@ namespace ImpossibleCreatures
 
             }
 
-            return new ColorsPair(fillColor, strokeColor);
+            return new ColorsPair(fillColor, fillColor);
         }
 
         private Color GetFoodColor(int food, int maxFood)

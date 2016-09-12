@@ -31,6 +31,8 @@
                     <StackPanel>
                         <Button Name="ButtonStartStop" Click="Start_Click">Start</Button>
                         <Button Name="ButtonOneStep" Click="OneStep_Click">One step forward</Button>
+                        <Button Name="ButtonRepaint" Click="Repaint_Click">Repaint</Button>
+                        <Button Name="ButtonRestart" Click="Restart_Click">Restart</Button>
                     </StackPanel>
                 </GroupBox>
                 <GroupBox Header="Visualization">

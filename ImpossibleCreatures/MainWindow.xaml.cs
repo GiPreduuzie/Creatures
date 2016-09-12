@@ -23,7 +23,7 @@ namespace ImpossibleCreatures
         private TurnExecutor _turnExecutor;
         public ExecutionSettings ExecutionSettings { get; set; } = new ExecutionSettings();
 
-        private readonly Lazy<Matrix> _matrix = new Lazy<Matrix>(() => new DependenciesResolver.DependencyResolver().GetMatrix());
+        private Lazy<Matrix> _matrix = new Lazy<Matrix>(() => new DependenciesResolver.DependencyResolver().GetMatrix());
 
 
         public MainWindow()
@@ -60,16 +60,15 @@ namespace ImpossibleCreatures
             Debug.WriteLine("Mark parent");
 
             var n = 0;
-            if (_matrix.Value.GetNationsAmount() == 1)
-            {
-                _colorsManager.Reset();
 
-                foreach (var creature in _matrix.Value.CreaturesAsEnumerable)
-                {
-                    creature.ParentMark = n;
-                    n++;
-                }
+            _colorsManager.Reset();
+
+            foreach (var creature in _matrix.Value.CreaturesAsEnumerable)
+            {
+                creature.ParentMark = n;
+                n++;
             }
+
         }
 
         private void PrintCurrentMatrix(object sender, object o)
@@ -148,6 +147,16 @@ namespace ImpossibleCreatures
             MakeTurn(null, null);
         }
 
+        private void Repaint_Click(object sender, RoutedEventArgs e)
+        {
+            _turnExecutor.Stop();
+
+            MarkParts();
+            PrintBitmap();
+
+            _turnExecutor.Start();
+        }
+
         private void RefreshSpeed_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (Timer != null)
@@ -161,6 +170,24 @@ namespace ImpossibleCreatures
             var radioButton = (RadioButton)sender;
             _visualizationType = (VisualizationType)Enum.Parse(typeof(VisualizationType), radioButton.Tag.ToString());
             ProcessCurrentStatus();
+        }
+
+        private void Restart_Click(object sender, RoutedEventArgs e)
+        {
+            _turnExecutor.Stop();
+            Timer.Stop();
+
+            _nationsCount = 0;
+            _averageGenotypeLength = 0;
+
+            _matrix = new Lazy<Matrix>(() => new DependenciesResolver.DependencyResolver().GetMatrix());
+
+            _matrix.Value.FillStartMatrixRandomly();
+            PrintBitmap();
+            _turnExecutor = new TurnExecutor(_matrix.Value, ExecutionSettings);
+
+            _turnExecutor.Start();
+            Timer.Start();
         }
     }
 }
