@@ -39,7 +39,7 @@ namespace ConsoleWorker
 
             var log = new StringBuilder();
 
-            for (int i = 0; i < LogConstants.CountOfTurns; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 if (matrix.AliveCount == 0)
                     break;

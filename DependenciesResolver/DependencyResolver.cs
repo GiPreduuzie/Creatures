@@ -13,10 +13,6 @@ namespace DependenciesResolver
 {
     public class DependencyResolver
     {
-        public DependencyResolver(MainWindow )
-        {
-            
-        }
         public Matrix GetMatrix()
         {
             return new Matrix(
@@ -29,6 +25,87 @@ namespace DependenciesResolver
                 GetChildCreatingStrategy());
         }
 
+        public string GetPathForLogs()
+        {
+            return GetString("path for logs");
+        }
 
+        private ICommand[] GetActionAlgorithm()
+        {
+            return new ActionExperimentalAlgorithm().Algorithm;
+        }
+
+        public CreatorOfCreature GetCreatureCreator()
+        {
+            return new CreatorOfCreature(GetMutator(), GetActionAlgorithm(), GetChildCreatingStrategy());
+        }
+
+        private IChildCreatingStrategy GetChildCreatingStrategy()
+        {
+            var strategy = GetString("child creation price");
+            switch (strategy)
+            {
+                case "constant": return new PlainChildCreatingStrategy(new LivegivingPrice(CreatureConstants.ChildPrice));
+                case "logarithmic penality": return new LogarithmicPenaltyStrategy(CreatureConstants.ChildPrice);
+                case "linear penality": return new LinearPenaltyStrategy(CreatureConstants.ChildPrice);
+
+                default: throw new ArgumentException("I know nothing about such strategy: " + strategy);
+            }
+        }
+
+        private Mutator GetMutator()
+        {
+            return new Mutator(GetDouble("mutation probability"));
+        }
+
+        private IFoodDistributionStrategy GetFoodDistributionStrategy()
+        {
+            var strategy = GetString("food distibution strategy");
+            switch (strategy)
+            {
+                case "as water from corners": return new FillingFromCornersByWavesStrategy();
+                case "random rain": return new RandomRainOfFoodStrategy(GetDouble("rain thikness"));
+                case "fill entire field": return new FillingOfEntireFieldStrategy();
+
+                default: throw new ArgumentException("I know nothing about this strategy: " + strategy);
+            }
+        }
+
+        private IFoodBehavior GetFoodBehavior()
+        {
+            var strategy = GetString("food behavior");
+            switch (strategy)
+            {
+                case "plain": return new PlainBehaviour();
+                case "grow": return new PlantGrowingBehaviour();
+
+                default: throw new ArgumentException("I know nothing about this strategy: " + strategy);
+            }
+        }
+
+        private int GetFoodDistributingFrequency()
+        {
+            return GetInt("food distribution frequency");
+        }
+
+        public int GetMatrixSize()
+        {
+            return GetInt("matrix size");
+        }
+
+        private int GetInt(string key)
+        {
+            return int.Parse(GetString(key));
+        }
+
+        private double GetDouble(string key)
+        {
+            return double.Parse(GetString(key), new CultureInfo("en-US"));
+        }
+
+        private string GetString(string key)
+        {
+            return System.Configuration.ConfigurationManager.AppSettings[key];
+        }
     }
 }

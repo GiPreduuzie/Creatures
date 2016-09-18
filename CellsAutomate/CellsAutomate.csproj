@@ -82,7 +82,6 @@
     <Compile Include="Mutator\Mutations\SwapCommandMutation.cs" />
     <Compile Include="Mutator\Mutator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Algorithms\DirectionAlgorithmProvider.cs" />
     <Compile Include="Creatures\SimpleCreature.cs" />
     <Compile Include="Stats.cs" />
     <Compile Include="Tools\ActionEx.cs" />
