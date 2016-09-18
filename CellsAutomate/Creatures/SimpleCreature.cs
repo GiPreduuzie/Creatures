@@ -47,5 +47,10 @@ namespace CellsAutomate.Creatures
         {
             throw new NotImplementedException();
         }
+
+        public override int SolveTask(Point position, Random random)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

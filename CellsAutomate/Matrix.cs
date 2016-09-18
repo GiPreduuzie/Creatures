@@ -157,7 +157,8 @@ namespace CellsAutomate
                     case ActionEnum.Go:
                         MakeTurnGo(direction, currentCreature); break;
                     case ActionEnum.Eat:
-                        currentCreature.Eat(EatMatrix); break;
+                        var answerQuality = currentCreature.SolveTask();
+                        currentCreature.Eat(EatMatrix, answerQuality); break;
                     default: throw new Exception();
                 }
             }

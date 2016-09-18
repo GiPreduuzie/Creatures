@@ -37,7 +37,7 @@ namespace DependenciesResolver
 
         public CreatorOfCreature GetCreatureCreator()
         {
-            return new CreatorOfCreature(GetMutator(), GetActionAlgorithm(), GetChildCreatingStrategy());
+            return new CreatorOfCreature(GetMutator(), GetActionAlgorithm(), new ICommand[0], GetChildCreatingStrategy());
         }
 
         private IChildCreatingStrategy GetChildCreatingStrategy()

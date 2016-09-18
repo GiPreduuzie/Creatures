@@ -35,7 +35,7 @@ namespace Creaturestests.Food
             eatMatrix.Build(creatures);
             for (int i = 0; i < eatMatrix.Length; i++)
                 for (int j = 0; j < eatMatrix.Height; j++)
-                    Assert.IsFalse(eatMatrix.HasOneBite(new Point(i, j)));
+                    Assert.IsFalse(eatMatrix.HasOneBite(new Point(i, j), CreatureConstants.OneBite));
         }
 
         [TestMethod()]

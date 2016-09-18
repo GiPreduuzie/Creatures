@@ -17,13 +17,16 @@ namespace CellsAutomate.Creatures
         public Queue<int> ReceivedMessages { get; } = new Queue<int>();
 
         public ICommand[] CommandsForGetAction { get; }
+        public ICommand[] CommandsForSolution { get; }
+
 
         public Creature(
-            Executor executor, 
-            ICommand[] commandsForGetAction, Action<Point, int, int> sendMessage)
+            Executor executor,
+            ICommand[] commandsForGetAction, ICommand[] commandsForSolution, Action<Point, int, int> sendMessage)
         {
             _executor = executor;
             CommandsForGetAction = commandsForGetAction;
+            CommandsForSolution = commandsForSolution;
             _sendMessage = sendMessage;
         }
 
@@ -60,7 +63,7 @@ namespace CellsAutomate.Creatures
                 var direction = DirectionEx.DirectionByPointsWithNumber(position, point);
 
                 if (CommonMethods.IsValidAndFree(point, creatures))
-                    state.Add(direction, eatMatrix.HasOneBite(point) ? 4 : 3);
+                    state.Add(direction, eatMatrix.HasOneBite(point, Constants.CreatureConstants.OneBite) ? 4 : 3);
 
                 if (!CommonMethods.IsValid(point, eatMatrix.Length, eatMatrix.Height))
                     state.Add(direction, 1);
@@ -80,6 +83,32 @@ namespace CellsAutomate.Creatures
                 ReceivedMessages.Dequeue();
 
             ReceivedMessages.Enqueue(message);
+        }
+
+        public override int SolveTask(Point position, Random random)
+        {
+            var sourceData = new Dictionary<int, int>();
+            sourceData[0] = 2;
+            sourceData[1] = random.Next(100);
+            sourceData[2] = random.Next(100);
+
+            var answer = _executor.Execute(CommandsForGetAction, new MyExecutorToolset(random, sourceData, CreatureMemory, (x, y) => _sendMessage(position, x, y), ReceivedMessages));
+            var result = answer
+                .Split('\n')
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Select(x => int.Parse(x.Trim())).ToArray();
+
+            if (result.Length == 1)
+            {
+                if (result[0] == sourceData[1] + sourceData[2])
+                    return 200;
+                else
+                    return 150;
+            }
+            else
+            {
+                return 100;
+            }
         }
     }
 }

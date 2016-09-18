@@ -19,7 +19,7 @@ namespace CellsAutomate.Food.Tests
 
             FrequentlyUsedMethods.RaiseFoodLevelToConstantWithAddFood(eatMatrix, point, CreatureConstants.OneBite);
 
-            Assert.IsTrue(eatMatrix.HasOneBite(point));
+            Assert.IsTrue(eatMatrix.HasOneBite(point, CreatureConstants.OneBite));
         }
 
         [TestMethod()]
@@ -31,7 +31,7 @@ namespace CellsAutomate.Food.Tests
             {
                 for (int j = 0; j < eatMatrix.Height; j++)
                 {
-                    Assert.IsFalse(eatMatrix.HasOneBite(new Point(i, j)));
+                    Assert.IsFalse(eatMatrix.HasOneBite(new Point(i, j), CreatureConstants.OneBite));
                 }
             }
         }
@@ -71,7 +71,7 @@ namespace CellsAutomate.Food.Tests
 
             FrequentlyUsedMethods.RaiseFoodLevelToConstantWithAddFood(eatMatrix, point, CreatureConstants.OneBite);
 
-            Assert.IsTrue(eatMatrix.HasOneBite(point));
+            Assert.IsTrue(eatMatrix.HasOneBite(point, CreatureConstants.OneBite));
         }
 
         [TestMethod()]
@@ -82,15 +82,15 @@ namespace CellsAutomate.Food.Tests
 
             FrequentlyUsedMethods.RaiseFoodLevelToConstantWithAddFood(eatMatrix, point, CreatureConstants.OneBite);
 
-            Assert.IsTrue(eatMatrix.HasOneBite(point));
+            Assert.IsTrue(eatMatrix.HasOneBite(point, CreatureConstants.OneBite));
 
             var counter = FoodMatrixConstants.AddedFoodLevel / CreatureConstants.OneBite;
             for (int i = 0; i < counter; i++)
             {
-                Assert.IsTrue(eatMatrix.TakeFood(point));
+                Assert.IsTrue(eatMatrix.TakeFood(point, CreatureConstants.OneBite));
             }
 
-            Assert.IsFalse(eatMatrix.HasOneBite(point));
+            Assert.IsFalse(eatMatrix.HasOneBite(point, CreatureConstants.OneBite));
         }
 
         [TestMethod()]
@@ -98,7 +98,7 @@ namespace CellsAutomate.Food.Tests
         {
             var eatMatrix = new FoodMatrix(2, 2, 1, new FillingFromCornersByWavesStrategy(), new PlainBehaviour());
             var point = new Point(0, 0);
-            Assert.IsFalse(eatMatrix.TakeFood(point));
+            Assert.IsFalse(eatMatrix.TakeFood(point, CreatureConstants.OneBite));
         }
     }
 }

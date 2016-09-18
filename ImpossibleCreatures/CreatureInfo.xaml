@@ -33,9 +33,20 @@
             </StackPanel>
         </Grid>
         <Grid Column="2" >
-            <GroupBox Header="Action code">
-                <TextBox Name="ActionCode" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" />
-            </GroupBox>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid Row="0">
+                <GroupBox Header="Action code">
+                    <TextBox Name="ActionCode" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" />
+                </GroupBox>
+            </Grid>
+            <Grid Row="1">
+                <GroupBox Header="Solution code">
+                    <TextBox Name="Solution" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" />
+                </GroupBox>
+            </Grid>
         </Grid>
         <Grid Column="3">
             <Grid>

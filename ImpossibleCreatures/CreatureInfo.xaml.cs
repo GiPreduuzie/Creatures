@@ -34,6 +34,7 @@ namespace ImpossibleCreatures
             GenLength.Content = creature.GenotypeLength;
 
             ActionCode.Text = new CommandPrinter().ParseCommands(creature.CommandsForGetAction);
+            Solution.Text = new CommandPrinter().ParseCommands(creature.CommandsForSolution);
             Memory.Text = DictToString(creature.CreatureMemory);
             ReceivedMessages.Text = string.Join(Environment.NewLine, creature.ReceivedMessages);
         }

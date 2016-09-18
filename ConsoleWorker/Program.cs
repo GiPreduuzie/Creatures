@@ -191,7 +191,7 @@ namespace ConsoleWorker
                     for (int j = 0; j < newLength; j += scale)
                     {
                         for (int l = 0; l < scale; l++)
-                            bitmap.SetPixel(i + k, j + l, matrix.EatMatrix.HasOneBite(new Point(i / scale, j / scale)) ? Color.Green : Color.White);
+                            bitmap.SetPixel(i + k, j + l, matrix.EatMatrix.HasOneBite(new Point(i / scale, j / scale), CreatureConstants.OneBite) ? Color.Green : Color.White);
                     }
             }
 

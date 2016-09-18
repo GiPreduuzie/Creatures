@@ -8,6 +8,7 @@ using CellsAutomate.Food.DistributingStrategy;
 using CellsAutomate.Food.FoodBehavior;
 using CellsAutomate.Mutator;
 using Creatures.Language.Commands.Interfaces;
+using Creatures.Language.Commands;
 
 namespace ImpossibleCreatures.Settings
 {
@@ -29,7 +30,7 @@ namespace ImpossibleCreatures.Settings
 
         public CreatorOfCreature GetCreatureCreator(ComboBox childCreationPrice)
         {
-            return new CreatorOfCreature(GetMutator(), GetActionAlgorithm(), GetChildCreatingStrategy(childCreationPrice));
+            return new CreatorOfCreature(GetMutator(), GetActionAlgorithm(), new ICommand[] { new Stop()}, GetChildCreatingStrategy(childCreationPrice));
         }
 
         public int GetFoodDistributingFrequency(Slider slider)

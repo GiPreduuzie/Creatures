@@ -53,7 +53,7 @@ namespace CellsAutomate
 
         private bool HasOneBite(FoodMatrix eatMatrix)
         {
-            return eatMatrix.HasOneBite(Position);
+            return eatMatrix.HasOneBite(Position, CreatureConstants.OneBite);
         }
 
         private bool HasToDie()
@@ -69,11 +69,11 @@ namespace CellsAutomate
             return directions.Count == 0 ? DirectionEnum.Stay : directions.ElementAt(_random.Next(directions.Count));
         }
 
-        public void Eat(FoodMatrix eatMatrix)
+        public void Eat(FoodMatrix eatMatrix, int answerQuality)
         {
-            if (eatMatrix.TakeFood(Position))
+            if (eatMatrix.TakeFood(Position, answerQuality))
             {
-                EnergyPoints += CreatureConstants.OneBite;
+                EnergyPoints += (int)(CreatureConstants.OneBite * (1.0 * answerQuality) / 100);
             }
         }
 
@@ -89,6 +89,11 @@ namespace CellsAutomate
             creatures[Position.X, Position.Y] = null;
             Position = newPosition;
             creatures[Position.X, Position.Y] = this;
+        }
+
+        public int SolveTask()
+        {
+            return Creature.SolveTask(Position, _random);
         }
 
         public int ParentMark

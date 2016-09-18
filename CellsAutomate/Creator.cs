@@ -21,22 +21,25 @@ namespace CellsAutomate
     {
         private readonly Mutator.Mutator _mutator;
         private readonly ICommand[] _commandsForGetAction;
+        private readonly ICommand[] _commandsForSolution;
         private readonly IChildCreatingStrategy _childCreatingStrategy;
 
         public CreatorOfCreature(
             Mutator.Mutator mutator,
             ICommand[] commandsForGetAction,
+            ICommand[] commandsForSolution,
             IChildCreatingStrategy childCreatingStrategy)
         {
             _mutator = mutator;
             _commandsForGetAction = commandsForGetAction;
+            _commandsForSolution = commandsForSolution;
             _childCreatingStrategy = childCreatingStrategy;
         }
 
         public override BaseCreature CreateAbstractCreature(Action<Point, int, int> sendMessage)
         {
             var executor = new Executor();
-            return new Creature(executor, _commandsForGetAction, sendMessage);
+            return new Creature(executor, _commandsForGetAction, _commandsForSolution, sendMessage);
         }
 
         public override Tuple<BaseCreature, LivegivingPrice> MakeChild(BaseCreature parent, Action<Point, int, int> sendMessage)
@@ -45,9 +48,10 @@ namespace CellsAutomate
             if (parentAsCreature == null) throw new ArgumentException();
 
             var childsActions = Mutate(parentAsCreature.CommandsForGetAction);
+            var commandsForSolution = Mutate(parentAsCreature.CommandsForSolution);
 
             var executor = new Executor();
-            BaseCreature child = new Creature(executor, childsActions, sendMessage);
+            BaseCreature child = new Creature(executor, childsActions, commandsForSolution, sendMessage);
             return Tuple.Create(child, _childCreatingStrategy.CountPrice(childsActions.Length));
         }
 

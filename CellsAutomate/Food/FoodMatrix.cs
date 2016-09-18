@@ -31,9 +31,9 @@ namespace CellsAutomate.Food
             _foodBehavior = foodBehavior;
         }
 
-        public bool HasOneBite(Point currentPoint)
+        public bool HasOneBite(Point currentPoint, int neccessaryAmount)
         {
-            return GetLevelOfFood(currentPoint) >= CreatureConstants.OneBite;
+            return GetLevelOfFood(currentPoint) >= neccessaryAmount;
         }
 
         public bool HasMaxFoodLevel(Point currentPoint)
@@ -46,11 +46,13 @@ namespace CellsAutomate.Food
             Matrix[currentPoint.X, currentPoint.Y] += FoodMatrixConstants.AddedFoodLevel;
         }
 
-        public bool TakeFood(Point currentPoint)
+        public bool TakeFood(Point currentPoint, int answerQuality)
         {
-            if (!HasOneBite(currentPoint))
+            var necessaryAmount = (int)(CreatureConstants.OneBite * (1.0 * answerQuality) / 100);
+
+            if (!HasOneBite(currentPoint, necessaryAmount))
                 return false;
-            Matrix[currentPoint.X, currentPoint.Y] -= CreatureConstants.OneBite;
+            Matrix[currentPoint.X, currentPoint.Y] -= necessaryAmount;
             return true;
         }
 
