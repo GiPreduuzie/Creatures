@@ -11,13 +11,13 @@ namespace Creatures.Language.Parsers
         public IEnumerable<ICommand> ProcessCommands(string commands)
         {
             return commands
-                .Split(new[] { '\r', '\n' })
+                .Split('\r', '\n')
                 .Select(item => item.Trim())
                 .Where(item => !string.IsNullOrEmpty(item))
                 .Select(ProcessCommand);
         }
 
-        public ICommand ProcessCommand(string command)
+        private ICommand ProcessCommand(string command)
         {
             var constructor = new Constructor();
 

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
 using Creatures.Language.Commands.Interfaces;
 using Creatures.Language.Parsers;
@@ -32,6 +33,10 @@ namespace CellsAutomate.Algorithms
                     .AppendLine("starvingLevel = " + CreatureConstants.ChildPrice)
                     .AppendLine("int starving")
                     .AppendLine("starving = starvingLevel - state")
+                    .AppendLine("int randomDirection")
+                    .AppendLine("int directionsAmount")
+                    .AppendLine("directionsAmount = " + Enum.GetNames(typeof(DirectionEnum)).Length)
+                    .AppendLine("randomDirection = random directionsAmount")
 
                     .AppendLine("if starving then")
                     .AppendLine("    int foodOnCell")
@@ -43,25 +48,23 @@ namespace CellsAutomate.Algorithms
 
                     .AppendLine("    if haveToGo then")
                     .AppendLine("        int go")
-                    .AppendLine("        go = " + (int)ActionEnum.Go)
-                    .AppendLine("        int randomGo")
-                    .AppendLine("        randomGo = random state")
+                    .AppendLine("        go = " + (int) ActionEnum.Go)
                     .AppendLine("        print go")
-                    .AppendLine("        print randomGo")
+                    .AppendLine("        print randomDirection")
                     .AppendLine("        stop")
                     .AppendLine("    endif")
 
                     .AppendLine("    int eat")
-                    .AppendLine("    eat = " + (int)ActionEnum.Eat)
+                    .AppendLine("    eat = " + (int) ActionEnum.Eat)
                     .AppendLine("    print eat")
                     .AppendLine("    print state")
                     .AppendLine("    stop")
                     .AppendLine("endif")
 
                     .AppendLine("int child")
-                    .AppendLine("child = " + (int)ActionEnum.MakeChild)
+                    .AppendLine("child = " + (int) ActionEnum.MakeChild)
                     .AppendLine("print child")
-                    .AppendLine("print state");
+                    .AppendLine("print randomDirection");
 
             return commands.ToString();
         }

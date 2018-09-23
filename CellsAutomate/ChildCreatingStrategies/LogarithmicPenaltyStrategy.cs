@@ -1,5 +1,4 @@
 ﻿using System;
-using Creatures.Language.Commands.Interfaces;
 
 namespace CellsAutomate.ChildCreatingStrategies
 {
@@ -12,9 +11,9 @@ namespace CellsAutomate.ChildCreatingStrategies
             _basicPrice = basicPrice;
         }
 
-        public LivegivingPrice CountPrice(int childsActionsLength)
+        public LivegivingPrice CountPrice(int childrenActionsLength)
         {
-            var price = Math.Log(childsActionsLength, 10);
+            var price = Math.Log(childrenActionsLength, 10);
             return new LivegivingPrice(_basicPrice + (int)price);
         }
     }

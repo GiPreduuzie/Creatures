@@ -1,6 +1,4 @@
-﻿using Creatures.Language.Commands.Interfaces;
-
-namespace CellsAutomate.ChildCreatingStrategies
+﻿namespace CellsAutomate.ChildCreatingStrategies
 {
     public class LinearPenaltyStrategy : IChildCreatingStrategy
     {
@@ -11,9 +9,9 @@ namespace CellsAutomate.ChildCreatingStrategies
             _basicPrice = basicPrice;
         }
 
-        public LivegivingPrice CountPrice(int childsActionsLength)
+        public LivegivingPrice CountPrice(int childrenActionsLength)
         {
-            var price = childsActionsLength ;
+            var price = childrenActionsLength ;
             var start = 150;
             var result = price - start > 0 ? price - start : 0;
             return new LivegivingPrice(_basicPrice + result);

@@ -7,6 +7,6 @@
             Price = price;
         }
 
-        public int Price { get; private set; }
+        public int Price { get; }
     }
 }

@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CellsAutomate</RootNamespace>
     <AssemblyName>CellsAutomate</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -51,6 +52,7 @@
     <Compile Include="ChildCreatingStrategies\LivegivingPrice.cs" />
     <Compile Include="ChildCreatingStrategies\LogarithmicPenaltyStrategy.cs" />
     <Compile Include="ChildCreatingStrategies\PlainChildCreatingStrategy.cs" />
+    <Compile Include="Creatures\PointStates.cs" />
     <Compile Include="Food\FoodBehavior\IFoodBehavior.cs" />
     <Compile Include="Food\FoodBehavior\PlainBehaviour.cs" />
     <Compile Include="Food\FoodBehavior\PlantGrowingBehaviour.cs" />

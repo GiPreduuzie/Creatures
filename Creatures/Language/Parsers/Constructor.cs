@@ -1,5 +1,4 @@
-﻿using System.Data;
-using System.Linq;
+﻿using System.Linq;
 using Creatures.Language.Commands;
 using Creatures.Language.Commands.Interfaces;
 using Creatures.ResultMonad;
@@ -28,7 +27,7 @@ namespace Creatures.Language.Parsers
 
         public IResult<ICommand> CloneValue(string command)
         {
-            var error = "Should be '<name_target> = <name_soure>', but it is: " + command;
+            var error = "Should be '<name_target> = <name_source>', but it is: " + command;
             var failure = Result<ICommand>.CreateFailure(error);
 
             var parts = command.Split('=').Select(item=>item.Trim()).ToList();
@@ -255,10 +254,7 @@ namespace Creatures.Language.Parsers
 
         private bool IsIdentifier(string value)
         {
-            if (value.Length == 0)
-                return false;
-
-            return value.All(x =>  char.IsLetter(x) || x == '_');
+            return value.Length != 0 && value.All(x => char.IsLetter(x) || x == '_');
         }
     }
 }

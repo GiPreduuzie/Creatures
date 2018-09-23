@@ -11,7 +11,6 @@ namespace CellsAutomate
     public class Membrane
     {
         private readonly Random _random;
-        private int _parentMark;
         public Point Position { get; set; }
         public int Generation { get; }
         public int EnergyPoints { get; private set; } = CreatureConstants.StartEnergyPoints;
@@ -29,7 +28,7 @@ namespace CellsAutomate
         {
             Creature = creature;
             _random = random;
-            _parentMark = parentMark;
+            ParentMark = parentMark;
             Position = position;
             Generation = generation;
             _creator = creator;
@@ -44,11 +43,11 @@ namespace CellsAutomate
             Age++;
             EnergyPoints -= CreatureConstants.MinFoodToSurvive;
 
-            var result = Creature.MyTurn(eatMatrix, creatures, Position, _random, HasOneBite(eatMatrix), EnergyPoints);
+            return Creature.MyTurn(eatMatrix, creatures, Position, _random, HasOneBite(eatMatrix), EnergyPoints);
 
-            return result.Item1 == ActionEnum.MakeChild 
-                ? Tuple.Create(ActionEnum.MakeChild, GetDirectionForChild(creatures)) 
-                : result;
+//            return result.Item1 == ActionEnum.MakeChild 
+//                ? Tuple.Create(ActionEnum.MakeChild, GetDirectionForChild(creatures)) 
+//                : result;
         }
 
         private bool HasOneBite(FoodMatrix eatMatrix)
@@ -61,13 +60,13 @@ namespace CellsAutomate
             return EnergyPoints < CreatureConstants.MinFoodToSurvive;
         }
 
-        private DirectionEnum GetDirectionForChild(Membrane[,] creatures)
-        {
-            var points = CommonMethods.GetPoints(Position);
-            var directions = (from item in points where CommonMethods.IsValidAndFree(item, creatures)
-                              select DirectionEx.DirectionByPoints(Position, item)).ToList();
-            return directions.Count == 0 ? DirectionEnum.Stay : directions.ElementAt(_random.Next(directions.Count));
-        }
+//        private DirectionEnum GetDirectionForChild(Membrane[,] creatures)
+//        {
+//            var points = CommonMethods.GetPoints(Position);
+//            var directions = (from item in points where CommonMethods.IsValidAndFree(item, creatures)
+//                              select DirectionEx.DirectionByPoints(Position, item)).ToList();
+//            return directions.Count == 0 ? DirectionEnum.Stay : directions.ElementAt(_random.Next(directions.Count));
+//        }
 
         public void Eat(FoodMatrix eatMatrix, int answerQuality)
         {
@@ -81,7 +80,7 @@ namespace CellsAutomate
         {
             var child = _creator.MakeChild(Creature, sendMessage);
             EnergyPoints -= child.Item2.Price;
-            return new Membrane(child.Item1, _random, childPosition, Generation + 1, _parentMark, _creator);
+            return new Membrane(child.Item1, _random, childPosition, Generation + 1, ParentMark, _creator);
         }
         
         public void Move(Membrane[,] creatures, Point newPosition)
@@ -96,10 +95,6 @@ namespace CellsAutomate
             return Creature.SolveTask(Position, _random);
         }
 
-        public int ParentMark
-        {
-            get { return _parentMark; }
-            set { _parentMark = value; }
-        }
+        public int ParentMark { get; set; }
     }
 }

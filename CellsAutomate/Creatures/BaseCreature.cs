@@ -14,8 +14,13 @@ namespace CellsAutomate.Creatures
             int energyPoints,
             int levelOfFood);
 
-        public Tuple<ActionEnum, DirectionEnum> MyTurn(FoodMatrix eatMatrix, Membrane[,] creatures, Point position, 
-            Random random, bool hasOneBite, int energyPoints)
+        public Tuple<ActionEnum, DirectionEnum> MyTurn(
+            FoodMatrix eatMatrix, 
+            Membrane[,] creatures, 
+            Point position, 
+            Random random, 
+            bool hasOneBite, 
+            int energyPoints)
         {
             return GetCreatureDesires
                 (eatMatrix,

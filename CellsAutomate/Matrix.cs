@@ -15,11 +15,11 @@ namespace CellsAutomate
     {
         public readonly int Length;
         public readonly int Height;
-        public FoodMatrix EatMatrix { get; private set; }
+        public FoodMatrix EatMatrix { get; }
         private readonly Creator _creator;
         private readonly IChildCreatingStrategy _childCreatingStrategy;
 
-        public Membrane[,] Creatures { get; set; }
+        public Membrane[,] Creatures { get; }
 
         public int GetNationsAmount()
         {
@@ -61,9 +61,9 @@ namespace CellsAutomate
         {
             var placeHoldersMatrix = new bool[Length, Height];
 
-            for (int i = 0; i < Length; i++)
+            for (var i = 0; i < Length; i++)
             {
-                for (int j = 0; j < Height; j++)
+                for (var j = 0; j < Height; j++)
                 {
                     placeHoldersMatrix[i, j] = Creatures[i, j] != null;
                 }
@@ -133,11 +133,7 @@ namespace CellsAutomate
                 default: throw new Exception();
             }
 
-            var value = Creatures[point.X, point.Y];
-            if (value == null) return;
-
-            value.Creature.ReceiveMessage(message);
-
+            Creatures[point.X, point.Y]?.Creature.ReceiveMessage(message);
         }
 
         private void MakeTurn(Membrane currentCreature)
